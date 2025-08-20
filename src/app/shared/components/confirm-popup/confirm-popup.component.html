@@ -1,0 +1,18 @@
+<mat-dialog-content class="dialog-content">
+  <div class="dialog-container">
+    <label>{{ data.message | translate }}</label>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button class="button_style" (click)="popupAction(1)">
+    {{ data.okLabel || ('label.ok' | translate) }}
+  </button>
+  <button
+    *ngIf="data.showCancel"
+    mat-button
+    class="button_style"
+    (click)="popupAction(0)">
+    {{ data.cancelLabel || ('label.cancel' | translate) }}
+  </button>
+</mat-dialog-actions>

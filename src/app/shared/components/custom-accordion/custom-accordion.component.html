@@ -1,0 +1,11 @@
+<mat-accordion>
+  <mat-expansion-panel class="custom-panel">
+    <mat-expansion-panel-header [attr.title]="''">
+      <mat-panel-title class="mat-expansion-header">
+        {{ title | translate }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <ng-content></ng-content>
+  </mat-expansion-panel>
+</mat-accordion>

@@ -1,0 +1,127 @@
+<main>
+  <!-- Slider / Breadcrumb -->
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-8 col-lg-11 col-md-12">
+              <div class="hero__caption hero__caption2">
+                <h1> {{'courses' | translate}}</h1>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="accordion-container">
+      <!-- Courses -->
+    <app-custom-accordion title="courses">
+      <app-generic-table
+       [screenId]="'courses'" 
+       [primaryKey]="'teacherCoursePk'"
+       [columns]="teacherCourseColumns"
+       [dataFactory]="teacherCourseDataFactory"
+       [apiPath]="'teacherCourses'"
+       (rowSelected)="onTeacherCourseSelected($event)"
+       >
+      </app-generic-table>
+    </app-custom-accordion>
+     <!-- Course Details -->
+      <br>
+      <app-custom-accordion title="TeacherCourse.courseDetails">
+        <app-generic-form
+         [columns]="teacherCourseColumns"
+         [selectedRow]="selectedCourse"
+         [alwaysEditable]="true"
+         [primaryKey]="'teacherCoursePk'"
+         [dataFactory]="teacherCourseDataFactory"
+         [apiPath]="'teacherCourses'"
+         (rowChanged)="onFormRowChanged($event)"
+         (newRowCreated)="onNewRow($event)"
+         (rowDeleted)="onFormRowDeleted($event)"   
+         (rowSaved)="onFormSaved($event)"
+
+         >
+        </app-generic-form>
+      </app-custom-accordion>
+
+     <!-- Course Classes / students -->
+      <br>
+      <app-custom-accordion title="TeacherCourse.classes-students">
+        <mat-tab-group mat-stretch-tabs="false">
+          <mat-tab label='{{"Class.Classes" | translate}}' >
+               <app-generic-table
+                [screenId]="'courses'" 
+                [primaryKey]="'classPk'"
+                [columns]="classColumns"
+                [dataFactory]="classDataFactory"
+                [apiPath]="'classes'"
+                [selectedId]="selectedCourse?.teacherCoursePk"
+                [searchParameterKey]="'teacherCourseFk'"
+                (rowSelected)="onClassSelected($event)">
+              </app-generic-table>
+          </mat-tab>
+          <mat-tab label='{{"CourseStudent.Students" | translate}}' >
+              <app-generic-table
+                [screenId]="'courses'" 
+                [primaryKey]="'courseStudentPk'"
+                [columns]="courseStudentColumns"
+                [dataFactory]="courseStudentDataFactory"
+                [apiPath]="'courseStudents'"
+                [selectedId]="selectedCourse?.teacherCoursePk"
+                [searchParameterKey]="'teacherCourseFk'">
+              </app-generic-table>
+          </mat-tab>
+        </mat-tab-group>
+      </app-custom-accordion>
+
+     
+      <br>
+     <app-custom-accordion title="Class.ClassDetails">
+
+      <!-- حقل expectedStartTime -->
+<!-- <app-date-time-picker
+  [value]="selectedClass?.expectedStartTime!"
+  >
+</app-date-time-picker> -->
+
+<!-- حقل expectedEndTime -->
+<!-- <app-date-time-picker
+  [value]="selectedClass?.expectedEndTime!"
+  >
+</app-date-time-picker>
+ -->
+
+<!-- مثال: expectedStartTime -->
+<!-- <app-date-time-picker
+  [label]="'التاريخ والوقت'"
+  [value]="selectedClass?.expectedStartTime!"
+  >
+</app-date-time-picker> -->
+
+<!-- مثال: expectedEndTime -->
+<!-- <app-date-time-picker
+  [label]="'وقت الانتهاء'"
+  [value]="selectedClass?.expectedEndTime!">
+</app-date-time-picker>
+ -->
+
+
+        <app-generic-form
+         [columns]="classColumns"
+         [selectedRow]="selectedClass"
+         [alwaysEditable]="true"
+         [primaryKey]="'classPk'"
+         [dataFactory]="classDataFactory"
+         [apiPath]="'classes'">
+        </app-generic-form>
+      </app-custom-accordion>
+  </div>
+
+
+</main>

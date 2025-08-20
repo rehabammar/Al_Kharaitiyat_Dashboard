@@ -37,9 +37,53 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "public/assets/css/bootstrap.min.css",
+              "public/assets/css/owl.carousel.min.css",
+              "public/assets/css/slicknav.css",
+              "public/assets/css/flaticon.css",
+              "public/assets/css/progressbar_barfiller.css",
+              "public/assets/css/gijgo.css",
+              "public/assets/css/adminlte.css",
+              "public/assets/css/animate.min.css",
+              "public/assets/css/animated-headline.css",
+              "public/assets/css/magnific-popup.css",
+              "public/assets/css/fontawesome-all.min.css",
+              "public/assets/css/themify-icons.css",
+              "public/assets/css/slick.css",
+              "public/assets/css/nice-select.css",
+              "public/assets/css/style.css",
+              "public/assets/css/form-style.css"
+              
             ],
-            "scripts": []
+            "scripts": [
+              "public/assets/js/vendor/modernizr-3.5.0.min.js",
+              "public/assets/js/vendor/jquery-1.12.4.min.js",
+              "public/assets/js/popper.min.js",
+              "public/assets/js/bootstrap.min.js",
+              "public/assets/js/jquery.slicknav.min.js",
+              "public/assets/js/owl.carousel.min.js",
+              "public/assets/js/slick.min.js",
+              "public/assets/js/wow.min.js",
+              "public/assets/js/animated.headline.js",
+              "public/assets/js/jquery.magnific-popup.js",
+              "public/assets/js/gijgo.min.js",
+              "public/assets/js/jquery.nice-select.min.js",
+              "public/assets/js/jquery.sticky.js",
+              "public/assets/js/jquery.barfiller.js",
+              "public/assets/js/jquery.counterup.min.js",
+              "public/assets/js/jquery.vide.js",
+              "public/assets/js/waypoints.min.js",
+              "public/assets/js/jquery.countdown.min.js",
+              "public/assets/js/hover-direction-snake.min.js",
+              "public/assets/js/contact.js",
+              "public/assets/js/jquery.form.js",
+              "public/assets/js/jquery.validate.min.js",
+              "public/assets/js/mail-script.js",
+              "public/assets/js/jquery.ajaxchimp.min.js",
+              "public/assets/js/plugins.js",
+              "public/assets/js/main.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -95,6 +139,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -102,5 +147,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

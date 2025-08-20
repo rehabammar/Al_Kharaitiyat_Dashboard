@@ -1,0 +1,98 @@
+<!-- <main class="login-body position-relative">
+<video autoplay muted loop playsinline id="bg-video">
+  <source src="assets/img/login-bg.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+  <form class="form-default" (submit)="onSubmit()">
+    <div class="login-form">
+      <div class="logo-login">
+        <a routerLink="/">
+          <img src="assets/img/logo/loder.png" alt="Logo" />
+        </a>
+      </div>
+      <h2>Login Here</h2>
+      <div class="form-input">
+        <label for="email">Email</label>
+        <input type="email" id="email" [(ngModel)]="userName" name="email" placeholder="Email" required />
+      </div>
+      <div class="form-input">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+      </div>
+      <div class="form-input pt-30">
+        <input type="submit" value="Login" />
+      </div>
+      <a routerLink="/forgot-password" class="forget">Forget Password</a>
+      <a routerLink="/register" class="registration">Registration</a>
+    </div>
+  </form>
+</main> -->
+
+<main class="login-body position-relative">
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="assets/img/login-bg.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- change lang -->
+   
+<div dir="rtl" style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px; padding: 10px;">
+  <ng-container *ngFor="let row of languagesList">
+    <a href="javascript:void(0);" *ngIf="row.langCode !== selectedLanguage.langCode" (click)="changeLanguage(row.langCode!)"
+      class="langStyle">
+      <i class="fas fa-language">&#160;</i>
+      {{ row.langName }}
+    </a>
+  </ng-container>
+</div>
+
+
+  <!-- Login Form -->
+  <form class="form-default" (ngSubmit)="useLogin()" #f="ngForm" novalidate>
+    <div class="login-form">
+      <div class="logo-login">
+        <a routerLink="/"><img src="assets/img/logo/loder.png" alt="Logo" /></a>
+      </div>
+
+      <h2>{{ 'login' | translate }}</h2>
+
+      <div class="form-input">
+        <label for="email">{{ 'username' | translate }}</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          [(ngModel)]="userName"
+          #emailCtrl="ngModel" />
+        <small class="error" *ngIf="emailCtrl.invalid && (emailCtrl.touched || emailCtrl.dirty)">
+          Email is required
+        </small>
+      </div>
+
+      <div class="form-input">
+        <label for="password">{{ 'password' | translate }}</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          [(ngModel)]="password"
+          #passCtrl="ngModel" />
+        <small class="error" *ngIf="passCtrl.invalid && (passCtrl.touched || passCtrl.dirty)">
+          Password is required
+        </small>
+      </div>
+
+      <div class="form-input pt-30">
+        <button type="submit" [disabled]="f.invalid || loading">{{ 'login' | translate }}</button>
+      </div>
+
+      <div class="error-banner" *ngIf="showError">{{ errorMessage }}</div>
+
+      <a routerLink="/forgot-password" class="forget">{{ 'forgetPassword' | translate }}</a>
+    </div>
+  </form>
+</main>
+

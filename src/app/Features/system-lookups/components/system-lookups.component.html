@@ -1,0 +1,49 @@
+<main>
+  <!-- Slider / Breadcrumb -->
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-8 col-lg-11 col-md-12">
+              <div class="hero__caption hero__caption2">
+                <h1> {{'systemLookups' | translate}}</h1>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<div class="accordion-container">
+
+<app-custom-accordion title="Lookup.Lookups">
+  <app-generic-table
+    [screenId]="'lookups'"
+    [primaryKey]="'lookupPk'"
+    [columns]="lookupColumns"
+    [dataFactory]="lookupDataFactory"
+    [apiPath]="'lookups'"
+    (rowSelected)="onLookupSelected($event)"
+    [isEditableTable]="true">
+  </app-generic-table>
+</app-custom-accordion>
+
+<br>
+
+<app-custom-accordion title="LookupDetail.LookupDetails">
+  <app-generic-table
+    [screenId]="'lookupDetails'"
+    [primaryKey]="'lookupDetailPk'"
+    [columns]="lookupDetailColumns"
+    [dataFactory]="lookupDetailDataFactory"
+    [apiPath]="'lookupDetails'"
+    [selectedId]="selectedLookup?.lookupPk"
+    [searchParameterKey]="'lookupFk'"
+    (rowSelected)="onDetailSelected($event)">
+  </app-generic-table>
+</app-custom-accordion>
+
+</div>
+</main>

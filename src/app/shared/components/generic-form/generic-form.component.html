@@ -1,0 +1,91 @@
+  
+  <div class="button-wrapper">
+   <app-button
+     [label]="'createInsert'" 
+     [imageSrc]="'/assets/img/icon/createInsert.png'"
+     [onClick]="addNewRow"
+    
+     >
+    </app-button>
+       <app-button 
+     [label]="'commit'"
+     [imageSrc]="'/assets/img/icon/save.svg'" 
+     [onClick]="save"
+    >
+    </app-button> 
+     <app-button 
+    [label]="'delete'" 
+    [imageSrc]="'/assets/img/icon/delete.svg'"
+    [color]="'#dc3545'"
+    [onClick]="openDeletePopup"
+    >
+    </app-button>
+  </div>
+
+<div class="generic-form-container" *ngIf="selectedRow">
+  <div class="form-grid">
+    <div class="form-item" *ngFor="let column of columns">
+      
+      <!-- Label -->
+     
+   <div class="header-label-line align-start">
+         <label class="form-label">{{ column.labelKey | translate }}</label>
+       <span *ngIf="column.required" class="required-indicator">*</span>
+    </div>
+
+     <!-- FLAG -->
+<ng-container *ngIf="column.isFlag; else notFlag">
+  <div class="icon-wrapper"
+       (click)="toggleFlag(column.field)"
+       [class.disabled]="!editable">
+    <img *ngIf="selectedRow[column.field] == 1"
+         src="/assets/img/icon/tick.png"
+         class="status-image" alt="Checked" />
+    <img *ngIf="selectedRow[column.field] != 1"
+         src="/assets/img/icon/untick.png"
+         class="status-image" alt="Unchecked" />
+  </div>
+</ng-container>
+
+<!-- if NOT flag -->
+<ng-template #notFlag>
+  <!-- COMBOBOX -->
+  <ng-container *ngIf="column.isCombobox; else normalField">
+  <app-combobox-search
+    [apiPath]="column.apiPath!"
+    [dataFactory]="column.dataFactory!"
+    [primaryKey]="column.primaryKey!"
+    [displayItemKey]="column.displayItemKey!"
+    [selectedKey]="selectedRow[column.fieldFK!]"
+    (itemSelected)="onComboSelected(column, $event)"
+    [hasError]="isInvalid(column)"
+    >
+  </app-combobox-search>
+
+  <div class="error-text" *ngIf="isInvalid(column)">
+    {{ 'validation.requiredSelect' | translate }}
+  </div>
+</ng-container>
+
+</ng-template>
+
+<!-- NORMAL INPUT -->
+<ng-template #normalField>
+  <div class="input-wrapper"
+     *ngIf="(alwaysEditable || editable) && !column.disabled; else readOnly">
+  <input class="custom-input"
+         [attr.name]="column.field"
+         [(ngModel)]="selectedRow[column.field]"
+         (ngModelChange)="onFieldChanged(column, $event)"
+         [class.input-error]="isInvalid(column)" />
+  <div class="error-text" *ngIf="isInvalid(column)">
+    {{ 'validation.required' | translate }}
+  </div>
+ </div>
+  <ng-template #readOnly>
+    <span class="custom-label">{{ selectedRow[column.field] }}</span>
+  </ng-template>
+</ng-template>
+
+
+

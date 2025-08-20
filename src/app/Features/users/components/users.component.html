@@ -1,0 +1,49 @@
+<main>
+  <!-- Slider / Breadcrumb -->
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-8 col-lg-11 col-md-12">
+              <div class="hero__caption hero__caption2">
+                <h1> {{'User.Users' | translate}}</h1>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="accordion-container">
+
+<app-custom-accordion title="User.Users">
+  <app-generic-table
+    [screenId]="'users'"
+    [primaryKey]="'userPk'"
+    [columns]="userColumns"
+    [dataFactory]="userDataFactory"
+    [apiPath]="'users'"
+    (rowSelected)="onUserSelected($event)">
+  </app-generic-table>
+</app-custom-accordion>
+
+<br>
+
+<app-custom-accordion title="User.UserDetails">
+  <app-generic-form
+    [columns]="userColumns"
+    [selectedRow]="selectedUser"
+    [alwaysEditable]="true"
+    [primaryKey]="'userPk'"
+    [dataFactory]="userDataFactory"
+    [apiPath]="'users'"
+    (rowChanged)="onUserFieldChanged($event)"
+    (rowSaved)="onUserSaved($event)">
+  </app-generic-form>
+</app-custom-accordion>
+</div>
+</main>

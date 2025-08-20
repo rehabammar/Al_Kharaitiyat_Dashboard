@@ -1,0 +1,23 @@
+<mat-dialog-content class="fullscreen-dialog">
+  <div class="dialog-body">
+    <!-- <label class="header-label">{{ 'label.translation' | translate }}</label> -->
+      <mat-panel-title class="mat-expansion-header">
+       {{ 'label.translation' | translate }}
+      </mat-panel-title>
+    <app-generic-table
+    [primaryKey]="primaryKey" 
+    [dataFactory]="dataFactory"
+    [buttonVisibility]="buttonVisibility"
+    [columns]="translationColumn"
+    [entityName]="entityName"
+    [selectedId]="selectedId!">
+    </app-generic-table>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions" align="end">
+  <button mat-button (click)="popupAction(0)" class="button_style">
+    {{ 'label.cancel' | translate }}
+  </button>
+</mat-dialog-actions>

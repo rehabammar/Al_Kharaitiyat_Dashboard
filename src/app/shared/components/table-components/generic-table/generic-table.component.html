@@ -1,0 +1,129 @@
+<div class="table-wrapper">
+
+  <div class="button-wrapper">
+
+    <app-button [label]="''" [imageSrc]="'/assets/img/icon/filter.png'" [onClick]="tooggleShowFilter">
+    </app-button>
+
+    <app-button 
+    [label]="'label.reset'" 
+    [imageSrc]="'/assets/img/icon/refresh.png'"
+    [onClick]="clearAllFilters"
+    [showButton]="buttonVisibility.showDelete!">
+    </app-button>
+
+    <ng-container *ngIf="isEditableTable">
+        <app-button 
+          [label]="'delete'" 
+          [imageSrc]="'/assets/img/icon/delete.svg'"
+          [color]="'#dc3545'"
+          [onClick]="openDeletePopup"
+          [showButton]="buttonVisibility.showDelete!"
+          [disabled]="buttonDisabled['delete']">
+        </app-button>
+
+        <app-button
+          [label]="'createInsert'" 
+          [imageSrc]="'/assets/img/icon/createInsert.png'"
+          [onClick]="addNewRow"
+          [showButton]="buttonVisibility.showInsert!" 
+          [disabled]="buttonDisabled['insert']">
+        </app-button>
+
+        <app-button 
+          [label]="'commit'"
+          [imageSrc]="'/assets/img/icon/save.svg'" 
+          [onClick]="save"
+          [showButton]="buttonVisibility.showSave!"
+          [disabled]="buttonDisabled['save']">
+        </app-button> 
+      </ng-container>
+
+    <!-- <app-button 
+      [label]="'rollback'"
+      [imageSrc]="'/assets/img/icon/rollback.png'"
+      [showButton]="buttonVisibility.showRollback!"
+      [onClick]="rollback">
+    </app-button>
+
+    <app-button 
+      [label]="'print'"
+      [imageSrc]="'/assets/img/icon/print.png'"
+      [onClick]="print"
+      [disabled]="buttonDisabled['print']">
+    </app-button>
+
+    <app-button 
+      [label]="'excel'"
+      [imageSrc]="'/assets/img/icon/excel.png'"
+      [onClick]="exportToExcel"
+      [disabled]="buttonDisabled['excel']">
+
+    </app-button>
+
+    <app-button 
+      [label]="'translation'"
+      [imageSrc]="'/assets/img/icon/translation.png'"
+      [onClick]="openTranslationTable" 
+      [showButton]="buttonVisibility.showTranslation!"
+      [disabled]="buttonDisabled['translation']">
+
+    </app-button> -->
+
+  </div>
+
+  
+ <div class="table-scroll-wrapper">
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
+      <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
+        <div class="header-container" [ngClass]="showFilter ? 'with-filter' : 'no-filter'">
+          <div class="filter-container" *ngIf="showFilter">
+            <input class="header-input" placeholder="{{ column.labelKey | translate }}"
+              (keyup.enter)="applyFilter(column.field, $event, 'asc', column.dataType, false)" />
+          </div>
+
+          <div class="header-label-line">
+        
+            <span class="column-label">{{ column.labelKey | translate }}</span>
+
+            <span *ngIf="column.required && isEditableTable" class="required-indicator">*</span>
+
+            <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
+              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'asc')"
+                (click)="applyFilter(column.field, null, 'asc', column.dataType, true)">▲</span>
+              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'desc')"
+                (click)="applyFilter(column.field, null, 'desc', column.dataType, true)">▼</span>
+            </div>
+          </div>
+        </div>
+
+
+      </th>
+
+      <td mat-cell *matCellDef="let row" [style.width]="column.width" >
+        <app-table-column
+         [column]="column" 
+         [currentRow]="row" 
+         [selectedRow]="selectedRow"
+         [isSaveAttempted]="isSaveAttempted"
+         [isEditableTable]="isEditableTable"
+         (fieldChanged)="onFieldChanged(row, $event)"
+        >
+        </app-table-column>
+      </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let system; columns: displayedColumns;" (click)="selectRow(system)"
+      [class.selected-row]="selectedRow === system">
+    </tr>
+  </table>
+    </div>
+
+  <mat-paginator [length]="totalCount" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
+
+</div>

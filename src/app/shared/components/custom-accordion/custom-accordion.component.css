@@ -1,0 +1,29 @@
+.mat-expansion-header {
+    font-family: 'Bukra';
+    margin: 0px;
+    color: #265b3b;
+    height: 50px;
+    font-weight: bolder;
+    font-size: 20px;
+    /* background: rgb(176, 29, 29); */
+    line-height: 50px;
+}
+
+
+.mat-expansion-panel-header {
+  pointer-events: auto;
+}
+
+.mat-expansion-panel-header[title]:hover:after {
+  content: none !important;
+}
+
+.custom-panel .mat-expansion-panel-content {
+  background-color: white !important ;
+}
+
+.custom-panel .mat-expansion-panel-header {
+  background-color: white !important; /* full header red */
+  color: white; /* optional: force text color */
+}
+

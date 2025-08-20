@@ -1,0 +1,17 @@
+.button_style {
+  cursor: default;
+  white-space: nowrap !important;
+  min-height: 19px!important;
+  border: var(--bg-color,#265B3B) !important;
+  background-image: -webkit-linear-gradient(top, #CCE2F6 0%, #B1D2F2 100%) !important;
+  font-family: 'Bukra', sans-serif !important;
+  display: inline-block !important;
+  font-size: 10pt !important;
+  text-align: center !important;
+  vertical-align: middle!important;
+  background: var(--bg-color,#265B3B) !important;
+  font-weight: normal!important;
+  border-radius: 20px!important;
+  padding: 5px 20px!important;
+  color: white !important;
+}

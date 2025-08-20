@@ -1,0 +1,49 @@
+.button_override {
+  background-color: var(--custom-color) !important;
+}
+
+.button_style {
+  cursor: default;
+  white-space: nowrap !important;
+  min-height: 19px!important;
+  border: var(--bg-color,#265B3B) !important;
+  background-image: -webkit-linear-gradient(top, #CCE2F6 0%, #B1D2F2 100%) !important;
+  font-family: 'Bukra', sans-serif !important;
+  display: inline-block !important;
+  font-size: 10pt !important;
+  text-align: center !important;
+  vertical-align: middle!important;
+  background: var(--bg-color,#265B3B) !important;
+  font-weight: normal!important;
+  border-radius: 20px!important;
+  padding: 5px 20px!important;
+  color: white !important;
+}
+
+.button_icon_style {
+  margin-left: 5px;
+  margin-right: 5px;
+  vertical-align: middle;
+  width: 18px;
+}
+
+
+
+.button_disabled {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #D5D5D5;
+  background-image: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E5E5 100%);
+  display: inline-block;
+  font-size: 10pt;
+  text-align: center;
+  vertical-align: middle;
+  background: #265B3B; /* fallback but will be overridden by gradient */
+  color: White;
+  font-weight: normal;
+  border-radius: 20px;
+  padding: 5px 20px;
+  opacity: 0.2; /* typical disabled effect */
+  cursor: not-allowed;
+  pointer-events: none; /* makes sure clicks don't happen */
+}

@@ -1,0 +1,142 @@
+<!-- 
+
+
+
+ <ng-container *ngIf="!isEditableTable; else EditableCloumn">
+  <ng-container *ngIf="!column.isFlag; else readOnlyIcon">
+
+    <div class="input-icon-wrapper"  >
+      <span class="custom-label">{{ currentRow[column.field] }}</span>
+    </div>
+  </ng-container>
+    <ng-template #readOnlyIcon>
+    <div class="icon-wrapper">
+      <img
+        *ngIf="currentRow[column.field] == 1"
+        src="/assets/img/icon/tick.png"
+        class="status-image"
+        alt="Checked"
+      />
+      <img
+        *ngIf="currentRow[column.field] != 1"
+        src="/assets/img/icon/untick.png"
+        class="status-image"
+        alt="Unchecked"
+      />
+    </div>
+  </ng-template>
+ </ng-container>
+
+
+
+<ng-template #EditableCloumn>
+<ng-container *ngIf="column.isFlag; else normalColumn">
+  <ng-container *ngIf="selectedRow === currentRow; else readOnlyIcon">
+    <div class="icon-wrapper" (click)="toggleStatus()">
+      
+      <img
+        *ngIf="currentRow[column.field] == 1"
+        src="/assets/img/icon/tick.png"
+        class="status-image"
+        alt="Checked"
+      />
+      <img
+        *ngIf="currentRow[column.field] != 1"
+        src="/assets/img/icon/untick.png"
+        class="status-image"
+        alt="Unchecked"
+      />
+    </div>
+  </ng-container>
+
+  <ng-template #readOnlyIcon>
+    <div class="icon-wrapper">
+      <img
+        *ngIf="currentRow[column.field] == 1"
+        src="/assets/img/icon/tick.png"
+        class="status-image"
+        alt="Checked"
+      />
+      <img
+        *ngIf="currentRow[column.field] != 1"
+        src="/assets/img/icon/untick.png"
+        class="status-image"
+        alt="Unchecked"
+      />
+    </div>
+  </ng-template>
+</ng-container>
+
+<ng-template #normalColumn>
+  <ng-container *ngIf="selectedRow === currentRow && !column.disabled; else readOnly">
+    <div class="input-icon-wrapper">
+      <input
+        matInput
+        [(ngModel)]="currentRow[column.field]"
+        (change)="updateColumnData($event)"
+        [class.input-error]="isFieldInvalid()"
+        class="custom-input"
+      />
+      <mat-icon
+        *ngIf="column.searchIcon"
+        class="search-icon"
+        (click)="column.onTap?.()"
+      >
+        search
+      </mat-icon>
+    </div>
+  </ng-container>
+
+  <ng-template #readOnly>
+    <div class="input-icon-wrapper"  >
+      <span class="custom-label">{{ currentRow[column.field] }}</span>
+    </div>
+  </ng-template>
+</ng-template>
+
+</ng-template> -->
+
+
+<!-- خلية واحدة لكل الحالات -->
+<ng-container *ngIf="column.isFlag; else valueCell">
+
+  <!-- أيقونة فلاج -->
+  <div class="icon-wrapper"
+       [class.disabled]="!(isEditableTable && selectedRow === currentRow)"
+       (click)="isEditableTable && selectedRow === currentRow && toggleStatus()">
+    <img *ngIf="currentRow[column.field] == 1"
+         src="/assets/img/icon/tick.png" class="status-image" alt="Checked" />
+    <img *ngIf="currentRow[column.field] != 1"
+         src="/assets/img/icon/untick.png" class="status-image" alt="Unchecked" />
+  </div>
+
+</ng-container>
+
+<!-- حقل قيمة (input أو قراءة فقط) -->
+<ng-template #valueCell>
+  <ng-container *ngIf="isEditableTable && selectedRow === currentRow && !column.disabled; else readOnlyCell">
+    <div class="input-icon-wrapper">
+      <input
+        matInput
+        class="custom-input"
+        [attr.name]="column.field"
+        [type]="column.dataType === 'number' ? 'number' : 'text'"
+        [placeholder]="column.labelKey | translate"
+        [(ngModel)]="currentRow[column.field]"
+        (ngModelChange)="updateColumnData($event)"
+        [class.input-error]="isFieldInvalid()">
+      <mat-icon *ngIf="column.searchIcon"
+                class="search-icon"
+                (click)="column.onTap?.(currentRow)">
+        search
+      </mat-icon>
+    </div>
+  </ng-container>
+</ng-template>
+
+<!-- قراءة فقط (يُعاد استخدامه) -->
+<ng-template #readOnlyCell>
+  <div class="input-icon-wrapper">
+    <span class="custom-label">{{ currentRow[column.field] }}</span>
+  </div>
+</ng-template>

@@ -1,0 +1,85 @@
+.status-active {
+  color: green;
+  font-size: 20px;
+
+}
+
+.status-inactive {
+  color: red;
+  font-size: 20px;
+
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.status-toggle {
+  font-size: 22px;
+  line-height: 1;
+}
+
+::ng-deep .input-error {
+  border: 1px solid red !important;
+  background-color: #fff0f0 !important;
+}
+
+
+
+.input-error {
+  border: 1px solid red;
+  background-color: white !important;
+}
+.input-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* ✅ يمنع خروج النص */
+
+}
+
+
+/* ✅ input يملى كل المساحة */
+.custom-input {
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.custom-label {
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.search-icon {
+  cursor: pointer;
+  
+color: #265b3b;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+

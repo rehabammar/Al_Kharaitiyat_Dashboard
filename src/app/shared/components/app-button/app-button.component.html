@@ -1,0 +1,11 @@
+<button 
+   *ngIf="showButton"
+    class="button_style"
+    [style.--bg-color]="color"
+    [disabled]="disabled"
+    [class.button_disabled]="disabled"
+    style="margin: 2px;" 
+    (click)="onClick && onClick()">
+    <img src={{imageSrc}} class="button_icon_style">
+    <span class="xgc">{{ label | translate}}</span>
+</button>

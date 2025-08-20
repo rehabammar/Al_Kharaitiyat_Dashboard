@@ -1,0 +1,13 @@
+<mat-form-field appearance="outline" class="w">
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    type="datetime-local"
+    [value]="localValue"
+    (change)="onChange($any($event.target).value)"
+    (input)="onChange($any($event.target).value)"
+    step="60" /> <!-- خطوة دقيقة -->
+  <mat-hint *ngIf="value">
+    {{ value | date:'EEEE، d MMMM y، HH:mm':'Africa/Cairo':'ar' }}
+  </mat-hint>
+</mat-form-field>

@@ -1,0 +1,23 @@
+<!-- <select class="styled-combobox" [(ngModel)]="selected" (ngModelChange)="onSelect($event)">
+
+  <option [ngValue]="null"></option>
+
+  <option *ngFor="let item of items" [ngValue]="item">
+    {{ getDisplayText(item) }}
+  </option>
+
+  <option [ngValue]="MORE_OPTION">...بحث</option>
+</select> -->
+
+<div class="combo-shell" [class.input-error]="hasError">
+  <select class="combo"
+          [(ngModel)]="selected"
+          (ngModelChange)="onSelect($event)">
+    <option [ngValue]="null"></option>
+    <option *ngFor="let item of items" [ngValue]="item">
+      {{ getDisplayText(item) }}
+    </option>
+  </select>
+  <!-- optional chevron -->
+  <span class="chevron" aria-hidden="true">▾</span>
+</div>
