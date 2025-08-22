@@ -118,6 +118,14 @@
     "Lookup.Organization": "Organization",
     "LookupDetail.LookupDetails": "Lookup Details",
     "LookupDetail.Id": "Detail ID",
-    "LookupDetail.Lookup": "Lookup"
+    "LookupDetail.Lookup": "Lookup",
+    "StudentAttendance.Attendance": "Attendance",
+    "StudentAttendance.StudentAttendanceClassPk": "Record ID",
+    "StudentAttendance.StudentName": "Student Name",
+    "StudentAttendance.PaymentStatusName": "Payment Status",
+    "StudentAttendance.ClassEvalution": "Class Evaluation",
+    "StudentAttendance.Comment": "comment"
+
+
 
 }

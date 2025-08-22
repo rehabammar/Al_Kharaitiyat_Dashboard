@@ -1,1 +1,20 @@
-.w { min-width: 260px; width: 100%; }
+.w-100 { width: 100%; }
+
+/* نفس ستايل حقولك */
+.custom-input {
+  border: 1px solid #ccc !important;
+  border-radius: 6px;
+  padding: 0.9rem 0.75rem;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input-error {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 4px rgba(220,53,69,.35);
+}
+
+/* منع الخلفية الحمراء الافتراضية */
+.mat-mdc-form-field-error-wrapper .mdc-text-field--invalid {
+  background: transparent !important;
+}

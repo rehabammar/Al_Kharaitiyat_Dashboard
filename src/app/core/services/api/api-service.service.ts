@@ -10,6 +10,8 @@ import { LoadingService } from '../shared/loading.service';
 // import { TranslationService } from '../shared/translation.service';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../../models/api-response.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from '../../../shared/components/confirm-popup/confirm-popup.component';
 
 
 
@@ -20,14 +22,14 @@ export class ApiService {
 
   constructor(
     private http: HttpClient,
-    // private dialog: MatDialog,
+    private dialog: MatDialog,
     private loadingService: LoadingService,
     private router: Router
 
   ) { }
 
   private handleResponse<T>(response: ApiResponse<T>): ApiResponse<T> {
-    if (response.status === 'error') {
+    if (!response.success) {
       throw new ApiException(response.message);
     }
 
@@ -61,9 +63,13 @@ export class ApiService {
   }
 
   private showErrorDialog(message: string): void {
-    // this.dialog.open(AlertDialogComponent, {
-    //   data: { message: message }
-    // });
+
+    this.dialog.open(ConfirmPopupComponent, {
+          data: {
+            message:message,
+            showCancel: false,
+          }
+        });
   }
 
   get<T>(url: string, params?: any): Observable<ApiResponse<T>> {

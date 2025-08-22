@@ -10,6 +10,7 @@ import { User } from '../../auth/models/user.model';
 import { Class } from '../models/class.model';
 import { GenericTableComponent } from '../../../shared/components/table-components/generic-table/generic-table.component';
 import { CourseStudent } from '../models/course-student.model';
+import { StudentAttendance } from '../models/student-attendance.model';
 
 interface Course {
   category: string;
@@ -54,6 +55,8 @@ export class CoursesPageComponent {
   // course class
 
   classDataFactory = () => new Class();
+  StudentAttendanceDataFactory = () => new StudentAttendance();
+
 
   // course class 
    
@@ -257,7 +260,7 @@ export class CoursesPageComponent {
       required: false,
       dataType: 'string',
       disabled: false,
-      width: '200px'
+      width: '500px'
     }
   ];
 
@@ -543,6 +546,52 @@ export class CoursesPageComponent {
 ];
 
 
+studentAttendanceColumns: TableColumn[] = [
+  {
+    labelKey: 'StudentAttendance.StudentAttendanceClassPk',
+    field: 'studentAttendanceClassPk',
+    required: false,
+    dataType: 'number',
+    disabled: true,
+    width: '140px'
+  },
+  {
+    labelKey: 'StudentAttendance.StudentName',
+    field: 'studentName',
+    required: true,
+    dataType: 'string',
+    disabled: false,
+    width: '220px'
+  },
+  {
+    labelKey: 'StudentAttendance.PaymentStatusName',
+    field: 'paymentStatusName',
+    required: false,
+    dataType: 'string',
+    disabled: true,
+    width: '180px'
+  },
+  {
+    labelKey: 'StudentAttendance.ClassEvalution',
+    field: 'teacherReview',
+    required: false,
+    dataType: 'number',
+    disabled: true,
+    width: '180px'
+  },
+    {
+    labelKey: 'StudentAttendance.Comment',
+    field: 'teacherReviewComment',
+    required: false,
+    dataType: 'string',
+    disabled: true,
+    width: '180px'
+  },
+
+  
+];
+
+
 
 
 
@@ -590,53 +639,11 @@ export class CoursesPageComponent {
 
   
 
+// courses-page.component.ts
+onExpectedChange(v: string | null) {
+  if (!this.selectedClass) this.selectedClass = this.classDataFactory(); // أو أي factory عندك
+  this.selectedClass.expectedStartTime = v;
+}
 
-
-  // loading = true;
-
-  // // نفس العناصر الظاهرة في القالب الأصلي — يمكنك جلبها من API لاحقًا
-  // courses: Course[] = [
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured1.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured2.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured3.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured4.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured5.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  //   { category: 'User Experience', title: 'Fundamental of UX for Application design', img: 'assets/img/gallery/featured6.png', rating: 4.5, reviews: 120, price: 135, link: '#' },
-  // ];
-
-  // topics: Topic[] = [
-  //   { title: 'Programing', img: 'assets/img/gallery/topic1.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic2.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic3.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic4.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic5.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic6.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic7.png', link: '#' },
-  //   { title: 'Programing', img: 'assets/img/gallery/topic8.png', link: '#' },
-  // ];
-
-  // services: ServiceItem[] = [
-  //   { icon: 'assets/img/icon/icon1.svg', title: '60+ UX courses', desc: 'The automated process all your website tasks.' },
-  //   { icon: 'assets/img/icon/icon2.svg', title: 'Expert instructors', desc: 'The automated process all your website tasks.' },
-  //   { icon: 'assets/img/icon/icon3.svg', title: 'Life time access', desc: 'The automated process all your website tasks.' },
-  // ];
-
-  // ngOnInit(): void {
-  //   // محاكاة الـ preloader
-  //   setTimeout(() => (this.loading = false), 600);
-  // }
-
-  // getFullStars(r: number): number[] {
-  //   return Array(Math.floor(r)).fill(0);
-  // }
-  // hasHalfStar(r: number): boolean {
-  //   return r % 1 >= 0.5;
-  // }
-
-
-
-
-
-  // onFieldChanged(f)
 
 }

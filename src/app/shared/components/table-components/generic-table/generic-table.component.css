@@ -8,18 +8,27 @@
 
 }
 
-
 .table-wrapper {
+  max-height: 60vh;       /* أو height: 400px; */
+  overflow-y: auto;       /* سكروول رأسي */
+  overflow-x: auto;       /* لو الجدول أعرض من الكونتينر */
+  display: block;
+  background: #fff;
+  padding-top: 5px;
+}
+
+/* .table-wrapper {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 100%;
   overflow-y: auto;
+  overflow-x: auto ;
   padding: 0;
   margin: 0;
   padding-top: 5px;
   background-color: white;
-}
+} */
 
 .table-scroll-wrapper {
   width: 100%;
@@ -139,7 +148,7 @@ th:hover .sort-icons,
 
 .column-label {
   font-weight: bold;
-  color: #265b3b;
+  color: hsl(var(--bg));
   font-size: 14px;
   line-height: 1.3;
   word-break: break-word;

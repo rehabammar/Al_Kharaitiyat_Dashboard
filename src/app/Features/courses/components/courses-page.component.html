@@ -83,43 +83,36 @@
      
       <br>
      <app-custom-accordion title="Class.ClassDetails">
+<!-- <ng-container *ngIf="selectedClass as cls">
+  <app-date-time-picker 
+  [(ngModel)]="cls.expectedStartTime" 
+  [timeZone]="'Africa/Cairo'"></app-date-time-picker>
+</ng-container> -->
 
-      <!-- حقل expectedStartTime -->
-<!-- <app-date-time-picker
-  [value]="selectedClass?.expectedStartTime!"
-  >
-</app-date-time-picker> -->
+      <mat-tab-group mat-stretch-tabs="false">
+          <mat-tab label='{{"Class.ClassDetails" | translate}}' >
+                 <app-generic-form
+                    [columns]="classColumns"
+                    [selectedRow]="selectedClass"
+                    [alwaysEditable]="true"
+                    [primaryKey]="'classPk'"
+                    [dataFactory]="classDataFactory"
+                    [apiPath]="'classes'">
+                 </app-generic-form>
+          </mat-tab>
+          <mat-tab label='{{"StudentAttendance.Attendance" | translate}}' >
+                <app-generic-table
+                  [screenId]="'studentAttendance'"
+                  [primaryKey]="'studentAttendanceClassPk'"
+                  [columns]="studentAttendanceColumns"
+                  [dataFactory]="StudentAttendanceDataFactory"
+                  [apiPath]="'studentAttendanceClasses'"
+                  [searchParameterKey]="'classFk'"
+                  [selectedId]="selectedClass?.classPk">
+                </app-generic-table>
+          </mat-tab>
+        </mat-tab-group>
 
-<!-- حقل expectedEndTime -->
-<!-- <app-date-time-picker
-  [value]="selectedClass?.expectedEndTime!"
-  >
-</app-date-time-picker>
- -->
-
-<!-- مثال: expectedStartTime -->
-<!-- <app-date-time-picker
-  [label]="'التاريخ والوقت'"
-  [value]="selectedClass?.expectedStartTime!"
-  >
-</app-date-time-picker> -->
-
-<!-- مثال: expectedEndTime -->
-<!-- <app-date-time-picker
-  [label]="'وقت الانتهاء'"
-  [value]="selectedClass?.expectedEndTime!">
-</app-date-time-picker>
- -->
-
-
-        <app-generic-form
-         [columns]="classColumns"
-         [selectedRow]="selectedClass"
-         [alwaysEditable]="true"
-         [primaryKey]="'classPk'"
-         [dataFactory]="classDataFactory"
-         [apiPath]="'classes'">
-        </app-generic-form>
       </app-custom-accordion>
   </div>
 

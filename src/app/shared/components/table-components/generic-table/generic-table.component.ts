@@ -18,6 +18,7 @@ import { GenericService } from '../../../../core/services/crud/generic.service';
 import { GenericServiceFactory } from '../../../../core/factories/generic-service-factory';
 import { ButtonVisibilityConfig } from '../../../../core/models/button-visibility-config.interface';
 import { TableColumn } from '../../../../core/models/table-column.interface';
+import { ConfirmPopupComponent } from '../../confirm-popup/confirm-popup.component';
 
 @Component({
   selector: 'app-generic-table',
@@ -32,8 +33,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: keyof T;
   @Input() apiPath!: string;
-  @Input() selectedId?: number;
-  @Input() searchParameterKey?: string;
+  @Input() selectedId: string | number | null | undefined= null; 
+  @Input() searchParameterKey!: string;          
   @Output() rowSelected = new EventEmitter<any>();
 
   @Input() buttonVisibility: ButtonVisibilityConfig = {
@@ -137,6 +138,7 @@ ngOnInit(): void {
   ngOnChanges(): void {
     if (this.selectedId) {
       this.parameter = { [this.searchParameterKey!]: this.selectedId };
+      this.selectedRow = undefined as any;
       this.loadData();
     }
   }
@@ -284,6 +286,9 @@ clearAllFilters = ()=> {
         console.warn("Validation Errors in Required Fields:", invalidFields);
       } else {
         this.isSaveAttempted = false;
+        if(this.searchParameterKey && this.selectedId){
+           (this.selectedRow as Record<string, any>)[this.searchParameterKey] = this.selectedId;
+        }
         this.service.save(this.selectedRow).subscribe(() => {
           this.changeDetectorRef.markForCheck();
           this.checkPrivileges();
@@ -296,17 +301,17 @@ clearAllFilters = ()=> {
 
   openDeletePopup = () => {
 
-    // this.dialog.open(ConfirmPopupComponent, {
-    //   // width: '400px',
-    //   data: {
-    //     message: 'label.areYouSure',
-    //     showCancel: true
-    //   }
-    // }).afterClosed().subscribe(result => {
-    //   if (result?.result === 1) {
-    //     this.delete();
-    //   }
-    // });
+    this.dialog.open(ConfirmPopupComponent, {
+      // width: '400px',
+      data: {
+        message: 'message.areYouSure',
+        showCancel: true
+      }
+    }).afterClosed().subscribe(result => {
+      if (result?.result === 1) {
+        this.delete();
+      }
+    });
 
   }
   openTranslationTable = () => {
@@ -340,7 +345,7 @@ clearAllFilters = ()=> {
 
   delete = () => {
     if (this.selectedRow && this.selectedRow[this.primaryKey]) {
-      this.service.delete(this.selectedRow[this.primaryKey]).subscribe(() => {
+      this.service.delete(this.selectedRow).subscribe(() => {
         this.loadData();
       });
     } else {

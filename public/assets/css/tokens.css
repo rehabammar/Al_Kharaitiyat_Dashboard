@@ -1,0 +1,34 @@
+/* styles/tokens.css */
+:root {
+  /* الهوية (Brand) */
+  --brand: 262 83% 57%;
+  --brand-foreground: 0 0% 100%;
+
+  /* دلالية (Semantic) */
+  --success: 142 72% 29%;
+  --warning: 38 92% 50%;
+  --danger: 0 84% 60%;
+
+  /* الدرجات الرمادية (Neutrals) */
+  --bg: 3 76% 20%;
+  --fg: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  /* الحدود والطبقات */
+  --border: 214 32% 91%;
+  --overlay: 222 47% 11%;
+}
+
+/* الثيم الداكن */
+:root[data-theme="dark"] {
+  --bg: 224 71% 4%;
+  --fg: 210 40% 98%;
+  --muted: 217 32% 17%;
+  --muted-foreground: 215 20% 65%;
+
+  --border: 217 32% 24%;
+  --overlay: 0 0% 0%;
+  /* ممكن تعدّل البراند شوية للداكن */
+  --brand: 262 83% 62%;
+}

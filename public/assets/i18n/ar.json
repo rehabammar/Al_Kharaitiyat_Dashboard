@@ -118,7 +118,14 @@
     "Lookup.Organization": "الجهة",
     "LookupDetail.LookupDetails": "تفاصيل القوائم",
     "LookupDetail.Id": "رقم التفصيل",
-    "LookupDetail.Lookup": "القائمة"
+    "LookupDetail.Lookup": "القائمة",
+    "StudentAttendance.Attendance": "الحضور",
+    "StudentAttendance.StudentAttendanceClassPk": "رقم السجل",
+    "StudentAttendance.StudentName": "اسم الطالب",
+    "StudentAttendance.PaymentStatusName": "حالة السداد",
+    "StudentAttendance.ClassEvalution": "تقييم الحصة",
+    "StudentAttendance.Comment": "تعليق"
+
 
 
 

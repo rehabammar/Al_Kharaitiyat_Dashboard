@@ -75,10 +75,9 @@ export class GenericService<T extends Record<string, any>> {
     return this.apiService.post<T>(this.apiMap.ADD!(), item).pipe(
       tap(response => {
         console.log("INSERT ITEMS" + JSON.stringify(response.data));
-        // item[this.primaryKey] = response.data[0][this.primaryKey];
-        // const updated = [item, ...this.dataSubject.getValue()];
-        // this.dataSubject.next(updated);
-        // this.totalElementsSubject.next(this.update.length);
+        const updated = [response.data, ...this.dataSubject.getValue()];
+        this.dataSubject.next(updated);
+        this.totalElementsSubject.next(updated.length);
         this.showSuccessPopup()
       })
     );
@@ -148,7 +147,6 @@ export class GenericService<T extends Record<string, any>> {
 
   showSuccessPopup() {
     this.dialog.open(ConfirmPopupComponent, {
-      // width: '400px',
       data: {
         message: 'message.success',
         showCancel: false,

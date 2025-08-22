@@ -41,7 +41,8 @@
     [apiPath]="'lookupDetails'"
     [selectedId]="selectedLookup?.lookupPk"
     [searchParameterKey]="'lookupFk'"
-    (rowSelected)="onDetailSelected($event)">
+    (rowSelected)="onDetailSelected($event)"
+    [isEditableTable]="true">
   </app-generic-table>
 </app-custom-accordion>
 

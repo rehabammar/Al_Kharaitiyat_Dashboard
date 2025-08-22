@@ -30,10 +30,16 @@
 
 <main class="login-body position-relative">
   <!-- Background Video -->
-  <video autoplay muted loop playsinline id="bg-video">
+  <!-- <video autoplay muted loop playsinline id="bg-video">
     <source src="assets/img/login-bg.mp4" type="video/mp4" />
     Your browser does not support the video tag.
-  </video>
+  </video> -->
+
+  <div class="bg-cover"
+     [style.background-image]="'url(assets/img/login-background.png)'"
+     style="position:fixed; inset:0; z-index:-1; background-position:center; background-size:cover; background-repeat:no-repeat;">
+</div>
+
 
   <!-- change lang -->
    

@@ -1,13 +1,53 @@
-<mat-form-field appearance="outline" class="w">
+<mat-form-field appearance="outline" class="w-100">
   <mat-label>{{ label }}</mat-label>
+
   <input
+    #nativeInput
     matInput
     type="datetime-local"
-    [value]="localValue"
-    (change)="onChange($any($event.target).value)"
-    (input)="onChange($any($event.target).value)"
-    step="60" /> <!-- خطوة دقيقة -->
-  <mat-hint *ngIf="value">
-    {{ value | date:'EEEE، d MMMM y، HH:mm':'Africa/Cairo':'ar' }}
+    [value]="localValue ?? ''"
+    [placeholder]="placeholder"
+    [required]="required"
+    [disabled]="disabled"
+    step="60"
+    (input)="handleInput($any($event.target).value)"
+    (change)="handleInput($any($event.target).value)"
+    (blur)="markTouched()"
+    class="custom-input"
+    [class.input-error]="required && touched && !localValue"
+  />
+
+  <!-- زر لفتح الـ picker أو fallback -->
+  <button mat-icon-button matSuffix type="button" (click)="openPicker(nativeInput)" aria-label="اختر التاريخ والوقت">
+    <mat-icon>event</mat-icon>
+  </button>
+
+  <mat-hint *ngIf="localValue as v">
+    {{ (v + ':00.000') | date:'EEEE، d MMMM y، HH:mm': timeZone : 'ar' }}
   </mat-hint>
+
+  <mat-error *ngIf="required && touched && !localValue">
+    {{ 'validation.required' | translate }}
+  </mat-error>
 </mat-form-field>
+
+<!-- Fallback UI (يظهر لو المتصفح ما بيدعمش showPicker أو فتحناه يدويًا) -->
+<div *ngIf="fallbackOpen || !supportsNativePicker" class="dtp">
+  <mat-form-field appearance="outline" class="w-50">
+    <mat-label>التاريخ</mat-label>
+    <input matInput type="date"
+           [value]="localValue ? localValue.split('T')[0] : ''"
+           (input)="onDatePartChange($any($event.target).value)" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-50">
+    <mat-label>الوقت</mat-label>
+    <input matInput type="time" step="60"
+           [value]="localValue ? localValue.split('T')[1] : ''"
+           (input)="onTimePartChange($any($event.target).value)" />
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-stroked-button type="button" (click)="closeFallback()">OK</button>
+  </div>
+</div>

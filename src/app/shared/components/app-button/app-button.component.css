@@ -13,7 +13,7 @@
   font-size: 10pt !important;
   text-align: center !important;
   vertical-align: middle!important;
-  background: var(--bg-color,#265B3B) !important;
+  background: var(--bg-color , hsl(var(--bg))) !important;
   font-weight: normal!important;
   border-radius: 20px!important;
   padding: 5px 20px!important;

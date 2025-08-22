@@ -53,8 +53,8 @@
               "public/assets/css/slick.css",
               "public/assets/css/nice-select.css",
               "public/assets/css/style.css",
-              "public/assets/css/form-style.css"
-              
+              "public/assets/css/form-style.css",
+              "public/assets/css/tokens.css"
             ],
             "scripts": [
               "public/assets/js/vendor/modernizr-3.5.0.min.js",

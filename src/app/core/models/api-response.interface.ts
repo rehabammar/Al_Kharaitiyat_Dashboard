@@ -1,5 +1,5 @@
 export interface ApiResponse<T> {
-  status: 'success' | 'error';
+  success: boolean;
   message: string;
   redirectPage?: string | null;
   data: T;
