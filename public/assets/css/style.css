@@ -398,7 +398,7 @@ hr {
     top: 0;
     width: 101%;
     height: 101%;
-    background: #AE59FF;
+    background: #fffffff0;
     z-index: 1;
     border-radius: 5px;
     transition: transform 0.5s;
@@ -537,7 +537,7 @@ hr {
     display: inline-block;
     font-size: 16px;
     box-shadow: 0px 7px 21px 0px rgba(0, 0, 0, 0.12);
-    border: 1px solid #FF3514;
+    border: 1px solid #f6f4f33f;
     background: none
 }
 
@@ -600,7 +600,7 @@ hr {
 .border-btn.border-btn2 {
     width: 100%;
     text-align: center;
-    border: 1px solid #E2E4FF;
+    border: 1px solid #ffffff54;
     color: #4255A4
 }
 
