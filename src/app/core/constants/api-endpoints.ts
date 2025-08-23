@@ -114,4 +114,7 @@ static buildCrudEndpoints = (basePath: string) => ({
   static userTypeLookup = '/userType';
   static courseLocationLookup = '/courseLocation';
   static qualificationType = '/qualification-type';
+
+
+
 }

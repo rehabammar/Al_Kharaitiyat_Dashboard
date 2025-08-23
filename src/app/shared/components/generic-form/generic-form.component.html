@@ -22,7 +22,8 @@
 <!-- bind a local variable `row` to avoid ?. warnings -->
 <div class="generic-form-container" *ngIf="selectedRow as row">
   <div class="form-grid">
-    <div class="form-item" *ngFor="let column of columns">
+    <div *ngFor="let column of columns">
+    <ng-container *ngIf="shouldShow(column, row)">
 
       <!-- Label -->
       <div class="header-label-line align-start">
@@ -108,7 +109,7 @@
           </span>
         </ng-template>
       </ng-template>
-
+    </ng-container>
     </div>
   </div>
 </div>

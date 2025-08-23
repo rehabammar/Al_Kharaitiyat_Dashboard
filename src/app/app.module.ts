@@ -48,6 +48,7 @@ import { UsersComponent } from './Features/users/components/users.component';
 import { SystemLookupsComponent } from './Features/system-lookups/components/system-lookups.component';
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
 import { AuthInterceptor } from '../auth.interceptor';
+import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
 // import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 
@@ -82,7 +83,8 @@ import { AuthInterceptor } from '../auth.interceptor';
     DateTimePickerComponent,
     UsersComponent,
     SystemLookupsComponent,
-    FinancialTransactionsPageComponent
+    FinancialTransactionsPageComponent,
+    ReportsFormComponent
     
   ],
   imports: [

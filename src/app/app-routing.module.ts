@@ -8,6 +8,7 @@ import { CoursesPageComponent } from './Features/courses/components/courses-page
 import { UsersComponent } from './Features/users/components/users.component';
 import { SystemLookupsComponent } from './Features/system-lookups/components/system-lookups.component';
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
+import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'system-lookups', component: SystemLookupsComponent },
       { path: 'financial-transactions', component: FinancialTransactionsPageComponent },
+      { path: 'reports', component: ReportsFormComponent },
 
 
       

@@ -36,6 +36,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Output() rowDeleted = new EventEmitter<any>();
   @Output() rowSaved      = new EventEmitter<T>();                          
 
+  @Input() context?: string; 
 
 
   isDirty = false;
@@ -69,9 +70,17 @@ export class GenericFormComponent<T extends Record<string, any>>
     (this.selectedRow as unknown as Record<string, any>)[key] = value;
   }
 
+  // ========= show and hied fields =========
+    shouldShow(c: TableColumn, row: any): boolean 
+    {
+    return c?.showWhen ? !!c.showWhen(row) : true;
+    }
+
   // ========== check for required fields =========
 
   showErrors = false;
+
+  
 
   private getFieldValue(column: TableColumn): any {
     if (!this.selectedRow) return null;
@@ -81,6 +90,8 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   private isMissingRequired(column: TableColumn): boolean {
     if (!column.required) return false;
+    if (!this.selectedRow) return false;
+    if (!this.shouldShow(column, this.selectedRow)) return false; 
     const v = this.getFieldValue(column);
     if (column.isFlag) return !(v === 1 || v === true);
     if (column.dataType === 'number')

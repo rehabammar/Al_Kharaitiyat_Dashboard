@@ -44,9 +44,24 @@
   box-sizing: border-box;
 }             
 
-/* الأساس */
+
+
 .custom-input {
+  text-align: start;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.9rem 0.75rem;
+  font-size: 14px;
+  width: 100%;
+  transition: border 0.2s, box-shadow 0.2s;
   background-color: #fff;
+
+}
+
+.custom-input:focus {
+  border-color: hsl(var(--bg)) !important ;
+  box-shadow: 0 0 5px rgba(39, 85, 235, 0.3);
+  outline: none;
 }
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */
@@ -207,6 +222,34 @@
   font-size: 14px;
 }
 
+/* generic form style */ 
+
+.generic-form-container {
+  margin-top: 20px;
+  padding: 10px;
+  background : white;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* always 4 columns */
+  gap: 1rem 2rem; /* row gap | column gap */
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  display: block;             
+  margin-bottom: 0.4rem;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-align: start;          
+  direction: inherit;      
+  color:  hsl(var(--bg)) !important;   
+}
 
 
 

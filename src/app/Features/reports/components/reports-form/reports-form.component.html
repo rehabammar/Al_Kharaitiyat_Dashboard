@@ -1,0 +1,72 @@
+<main>
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2">
+      </div>
+    </div>
+  </section>
+
+  <div class="accordion-container">
+    <app-custom-accordion title="reports">
+      <form class="generic-form-container" (ngSubmit)="onDownloadReports()" #f="ngForm">
+        <div class="form-grid">
+           <div>
+            <div class="header-label-line align-start">
+              <label class="form-label">{{'Reports.ReportType' | translate }}</label>
+              <span class="required-indicator">*</span>
+            </div>
+            <select class="custom-input"name="type" [(ngModel)]="reportType" required>
+            <option value="attendance">{{'Reports.Types.Attendance' | translate }}</option>
+            <option value="payments">{{'Reports.Types.Payments' | translate }}</option>
+            <option value="teacherCourses">{{'Reports.Types.TeacherCourses' | translate }}</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="header-label-line align-start">
+              <label class="form-label">{{'Reports.StartDate' | translate }}</label>
+              <span class="required-indicator">*</span>
+            </div>
+
+            <input class="custom-input" type="date" name="start" [(ngModel)]="startDate" />
+          </div>
+
+          <div>
+            <div class="header-label-line align-start">
+              <label class="form-label">{{'Reports.EndDate' | translate }}</label>
+              <span class="required-indicator">*</span>
+            </div>
+            <input class="custom-input" type="date" name="end" [(ngModel)]="endDate" />
+          </div>
+
+          
+          <div>
+            <div class="header-label-line align-start">
+              <label class="form-label">{{'Reports.Teacher' | translate }}</label>
+            </div>
+           <app-combobox-search
+            [apiPath]="'/users/search-teachers'"
+            [dataFactory]="teacherDataFactory"
+            [primaryKey]="'userPk'"
+            [displayItemKey]="'fullName'"
+            (itemSelected)="onComboSelected($event)"
+            >
+          </app-combobox-search>
+          </div>
+
+
+        </div>
+      </form>
+    <app-button
+      [label]="downloading ? 'Reports.Downloading' : 'Reports.Download'"
+      [imageSrc]="downloading ? '/assets/img/icon/spinner.svg' : '/assets/img/icon/download.svg'"
+      [onClick]="onDownloadReports"
+      [disabled]="downloading || !f.valid"
+      [showButton]="true">
+    </app-button>
+
+
+    </app-custom-accordion>
+
+  </div>
+</main>
