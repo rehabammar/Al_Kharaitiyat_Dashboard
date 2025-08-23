@@ -149,6 +149,7 @@ th:hover .sort-icons,
 
 .column-label {
   font-weight: bold;
+  font-family: 'bonFont';
   color: hsl(var(--bg)) !important;
   font-size: 14px;
   line-height: 1.3;

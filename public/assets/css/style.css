@@ -1,5 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&family=Mulish:wght@400;500;600;700&display=swap");
 
+
+@font-face {
+  font-family: 'AhMoharramBold';
+  src: url('/assets/fonts/ah-moharram-bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'binFont';
+  src: url('/assets/fonts/bein.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'bonFont';
+  src: url('/assets/fonts/bon.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+
 .white-bg {
     background: #ffffff
 }
@@ -2812,11 +2833,12 @@ hr {
 }
 
 .main-header .main-menu ul li a {
-    color: #ffffff;
-    font-weight: 600;
+    color: #ffffff; 
+    font-weight: 100;
+    font-family: 'bonFont';
     padding: 25px 2px;
     display: block;
-    font-size: 18px; 
+    font-size: 17px; 
     -webkit-transition: .3s;
     -moz-transition: .3s;
     -o-transition: .3s;

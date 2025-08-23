@@ -126,6 +126,7 @@
 .mat-mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
   color: hsl(var(--muted-foreground)) !important; /* choose your token */
   font-weight: 500;
+  font-family: "bonFont";
   font-size: 14px;
   opacity: .9; /* optional */
 }
@@ -145,6 +146,7 @@
 .mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
   color: hsl(var(--bg)) !important;
   font-weight: 700;
+  font-family: "bonFont";
   font-size: 15px;
 }
 
