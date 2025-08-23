@@ -1,4 +1,11 @@
 
+
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
 .custom-label {
   display: block;             
   box-sizing: border-box;
@@ -17,6 +24,17 @@
 .custom-label:empty::before {
   content: '\00a0';
 }
+
+
+.form-item label {
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-family: 'bonFont'; 
+  color: hsl(var(--bg)) !important;
+  font-size: 14px;
+}
+
+
 
 
 .icon-wrapper {

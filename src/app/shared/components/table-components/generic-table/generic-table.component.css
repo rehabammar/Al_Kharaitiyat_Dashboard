@@ -71,7 +71,7 @@
 
 
 .selected-row {
-  background-color: #E7E7E7 !important;
+  background-color: #58bcff19 !important;
 }
 
 
@@ -149,6 +149,7 @@ th:hover .sort-icons,
 
 .column-label {
   font-weight: bold;
+  font-family: 'bonFont';
   color: hsl(var(--bg)) !important;
   font-size: 14px;
   line-height: 1.3;
