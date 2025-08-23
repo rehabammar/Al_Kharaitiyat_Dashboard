@@ -93,7 +93,7 @@ export class CoursesPageComponent {
       displayItemKey: "yearName",
       primaryKey: "academicYearPk",
       dataFactory: this.academicYearDataFactory,
-      width: '140px'
+      width: '180px'
     },
     {
       labelKey: 'TeacherCourse.AcademicTerm',
@@ -156,18 +156,18 @@ export class CoursesPageComponent {
       width: '220px'
     },
 
-    {
-      labelKey: 'TeacherCourse.courseLocation',
-      field: 'courseTypeName',
-      fieldFK: 'courseTypeFk',
-      required: true,
-      isCombobox: true,
-      apiPath: "/lookupDetails/courseLocation",
-      displayItemKey: "lookupName",
-      primaryKey: "lookupDetailPk",
-      dataFactory: this.lookupDetailDataFactory,
-      width: '140px'
-    },
+    // {
+    //   labelKey: 'TeacherCourse.courseLocation',
+    //   field: 'courseTypeName',
+    //   fieldFK: 'courseTypeFk',
+    //   required: true,
+    //   isCombobox: true,
+    //   apiPath: "/lookupDetails/courseLocation",
+    //   displayItemKey: "lookupName",
+    //   primaryKey: "lookupDetailPk",
+    //   dataFactory: this.lookupDetailDataFactory,
+    //   width: '140px'
+    // },
     {
       labelKey: 'TeacherCourse.Status',
       field: 'courseStatusName',
@@ -188,41 +188,41 @@ export class CoursesPageComponent {
       disabled: false,
       width: '110px'
     },
-    {
-      labelKey: 'TeacherCourse.PriceType',
-      field: 'priceTypeFkName',
-      fieldFK: 'priceTypeFk',
-      required: true,
-      isCombobox: true,
-      apiPath: "/lookupDetails/price-type",
-      displayItemKey: "lookupName",
-      primaryKey: "lookupDetailPk",
-      dataFactory: this.lookupDetailDataFactory,
-      width: '130px'
-    },
-    {
-      labelKey: 'TeacherCourse.CenterPercentage',
-      field: 'centerPercentage',
-      required: true,
-      dataType: 'number',
-      disabled: false,
-      width: '130px'
-    },
-    {
-      labelKey: 'TeacherCourse.MaxStudents',
-      field: 'maxStudents',
-      required: true,
-      dataType: 'number',
-      disabled: false,
-      width: '120px'
-    },
+    // {
+    //   labelKey: 'TeacherCourse.PriceType',
+    //   field: 'priceTypeFkName',
+    //   fieldFK: 'priceTypeFk',
+    //   required: true,
+    //   isCombobox: true,
+    //   apiPath: "/lookupDetails/price-type",
+    //   displayItemKey: "lookupName",
+    //   primaryKey: "lookupDetailPk",
+    //   dataFactory: this.lookupDetailDataFactory,
+    //   width: '130px'
+    // },
+    // {
+    //   labelKey: 'TeacherCourse.CenterPercentage',
+    //   field: 'centerPercentage',
+    //   required: true,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '130px'
+    // },
+    // {
+    //   labelKey: 'TeacherCourse.MaxStudents',
+    //   field: 'maxStudents',
+    //   required: true,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '120px'
+    // },
     {
       labelKey: 'TeacherCourse.ActualStudentsCount',
       field: 'actualStudentsCount',
       required: true,
       dataType: 'number',
       disabled: false,
-      width: '150px'
+      width: '230px'
     },
     // {
     //   labelKey: 'TeacherCourse.DurationMinutes',
@@ -256,14 +256,14 @@ export class CoursesPageComponent {
     //   disabled: true,
     //   width: '170px'
     // },
-    {
-      labelKey: 'TeacherCourse.Notes',
-      field: 'notes',
-      required: false,
-      dataType: 'string',
-      disabled: false,
-      width: '500px'
-    }
+    // {
+    //   labelKey: 'TeacherCourse.Notes',
+    //   field: 'notes',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: false,
+    //   width: '500px'
+    // }
   ];
 
   classColumns: TableColumn[] = [
@@ -354,22 +354,22 @@ export class CoursesPageComponent {
     },
 
     // مبالغ/تكاليف
-    {
-      labelKey: 'Class.PaidToCenter',
-      field: 'paidToCenter',
-      required: false,
-      dataType: 'number',
-      disabled: false,
-      width: '140px'
-    },
-    {
-      labelKey: 'Class.PaidToTeacher',
-      field: 'paidToTeacher',
-      required: false,
-      dataType: 'number',
-      disabled: false,
-      width: '140px'
-    },
+    // {
+    //   labelKey: 'Class.PaidToCenter',
+    //   field: 'paidToCenter',
+    //   required: false,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '140px'
+    // },
+    // {
+    //   labelKey: 'Class.PaidToTeacher',
+    //   field: 'paidToTeacher',
+    //   required: false,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '140px'
+    // },
     {
       labelKey: 'Class.ActualAmountRequired',
       field: 'actualAmountRequired',
@@ -386,30 +386,30 @@ export class CoursesPageComponent {
       disabled: false,
       width: '170px'
     },
-    {
-      labelKey: 'Class.CostForStudent',
-      field: 'classCostForStudent',
-      required: false,
-      dataType: 'number',
-      disabled: false,
-      width: '160px'
-    },
+    // {
+    //   labelKey: 'Class.CostForStudent',
+    //   field: 'classCostForStudent',
+    //   required: false,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '160px'
+    // },
 
     // فلاج استلام مبالغ
-    {
-      labelKey: 'Class.TeacherReceivedMoney',
-      field: 'teacherReceivedMoneyFl',
-      required: false,
-      isFlag: true,
-      width: '250px'
-    },
-    {
-      labelKey: 'Class.CenterReceivedMoney',
-      field: 'centerReceivedMoneyFl',
-      required: false,
-      isFlag: true,
-      width: '250px'
-    },
+    // {
+    //   labelKey: 'Class.TeacherReceivedMoney',
+    //   field: 'teacherReceivedMoneyFl',
+    //   required: false,
+    //   isFlag: true,
+    //   width: '250px'
+    // },
+    // {
+    //   labelKey: 'Class.CenterReceivedMoney',
+    //   field: 'centerReceivedMoneyFl',
+    //   required: false,
+    //   isFlag: true,
+    //   width: '250px'
+    // },
 
     // تذكيري قبل (بالدقائق مثلاً)
     // {
@@ -440,14 +440,14 @@ export class CoursesPageComponent {
     },
 
     // ملاحظات
-    {
-      labelKey: 'Class.Notes',
-      field: 'notes',
-      required: false,
-      dataType: 'string',
-      disabled: false,
-      width: '300px'
-    },
+    // {
+    //   labelKey: 'Class.Notes',
+    //   field: 'notes',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: false,
+    //   width: '300px'
+    // },
 
     // (اختياري) إحداثيات قراءة فقط
     // {
