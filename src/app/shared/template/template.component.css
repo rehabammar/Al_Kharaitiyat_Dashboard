@@ -1,0 +1,10 @@
+html, body { height: 100%; margin: 0; }
+.layout {
+  min-height: 100svh;          /* full viewport height (handles mobile UI) */
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1 1 auto;              /* stretch the middle area */
+  /* optional padding: add your page padding here */
+}

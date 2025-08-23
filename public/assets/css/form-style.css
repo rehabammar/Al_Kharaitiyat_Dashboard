@@ -1,6 +1,7 @@
 :root {
-  --field-h: 44px;   /* change once, both will follow */
+  --field-h: 44px;   
   --field-px: 12px;
+  --icon-gap: 10px;
 }
 
 .accordion-container {
@@ -65,6 +66,15 @@
   box-shadow: 0 0 5px rgba(15, 92, 247, 0.3);
   outline: none;
 }
+
+.custom-input.date-field {
+  padding-inline-end: calc(50px + var(--icon-gap)); /* 28px ≈ icon area */
+  direction: ltr;          
+  text-align: right;       
+  padding: 2px ;
+  
+}
+
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */
 .custom-input.input-error,

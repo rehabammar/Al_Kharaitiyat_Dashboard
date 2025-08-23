@@ -31,7 +31,8 @@
               <label class="form-label">{{ 'Reports.StartDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <input class="custom-input" type="date" name="startDate" [(ngModel)]="startDate" required />
+            <input class="custom-input date-field" type="date" name="startDate" [(ngModel)]="startDate" required
+              [attr.dir]="'ltr'" [attr.lang]="'ar'" />
           </div>
 
           <!-- End date (required, min=startDate) -->
@@ -40,8 +41,8 @@
               <label class="form-label">{{ 'Reports.EndDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <input class="custom-input" type="date" name="endDate" [(ngModel)]="endDate" [min]="startDate || null"
-              required />
+            <input class="custom-input date-field" type="date" name="endDate" [(ngModel)]="endDate"
+              [min]="startDate || null" required />
             <div class="error-text" *ngIf="endDate && startDate && endDate < startDate">
               {{ 'validation.endDateBeforeStart' | translate: { start: startDate } }}
             </div>
