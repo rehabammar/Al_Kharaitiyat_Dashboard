@@ -19,6 +19,18 @@
   font-weight: bold;
   font-style: normal;
 }
+@font-face {
+  font-family: 'cairoFont';
+  src: url('/assets/fonts/cairo.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'cairoBoldFont';
+  src: url('/assets/fonts/cairoBold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
 
 
 .white-bg {
