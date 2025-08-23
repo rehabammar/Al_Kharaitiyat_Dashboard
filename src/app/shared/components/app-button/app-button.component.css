@@ -6,7 +6,7 @@
   cursor: default;
   white-space: nowrap !important;
   min-height: 19px!important;
-  border: var(--bg-color,#265B3B) !important;
+  border: var(--bg-color,#080437) !important;
   background-image: -webkit-linear-gradient(top, #CCE2F6 0%, #B1D2F2 100%) !important;
   font-family: 'Bukra', sans-serif !important;
   display: inline-block !important;
@@ -33,7 +33,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: #D5D5D5;
-  background-image: -webkit-linear-gradient(top, #F4F4F4 0%, #E5E5E5 100%);
+  background-image: -webkit-linear-gradient(top, #f4f4f4 0%, #E5E5E5 100%);
   display: inline-block;
   font-size: 10pt;
   text-align: center;

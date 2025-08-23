@@ -1,0 +1,10 @@
+
+.logo2 img {
+    width: 50px;          /* خليه مربع */
+    height: 50px;         /* نفس العرض */
+    object-fit: cover;    /* يظبط الصورة جوا الإطار */
+    border-radius: 50%;   /* يخليها دائرة */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* شادو خفيف */
+    display: block;
+    margin: 0 auto;
+}

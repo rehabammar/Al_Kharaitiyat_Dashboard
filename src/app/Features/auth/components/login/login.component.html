@@ -35,20 +35,19 @@
     Your browser does not support the video tag.
   </video> -->
 
-  <div class="bg-cover"
-     [style.background-image]="'url(assets/img/login-background.png)'"
-     style="position:fixed; inset:0; z-index:-1; background-position:center; background-size:cover; background-repeat:no-repeat;">
+<div class="bg-cover"
+     [style.background-image]="'url(assets/img/login-background.png)'">
 </div>
+
 
 
   <!-- change lang -->
    
-<div dir="rtl" style="display: flex; align-items: center; flex-wrap: wrap; gap: 20px; padding: 10px;">
+<div class="lang-box">
   <ng-container *ngFor="let row of languagesList">
-    <a href="javascript:void(0);" *ngIf="row.langCode !== selectedLanguage.langCode" (click)="changeLanguage(row.langCode!)"
-      class="langStyle">
-      <i class="fas fa-language">&#160;</i>
-      {{ row.langName }}
+    <a href="javascript:void(0);" *ngIf="row.langCode !== selectedLanguage.langCode"
+       (click)="changeLanguage(row.langCode!)" class="langStyle">
+      <i class="fas fa-language"></i>&nbsp;{{ row.langName }}
     </a>
   </ng-container>
 </div>
@@ -92,7 +91,7 @@
       </div>
 
       <div class="form-input pt-30">
-        <button type="submit" [disabled]="f.invalid || loading">{{ 'login' | translate }}</button>
+        <button class="btn-login" type="submit" [disabled]="f.invalid || loading">{{ 'login' | translate }}</button>
       </div>
 
       <div class="error-banner" *ngIf="showError">{{ errorMessage }}</div>

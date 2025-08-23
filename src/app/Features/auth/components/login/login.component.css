@@ -1,13 +1,207 @@
-#bg-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
+ 
+
+/* =================== LOGIN BODY =================== */
 .login-body {
   position: relative;
   z-index: 1;
+  min-height: 100vh;                 /* يغطي الشاشة بالكامل */
+  display: grid;                     /* تمركز أفقي وعمودي */
+  place-items: center;
+  padding: clamp(16px, 4vh, 48px);   /* مسافة أمان فوق وتحت */
+}
+
+/* =================== BACKGROUND IMAGE =================== */
+.bg-cover {
+  position: fixed;
+  inset: 0;               /* top/right/bottom/left = 0 */
+  z-index: -1; 
+  background-position: center;
+  background-size: cover; /* غطا كامل مع قص بسيط لو لازم */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* للديسكتوب */
+}
+
+/* طبقة شفافة خفيفة لتحسين التباين */
+.bg-cover::after {
+  content:"";
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.18));
+}
+
+/* ديسكتوب */
+@media (min-width: 768px) {
+  .bg-cover {
+    background-size: cover;
+  }
+}
+
+/* موبايل */
+@media (max-width: 767px) {
+  .bg-cover {
+    background-size: contain;
+    background-attachment: initial;   /* منع لاج على الموبايل */
+    background-color: #000;           /* عالج الفراغ */
+  }
+}
+
+/* =================== LOGIN BUTTON =================== */
+.login-form .btn.btn-login {
+  background-color: var(--login-bg);
+  color: #fff;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+.login-form .btn.btn-login:hover {
+  background-color: var(--login-bg-hover);
+}
+
+/* الشكل الأساسي */
+.btn-login {
+  background: #cccccc69; 
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,.15);
+}
+
+/* Hover */
+.btn-login:hover:not(:disabled) {
+  background: #cccccca1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,.2);
+}
+
+/* Active */
+.btn-login:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 3px 5px rgba(0,0,0,.2);
+}
+
+/* Disabled */
+.btn-login:disabled {
+  background: #cccccc69;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =================== LANGUAGE BOX =================== */
+.lang-box{
+  position: fixed;
+  top: 16px;
+  inset-inline-start: 16px; /* RTL = يمين, LTR = شمال */
+  z-index: 10;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,.35);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  backdrop-filter: blur(2px);
+  margin: 0;                    /* مهم: إلغاء التوسيط */
+  max-width: max-content;
+}
+.langStyle{
+  color:#fff; text-decoration:none; font-weight:500;
+  padding:6px 10px; border-radius:6px;
+  background: rgba(255, 255, 255, 0.659);
+  transition: transform .2s ease, background-color .2s ease;
+}
+.langStyle:hover{ background: rgba(255, 255, 255, 0.595); transform: translateY(-2px); }
+
+
+/* لو الصفحة بالعربي (RTL) الصندوق في اليمين */
+[dir="rtl"] .lang-box {
+  margin-left: auto;
+}
+
+/* لو الصفحة بالإنجليزي (LTR) الصندوق في الشمال */
+[dir="ltr"] .lang-box {
+  margin-right: auto;
+}
+
+/* =================== LANGUAGE LINKS =================== */
+.langStyle {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+.langStyle:hover {
+  background: rgba(157, 154, 154, 0.786);
+  transform: translateY(-2px);
+}
+
+/* =================== ACCESSIBILITY =================== */
+@media (prefers-reduced-motion: reduce) {
+  .btn-login, .langStyle { transition: none; }
+}
+
+/* الخلفية: في الموبايل خَلّيها cover وأوقف fixed لتفادي اللاج */
+@media (max-width: 767px) {
+  .bg-cover{
+    background-size: cover;       /* بدل contain */
+    background-attachment: initial;
+    background-color: transparent;/* مايحطش أسود */
+  }
+
+  /* تمركز وتضبيط حجم الفورم */
+  .login-body{
+    padding: 24px;                /* مسافة آمنة */
+    display: grid;
+    place-items: start center;    /* فوق شوية علشان ما تتغطاش */
+    min-height: 100svh;           /* ارتفاع فعلي للشاشة */
+  }
+
+  .login-form{
+    width: 92vw;
+    max-width: 320px;
+    background: rgba(0,0,0,0.55); /* كارد واضح فوق الخلفية */
+    backdrop-filter: blur(2px);
+    border-radius: 12px;
+    padding: 20px 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+
+  .logo-login img{
+    width: 72px; height: 72px;    /* صغر اللوجو */
+    object-fit: contain;
+    border-radius: 50%;
+    display: block;
+    margin: -36px auto 12px;      /* يطلع فوق الكارد */
+    box-shadow: 0 6px 12px rgba(0,0,0,.3);
+    background: #fff4;            /* هالة خفيفة */
+  }
+
+  .form-input input{
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid #eee;
+    background: transparent;
+    color: #fff;
+  }
+
+  .btn-login{
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+  }
+
+  /* زرار تغيير اللغة: صغّر وابعِده عن الفورم */
+  .lang-box{
+    top: 10px;
+    inset-inline-start: 10px;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+  }
+  .langStyle{ padding: 4px 8px; font-size: .9rem; }
 }
