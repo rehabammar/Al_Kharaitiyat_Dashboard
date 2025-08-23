@@ -6283,7 +6283,7 @@ hr {
     background: #1c1e4d;
     background: -moz-linear-gradient(top, #1d3a64 0%, #4A90E2 100%);
     background: -webkit-linear-gradient(top, #1d3a64 0%, #4A90E2 100%);
-    background: linear-gradient(to bottom, #1d3a64 0%, #4A90E2 100%;
+    background: linear-gradient(to bottom, #1d3a64 0%, #4A90E2 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1d3a64', midColorstr='#4A90E2', endColorstr='#6fd5f7', GradientType=0);
 }
 
