@@ -27,7 +27,7 @@
 }
 @font-face {
   font-family: 'cairoBoldFont';
-  src: url('/assets/fonts/cairoBold.ttf') format('truetype');
+  src: url('/assets/fonts/cairo-bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -2847,10 +2847,10 @@ hr {
 .main-header .main-menu ul li a {
     color: #ffffff; 
     font-weight: 100;
-    font-family: 'bonFont';
+    font-family: 'cairoBoldFont';
     padding: 25px 2px;
     display: block;
-    font-size: 17px; 
+    font-size: 14px; 
     -webkit-transition: .3s;
     -moz-transition: .3s;
     -o-transition: .3s;

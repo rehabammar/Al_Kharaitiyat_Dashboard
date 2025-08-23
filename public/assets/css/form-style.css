@@ -47,6 +47,7 @@
 /* الأساس */
 .custom-input {
   background-color: #fff;
+  font-family: 'cairoFont';
 }
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */
@@ -54,6 +55,7 @@
 .custom-input.ng-invalid.ng-touched,
 .was-validated .custom-input:invalid,
 .form-control.is-invalid {
+  font-family: 'cairoFont';
   background-color: #fff !important;   /* ✅ امنع الخلفية الوردية */
   background-image: none !important;   /* بعض الأطر بتضيف صورة/gradient */
   border-color: #dc3545 !important;    /* الحدّ الأحمر */
@@ -65,6 +67,7 @@
 .custom-input.ng-invalid.ng-touched:focus,
 .was-validated .custom-input:invalid:focus {
   background-color: #fff !important;
+  font-family: 'cairoFont';
   outline: none;
   border-color: #dc3545 !important;
   box-shadow: 0 0 4px rgba(220,53,69,.35);
@@ -79,6 +82,7 @@
 .error-text {
   margin-top: 4px;
   font-size: 12px;
+  font-family: 'cairoFont';
   color: #dc3545;
 }
 
@@ -88,12 +92,15 @@
   border-color: #dc3545 !important;
   box-shadow: 0 0 4px rgba(220,53,69,.35);
   background-color: #fff !important;       /* أهم سطر */
+  font-family: 'cairoFont';
+
 }
 
 /* عناصر الإدخال داخل الغلاف */
 .input-error .custom-input,
 .combo-shell.input-error .combo {
   background-color: transparent !important; /* ياخد لون الغلاف الأبيض */
+  font-family: 'cairoFont';
 }
 
 /* ❌ إبطال أي تلوين من Bootstrap إن كان مفعّل */
@@ -113,11 +120,14 @@
 /* للتأكيد على select */
 .combo {
   background: transparent;
+  font-family: 'cairoFont';
+
 }
 .combo-shell {
   background: #fff;
   border-radius: 6px;
   overflow: hidden;  /* يقص زوايا الـ select */
+  font-family: 'cairoFont';
 }
 
 
@@ -126,7 +136,7 @@
 .mat-mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
   color: hsl(var(--muted-foreground)) !important; /* choose your token */
   font-weight: 500;
-  font-family: "bonFont";
+  font-family: 'cairoFont';
   font-size: 14px;
   opacity: .9; /* optional */
 }
