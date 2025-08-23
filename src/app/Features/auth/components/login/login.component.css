@@ -160,15 +160,22 @@
     min-height: 100svh;           /* ارتفاع فعلي للشاشة */
   }
 
-  .login-form{
-    width: 92vw;
-    max-width: 320px;
-    background: rgba(0,0,0,0.55); /* كارد واضح فوق الخلفية */
-    backdrop-filter: blur(2px);
-    border-radius: 12px;
-    padding: 20px 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,.25);
-  }
+.login-form {
+  width: 92vw;
+  max-width: 400px;                  /* كبرتها أكتر شوية */
+  background: rgba(0,0,0,0.65);      /* خلفية أوضح */
+  backdrop-filter: blur(6px);
+  border-radius: 18px;
+  padding: 30px 26px;
+
+  /* شادو قوي من جميع الاتجاهات */
+  box-shadow:
+    25px 0 40px 5px rgba(0,0,0,0.85),   /* يمين أقوى + spread */
+    0 0 40px rgba(0,0,0,0.6),           /* هالة عامة */
+    0 15px 45px rgba(0,0,0,0.7);        /* عمق لتحت */
+}
+
+
 
   .logo-login img{
     width: 72px; height: 72px;    /* صغر اللوجو */
