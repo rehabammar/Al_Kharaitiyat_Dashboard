@@ -1,5 +1,21 @@
-<mat-form-field appearance="outline" class="w-100">
-  <mat-label>{{ label }}</mat-label>
+ <input
+    #nativeInput
+    matInput
+    type="datetime-local"
+    [value]="localValue ?? ''"
+    [placeholder]="placeholder"
+    [required]="required"
+    [disabled]="disabled"
+    step="60"
+    (input)="handleInput($any($event.target).value)"
+    (change)="handleInput($any($event.target).value)"
+    (blur)="markTouched()"
+    class="custom-input"
+    [class.input-error]="required && touched && !localValue"
+  />
+
+
+<!-- <mat-form-field appearance="outline">
 
   <input
     #nativeInput
@@ -17,8 +33,7 @@
     [class.input-error]="required && touched && !localValue"
   />
 
-  <!-- زر لفتح الـ picker أو fallback -->
-  <button mat-icon-button matSuffix type="button" (click)="openPicker(nativeInput)" aria-label="اختر التاريخ والوقت">
+  <button mat-icon-button matSuffix type="button"  class="icon-plain"  (click)="openPicker(nativeInput)" aria-label="اختر التاريخ والوقت">
     <mat-icon>event</mat-icon>
   </button>
 
@@ -29,9 +44,8 @@
   <mat-error *ngIf="required && touched && !localValue">
     {{ 'validation.required' | translate }}
   </mat-error>
-</mat-form-field>
+</mat-form-field> -->
 
-<!-- Fallback UI (يظهر لو المتصفح ما بيدعمش showPicker أو فتحناه يدويًا) -->
 <div *ngIf="fallbackOpen || !supportsNativePicker" class="dtp">
   <mat-form-field appearance="outline" class="w-50">
     <mat-label>التاريخ</mat-label>

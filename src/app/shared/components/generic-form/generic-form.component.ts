@@ -28,6 +28,9 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Input() primaryKey!: Extract<keyof T, string>;
   @Input() apiPath!: string;
 
+  @Input() selectedId: string | number | null | undefined= null; 
+  @Input() searchParameterKey!: string;   
+
   @Output() rowChanged = new EventEmitter<{ field: string; value: any }>();
   @Output() newRowCreated = new EventEmitter<T>();
   @Output() rowDeleted = new EventEmitter<any>();
@@ -159,6 +162,57 @@ export class GenericFormComponent<T extends Record<string, any>>
     return payload;
   }
 
+  //====== date filed ===========
+
+/** --- DATE HELPERS --- */
+
+// Build yyyy-MM-ddTHH:mm for <input type="datetime-local">
+toLocalInput(value: any | null): string {
+  if (!value) return '';
+  const d = new Date(value);            // works with ISO like ...+03:00 or ...Z
+  if (isNaN(d.getTime())) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const y  = d.getFullYear();
+  const m  = pad(d.getMonth() + 1);
+  const dd = pad(d.getDate());
+  const hh = pad(d.getHours());
+  const mm = pad(d.getMinutes());
+  return `${y}-${m}-${dd}T${hh}:${mm}`;
+}
+
+// Convert datetime-local (local time) -> ISO with local offset (+HH:MM)
+private toIsoWithOffset(localStr: string): string | null {
+  if (!localStr) return null;
+  const d = new Date(localStr);         // interpreted as local time
+  if (isNaN(d.getTime())) return null;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const y  = d.getFullYear();
+  const m  = pad(d.getMonth() + 1);
+  const dd = pad(d.getDate());
+  const hh = pad(d.getHours());
+  const mm = pad(d.getMinutes());
+  const ss = pad(d.getSeconds());
+  const tz = -d.getTimezoneOffset();    // minutes east of UTC
+  const sign = tz >= 0 ? '+' : '-';
+  const th = pad(Math.floor(Math.abs(tz) / 60));
+  const tm = pad(Math.abs(tz) % 60);
+  return `${y}-${m}-${dd}T${hh}:${mm}:${ss}.000${sign}${th}:${tm}`;
+}
+
+/** Called from (input)/(change) on the date control */
+onDateInput(column: TableColumn, localStr: string) {
+  // If you prefer UTC 'Z', use: const iso = localStr ? new Date(localStr).toISOString() : null;
+  const iso = this.toIsoWithOffset(localStr);
+  this.onFieldChanged(column, iso);
+}
+
+/** Optional: used by (blur) if you kept it in the template */
+touched = false;
+markTouched() { this.touched = true; }
+
+
+
+
   // ========== Actions ==========
 
 
@@ -185,7 +239,6 @@ export class GenericFormComponent<T extends Record<string, any>>
   public addNewRow = () => {
     const row: Row = this.dataFactory ? this.dataFactory() : {};
 
-    // ضمّن الحقول بديفولتات من تعريف الأعمدة
     for (const c of this.columns) {
       if (!(c.field in row)) {
         if (c.isFlag) row[c.field] = 0;
@@ -195,6 +248,10 @@ export class GenericFormComponent<T extends Record<string, any>>
       if (c.isCombobox && c.fieldFK && !(c.fieldFK in row)) {
         row[c.fieldFK] = null;
       }
+    }
+
+    if(this.selectedId && this.searchParameterKey){
+      row[this.searchParameterKey] = this.selectedId;
     }
 
     this.selectedRow = row as T;

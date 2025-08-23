@@ -118,8 +118,10 @@ ngOnInit(): void {
     this.dataSource.data = systems;
     if (!this.selectedRow && systems.length > 0) {
       this.selectedRow = systems[0];
-      this.rowSelected.emit(this.selectedRow);
+    }else{
+      this.selectedRow = undefined as any;
     }
+    this.rowSelected.emit(this.selectedRow);
     this.changeDetectorRef.markForCheck();
   });
 

@@ -12,6 +12,7 @@
       <!-- Courses -->
     <app-custom-accordion title="courses">
       <app-generic-table
+       #teacherCourseTable
        [screenId]="'courses'" 
        [primaryKey]="'teacherCoursePk'"
        [columns]="teacherCourseColumns"
@@ -31,10 +32,10 @@
          [primaryKey]="'teacherCoursePk'"
          [dataFactory]="teacherCourseDataFactory"
          [apiPath]="'teacherCourses'"
-         (rowChanged)="onFormRowChanged($event)"
-         (newRowCreated)="onNewRow($event)"
-         (rowDeleted)="onFormRowDeleted($event)"   
-         (rowSaved)="onFormSaved($event)"
+         (rowChanged)="onTeacherCourseRowChanged($event)"
+         (newRowCreated)="onNewTeacherCourseRow($event)"
+         (rowDeleted)="onTeacherCourseRowDeleted($event)"   
+         (rowSaved)="onTeacherCourseSaved($event)"
 
          >
         </app-generic-form>
@@ -46,6 +47,7 @@
         <mat-tab-group mat-stretch-tabs="false">
           <mat-tab label='{{"Class.Classes" | translate}}' >
                <app-generic-table
+                #classesTableRef
                 [screenId]="'courses'" 
                 [primaryKey]="'classPk'"
                 [columns]="classColumns"
@@ -73,12 +75,6 @@
      
       <br>
      <app-custom-accordion title="Class.ClassDetails">
-<!-- <ng-container *ngIf="selectedClass as cls">
-  <app-date-time-picker 
-  [(ngModel)]="cls.expectedStartTime" 
-  [timeZone]="'Africa/Cairo'"></app-date-time-picker>
-</ng-container> -->
-
       <mat-tab-group mat-stretch-tabs="false">
           <mat-tab label='{{"Class.ClassDetails" | translate}}' >
                  <app-generic-form
@@ -87,7 +83,13 @@
                     [alwaysEditable]="true"
                     [primaryKey]="'classPk'"
                     [dataFactory]="classDataFactory"
-                    [apiPath]="'classes'">
+                    [apiPath]="'classes'"
+                    [selectedId]="selectedCourse?.teacherCoursePk"
+                    [searchParameterKey]="'teacherCourseFk'"
+                    (rowChanged)="onselectedClassRowChanged($event)"
+                    (newRowCreated)="onNewClassRow($event)"
+                    (rowSaved)="onClassSaved($event)"
+                    (rowDeleted)="onClassRowDeleted($event)">
                  </app-generic-form>
           </mat-tab>
           <mat-tab label='{{"StudentAttendance.Attendance" | translate}}' >

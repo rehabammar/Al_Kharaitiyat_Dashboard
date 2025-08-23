@@ -137,6 +137,16 @@
 <!-- قراءة فقط (يُعاد استخدامه) -->
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
-    <span class="custom-label">{{ currentRow[column.field] }}</span>
+    <ng-container *ngIf="column.dataType === 'date'; else plain">
+      <span class="custom-label" dir="ltr">
+        <ng-container *ngIf="currentRow[column.field]; else dash" class="t">
+          {{ currentRow[column.field] | date:'MM/dd/yyyy hh:mm a' }}
+        </ng-container>
+        <ng-template #dash>—</ng-template>
+      </span>
+    </ng-container>
+    <ng-template #plain>
+      <span class="custom-label">{{ currentRow[column.field] }}</span>
+    </ng-template>
   </div>
 </ng-template>

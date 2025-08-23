@@ -6,7 +6,7 @@
                 <div class="container-fluid">
                     <div class="row align-items-center">
                         <!-- Logo -->
-                        <div class="col-xl-2 col-lg-2">
+                        <div class="col-xl-2 col-lg-2"> 
                             <div class="logo2">
                                 <a href="index.html"><img src="assets/img/logo/logo.png" alt=""></a>
                             </div>
@@ -17,26 +17,26 @@
                                 <div class="main-menu d-none d-lg-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                                            <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"> 
                                                 <a class="hover-underline" [routerLink]="['/homePage']">{{ 'home' | translate }}</a>
                                             </li>
 
-                                            <li routerLinkActive="active">
+                                            <li routerLinkActive="active"> 
                                                 <a class="hover-underline" [routerLink]="['/courses']">{{ 'courses' | translate }}</a>
                                             </li>
 
-                                            <li routerLinkActive="active">
+                                            <li routerLinkActive="active"> 
                                                 <a class="hover-underline" [routerLink]="['/users']">{{ 'users' | translate }}</a>
                                             </li>
-                                             <li routerLinkActive="active">
+                                             <li routerLinkActive="active"> 
                                                 <a class="hover-underline" [routerLink]="['/system-lookups']">{{ 'systemLookups' | translate }}</a>
                                             </li>
                                             
-                                            <li routerLinkActive="active">
-                                                <a class="hover-underline" [routerLink]="['/payment']">{{ 'payment' | translate }}</a>
+                                            <li routerLinkActive="active"> 
+                                                <a [routerLink]="['/financial-transactions']">{{ 'financial-transactions' | translate }}</a>
                                             </li>
 
-                                            <li routerLinkActive="active">
+                                            <li routerLinkActive="active"> 
                                                 <a class="hover-underline" [routerLink]="['/reports']">{{ 'reports' | translate }}</a>
                                             </li>
 

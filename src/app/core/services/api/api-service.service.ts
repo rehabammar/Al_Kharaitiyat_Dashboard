@@ -100,12 +100,12 @@ export class ApiService {
     this.loadingService.show();
 
     return this.http.post<ApiResponse<T>>(url, body).pipe(
-      tap(() => console.log(`[DEBUG] POST Request - Request Time: ${Date.now() - startTime} ms`)),
+      // tap(() => console.log(`[DEBUG] POST Request - Request Time: ${Date.now() - startTime} ms`)),
       map(response => this.handleResponse(response)),
       catchError(error => this.handleError(error)),
       finalize(() => {
         this.loadingService.hide();
-        console.log(`[DEBUG] POST Request Completed in ${Date.now() - startTime} ms`);
+        // console.log(`[DEBUG] POST Request Completed in ${Date.now() - startTime} ms`);
       })
     );
   }
