@@ -2830,7 +2830,7 @@ hr {
 
     .hover-underline {
         position: relative;
-        color: #2303d5;                /* اللون الأساسي */
+        color: #ffffff;                /* اللون الأساسي */
         text-decoration: none;
         transition: color 0.3s;
     }
@@ -2841,13 +2841,13 @@ hr {
         left: 0; 
         bottom: -1px;               /* مكان الخط تحت النص */
         width: 0;
-        height: 3px;
-        background: #2a0679;        /* لون الخط */
+        height: 5px;
+        background: #ffffff;        /* لون الخط */
         transition: width 0.3s;
     }
 
     .hover-underline:hover {
-        color: #21225f;             /* لون الخط عند الهوفر */
+        color: #b52121;             /* لون الخط عند الهوفر */
     }
 
     .hover-underline:hover::after {
