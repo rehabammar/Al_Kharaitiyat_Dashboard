@@ -54,14 +54,14 @@ userColumns: TableColumn[] = [
     dataType: 'string',
     width: '160px'
   },
-  {
-    labelKey: 'User.FullName',
-    field: 'fullName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '220px'
-  },
+  // {
+  //   labelKey: 'User.FullName',
+  //   field: 'fullName',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: true,
+  //   width: '220px'
+  // },
 
   // Username / Email / Phones
   {
@@ -85,27 +85,27 @@ userColumns: TableColumn[] = [
     dataType: 'string',
     width: '170px'
   },
-  {
-    labelKey: 'User.WhatsApp',
-    field: 'whatsappNumber',
-    required: false,
-    dataType: 'string',
-    width: '170px'
-  },
+  // {
+  //   labelKey: 'User.WhatsApp',
+  //   field: 'whatsappNumber',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '170px'
+  // },
 
   // Comboboxes: Gender / Nationality / UserType
-  {
-    labelKey: 'User.Gender',
-    field: 'genderName',
-    fieldFK: 'genderFk',
-    isCombobox: true,
-    required: true,
-    apiPath: '/lookupDetails/gender',         // عدّلي لو مختلف
-    displayItemKey: 'lookupName',
-    primaryKey: 'lookupDetailPk',
-    dataFactory: this.lookupDetailDataFactory,
-    width: '140px'
-  },
+  // {
+  //   labelKey: 'User.Gender',
+  //   field: 'genderName',
+  //   fieldFK: 'genderFk',
+  //   isCombobox: true,
+  //   required: true,
+  //   apiPath: '/lookupDetails/gender',         // عدّلي لو مختلف
+  //   displayItemKey: 'lookupName',
+  //   primaryKey: 'lookupDetailPk',
+  //   dataFactory: this.lookupDetailDataFactory,
+  //   width: '140px'
+  // },
   {
     labelKey: 'User.UserType',
     field: 'userTypeName',
@@ -145,22 +145,22 @@ userColumns: TableColumn[] = [
   },
 
   // Date of birth
-  {
-    labelKey: 'User.DateOfBirth',
-    field: 'dateOfBirth',
-    required: false,
-    dataType: 'date',
-    width: '180px'
-  },
+  // {
+  //   labelKey: 'User.DateOfBirth',
+  //   field: 'dateOfBirth',
+  //   required: false,
+  //   dataType: 'date',
+  //   width: '180px'
+  // },
 
   // Status flag
-  {
-    labelKey: 'User.Status',
-    field: 'statusFl',
-    required: false,
-    isFlag: true,
-    width: '120px'
-  },
+  // {
+  //   labelKey: 'User.Status',
+  //   field: 'statusFl',
+  //   required: false,
+  //   isFlag: true,
+  //   width: '120px'
+  // },
 
   // Job info
   {
@@ -170,57 +170,57 @@ userColumns: TableColumn[] = [
     dataType: 'string',
     width: '200px'
   },
-  {
-    labelKey: 'User.Specialization',
-    field: 'specialization',
-    required: false,
-    dataType: 'string',
-    width: '200px'
-  },
-  {
-    labelKey: 'User.ExperienceYears',
-    field: 'experienceYears',
-    required: false,
-    dataType: 'number',
-    width: '140px'
-  },
-  {
-    labelKey: 'User.EducationLevel',
-    field: 'educationLevel',
-    required: false,
-    dataType: 'string',
-    width: '220px'
-  },
+  // {
+  //   labelKey: 'User.Specialization',
+  //   field: 'specialization',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '200px'
+  // },
+  // {
+  //   labelKey: 'User.ExperienceYears',
+  //   field: 'experienceYears',
+  //   required: false,
+  //   dataType: 'number',
+  //   width: '140px'
+  // },
+  // {
+  //   labelKey: 'User.EducationLevel',
+  //   field: 'educationLevel',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '220px'
+  // },
 
   // Guardian (اختياري)
-  {
-    labelKey: 'User.GuardianName',
-    field: 'guardianName',
-    required: false,
-    dataType: 'string',
-    width: '200px'
-  },
-  {
-    labelKey: 'User.GuardianPhone',
-    field: 'guardianPhone',
-    required: false,
-    dataType: 'string',
-    width: '200px'
-  },
-  {
-    labelKey: 'User.GuardianEmail',
-    field: 'guardianEmail',
-    required: false,
-    dataType: 'string',
-    width: '220px'
-  },
-  {
-    labelKey: 'User.Notes',
-    field: 'notes',
-    required: false,
-    dataType: 'string',
-    width: '240px'
-  },
+  // {
+  //   labelKey: 'User.GuardianName',
+  //   field: 'guardianName',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '200px'
+  // },
+  // {
+  //   labelKey: 'User.GuardianPhone',
+  //   field: 'guardianPhone',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '200px'
+  // },
+  // {
+  //   labelKey: 'User.GuardianEmail',
+  //   field: 'guardianEmail',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '220px'
+  // },
+  // {
+  //   labelKey: 'User.Notes',
+  //   field: 'notes',
+  //   required: false,
+  //   dataType: 'string',
+  //   width: '240px'
+  // },
 
 ];
 
