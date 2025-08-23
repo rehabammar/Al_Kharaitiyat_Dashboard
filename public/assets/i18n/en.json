@@ -143,8 +143,23 @@
     "FinancialTransactions.CourseName": "Course Name",
     "FinancialTransactions.SubjectName": "Subject Name",
     "FinancialTransactions.ReferenceNo": "Reference No.",
-    "FinancialTransactions.Notes": "Notes"
-
-
+    "FinancialTransactions.Notes": "Notes",
+    "Reports.Title": "Reports",
+    "Reports.ReportType": "Report Type",
+    "Reports.StartDate": "Start Date",
+    "Reports.EndDate": "End Date",
+    "Reports.Course": "Course",
+    "Reports.Teacher": "Teacher",
+    "Reports.Student": "Student",
+    "Reports.FilterType": "Filter Type",
+    "Reports.Download": "Download Report",
+    "Reports.Downloading": "Downloading…",
+    "Reports.DownloadedSuccessfully": "Downloaded successfully",
+    "Reports.DownloadFailed": "Download failed",
+    "Reports.Types.Attendance": "Attendance",
+    "Reports.Types.Payments": "Payments",
+    "Reports.Types.TeacherCourses": "Courses",
+    "Footer.Copyright": "Copyright © {{year}} All rights reserved"
+  
 
 }

@@ -1,3 +1,9 @@
+:root {
+  --field-h: 44px;   
+  --field-px: 12px;
+  --icon-gap: 10px;
+}
+
 .accordion-container {
   padding: 16px;                     /* space inside */
   margin-bottom: 20px;               /* space between accordions */
@@ -5,9 +11,6 @@
   background: #ffffff;               /* white background */
   box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
 }
-
-
-
 
 .header-label-line {
   display: flex;
@@ -44,11 +47,34 @@
   box-sizing: border-box;
 }             
 
-/* الأساس */
+
+
 .custom-input {
-  background-color: #fff;
+  height: var(--field-h);
+  padding: 0 var(--field-px); 
+  text-align: start;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px; 
+  width: 100%;
+  transition: border 0.2s, box-shadow 0.2s;
   font-family: 'cairoFont';
 }
+
+.custom-input:focus {
+  border-color: #0eadf2;
+  box-shadow: 0 0 5px rgba(15, 92, 247, 0.3);
+  outline: none;
+}
+
+.custom-input.date-field {
+  padding-inline-end: calc(50px + var(--icon-gap)); /* 28px ≈ icon area */
+  direction: ltr;          
+  text-align: right;       
+  padding: 2px ;
+  
+}
+
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */
 .custom-input.input-error,
@@ -219,6 +245,34 @@
   font-size: 14px;
 }
 
+/* generic form style */ 
+
+.generic-form-container {
+  margin-top: 20px;
+  padding: 10px;
+  background : white;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* always 4 columns */
+  gap: 1rem 2rem; /* row gap | column gap */
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  display: block;             
+  margin-bottom: 0.4rem;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  text-align: start;          
+  direction: inherit;      
+  color:  hsl(var(--bg)) !important;   
+}
 
 
 

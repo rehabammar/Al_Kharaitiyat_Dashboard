@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { LoadingService } from '../../services/shared/loading.service';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { LoadingService } from '../../core/services/shared/loading.service';
 
 @Component({
   selector: 'app-loading-spinner',
-  standalone: true,
+  standalone: false,
   templateUrl: './loading-spinner.component.html',
   styleUrl: './loading-spinner.component.css',
-  imports:[CommonModule , AsyncPipe]
 })
 export class LoadingSpinnerComponent {
 constructor(public loadingService: LoadingService) {

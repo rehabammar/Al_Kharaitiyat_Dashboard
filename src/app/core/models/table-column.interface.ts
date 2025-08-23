@@ -13,6 +13,8 @@ export interface TableColumn {
   primaryKey?: string;
   displayItemKey?: string;
   width?: string; 
+  showWhen?: (row: any) => boolean;
+
 
 }
 

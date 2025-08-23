@@ -143,7 +143,27 @@
     "FinancialTransactions.CourseName": "اسم المقرر",
     "FinancialTransactions.SubjectName": "اسم المادة",
     "FinancialTransactions.ReferenceNo": "رقم المرجع",
-    "FinancialTransactions.Notes": "ملاحظات"
+    "FinancialTransactions.Notes": "ملاحظات",
+    "Reports.Title": "التقارير",
+    "Reports.ReportType": "نوع التقرير",
+    "Reports.StartDate": "تاريخ البداية",
+    "Reports.EndDate": "تاريخ النهاية",
+    "Reports.Course": "الدورة",
+    "Reports.Teacher": "المعلم",
+    "Reports.Student": "الطالب",
+    "Reports.FilterType": "نوع التصفية",
+    "Reports.Download": "تنزيل التقرير",
+    "Reports.Downloading": "جاري التنزيل…",
+    "Reports.DownloadedSuccessfully": "تم تنزيل التقرير بنجاح",
+    "Reports.DownloadFailed": "فشل تنزيل التقرير",
+    "Reports.Types.Attendance": "الحضور",
+    "Reports.Types.Payments": "المدفوعات",
+    "Reports.Types.TeacherCourses": "دورات المعلم",
+    "Footer.Copyright": "حقوق النشر © {{year}} جميع الحقوق محفوظة"
+
+    
+
+
 
 
 }

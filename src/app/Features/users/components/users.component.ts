@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { User } from '../../auth/models/user.model';
 import { TableColumn } from '../../../core/models/table-column.interface';
 import { LookupDetail } from '../../../core/models/lookup-detail.model';
+import { AppComponent } from '../../../app.component';
+import { AppConstants } from '../../../core/constants/app_constants';
 
 @Component({
   selector: 'app-users',
@@ -129,7 +131,8 @@ userColumns: TableColumn[] = [
     displayItemKey: 'stageName',
     primaryKey: 'stagePk',
     dataFactory: this.stageDataFactory,
-    width: '180px'
+    width: '180px',
+    // showWhen: this.teacherShowFields
   },
   {
     labelKey: 'User.Level',
@@ -248,6 +251,9 @@ onUserSaved = (saved: User) => {
 
 
 
+ teacherShowFields() : boolean{
+ return this.selectedUser?.userTypeFk == AppConstants.TEACHER
+ }
 
 
 }
