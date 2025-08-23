@@ -122,22 +122,22 @@ export class FinancialTransactionsPageComponent {
     disabled: true,
     width: '240px',
   },
-  {
-    labelKey: 'FinancialTransactions.CourseName',
-    field: 'courseName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '240px',
-  },
-  {
-    labelKey: 'FinancialTransactions.SubjectName',
-    field: 'subjectName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '180px',
-  },
+  // {
+  //   labelKey: 'FinancialTransactions.CourseName',
+  //   field: 'courseName',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: true,
+  //   width: '240px',
+  // },
+  // {
+  //   labelKey: 'FinancialTransactions.SubjectName',
+  //   field: 'subjectName',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: true,
+  //   width: '180px',
+  // },
 
   {
     labelKey: 'FinancialTransactions.ReferenceNo',
@@ -147,14 +147,14 @@ export class FinancialTransactionsPageComponent {
     disabled: true,
     width: '160px',
   },
-  {
-    labelKey: 'FinancialTransactions.Notes',
-    field: 'notes',
-    required: false,
-    dataType: 'string',
-    disabled: false,
-    width: '280px',
-  },
+  // {
+  //   labelKey: 'FinancialTransactions.Notes',
+  //   field: 'notes',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: false,
+  //   width: '280px',
+  // },
 ];
 
 
