@@ -72,7 +72,7 @@
       </form>
       <div class="form-actions">
         <app-button [label]="(downloading ? 'Reports.Downloading' : 'Reports.Download') | translate"
-          [imageSrc]="downloading ? '/assets/img/icon/spinner.svg' : '/assets/img/icon/download.svg'"
+          [imageSrc]="downloading ? '/assets/img/icon/loader.gif' : '/assets/img/icon/download.png'"
           [onClick]="onDownloadReports"
           [disabled]="downloading || !f.valid || (!!endDate && !!startDate && (endDate < startDate))"
           [showButton]="true">
