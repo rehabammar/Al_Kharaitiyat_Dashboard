@@ -26,12 +26,16 @@ export class ReportsService {
     startDate?: string | null;
     endDate?: string | null;
     openAfterDownload?: boolean;
-    // currentUser: { userPk: number; role: 'teacher' | 'student' | 'other' };
+    teacherId? : number ;
+    courseId? : number ;
   }): Promise<boolean> {
     const {
-      type, startDate, endDate,
+      type,
+      startDate,
+      endDate,
       openAfterDownload = true,
-    //    currentUser,
+      teacherId,
+      courseId
     } = opts;
 
     const reportName = this.reportNameFor(type);
@@ -47,10 +51,10 @@ export class ReportsService {
         startDate: startDate ,
         endDate:   endDate ,
         userId:    this.userService.getUser().userPk,
-        // teacherId: isTeacher ? currentUser.userPk : null,
+        teacherId: teacherId,
         // studentId: isStudent ? currentUser.userPk : null,
-        // filterType: isTeacher ? 'teacher' : (isStudent ? 'student' : 'other'),
-        courseId: null,
+        filterType: 'teacher' ,
+        courseId: courseId,
       },
     };
 

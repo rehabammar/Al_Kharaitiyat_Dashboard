@@ -158,7 +158,7 @@
     "Reports.DownloadFailed": "Download failed",
     "Reports.Types.Attendance": "Attendance",
     "Reports.Types.Payments": "Payments",
-    "Reports.Types.TeacherCourses": "Teacher Courses",
+    "Reports.Types.TeacherCourses": "Courses",
     "Footer.Copyright": "Copyright © {{year}} All rights reserved"
   
 

@@ -8,63 +8,76 @@
 
   <div class="accordion-container">
     <app-custom-accordion title="reports">
-      <form class="generic-form-container" (ngSubmit)="onDownloadReports()" #f="ngForm">
+
+      <form class="generic-form-container" #f="ngForm">
         <div class="form-grid">
-           <div>
+
+          <!-- Report type (required) -->
+          <div>
             <div class="header-label-line align-start">
-              <label class="form-label">{{'Reports.ReportType' | translate }}</label>
+              <label class="form-label">{{ 'Reports.ReportType' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <select class="custom-input"name="type" [(ngModel)]="reportType" required>
-            <option value="attendance">{{'Reports.Types.Attendance' | translate }}</option>
-            <option value="payments">{{'Reports.Types.Payments' | translate }}</option>
-            <option value="teacherCourses">{{'Reports.Types.TeacherCourses' | translate }}</option>
+            <select class="custom-input" name="type" [(ngModel)]="reportType" required>
+              <option value="attendance">{{ 'Reports.Types.Attendance' | translate }}</option>
+              <option value="payments">{{ 'Reports.Types.Payments' | translate }}</option>
+              <option value="teacherCourses">{{ 'Reports.Types.TeacherCourses' | translate }}</option>
             </select>
           </div>
 
+          <!-- Start date (required) -->
           <div>
             <div class="header-label-line align-start">
-              <label class="form-label">{{'Reports.StartDate' | translate }}</label>
+              <label class="form-label">{{ 'Reports.StartDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-
-            <input class="custom-input" type="date" name="start" [(ngModel)]="startDate" />
+            <input class="custom-input" type="date" name="startDate" [(ngModel)]="startDate" required />
           </div>
 
+          <!-- End date (required, min=startDate) -->
           <div>
             <div class="header-label-line align-start">
-              <label class="form-label">{{'Reports.EndDate' | translate }}</label>
+              <label class="form-label">{{ 'Reports.EndDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <input class="custom-input" type="date" name="end" [(ngModel)]="endDate" />
+            <input class="custom-input" type="date" name="endDate" [(ngModel)]="endDate" [min]="startDate || null"
+              required />
+            <div class="error-text" *ngIf="endDate && startDate && endDate < startDate">
+              {{ 'validation.endDateBeforeStart' | translate: { start: startDate } }}
+            </div>
           </div>
 
-          
+          <!-- Optional: Teacher -->
           <div>
             <div class="header-label-line align-start">
-              <label class="form-label">{{'Reports.Teacher' | translate }}</label>
+              <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
             </div>
-           <app-combobox-search
-            [apiPath]="'/users/search-teachers'"
-            [dataFactory]="teacherDataFactory"
-            [primaryKey]="'userPk'"
-            [displayItemKey]="'fullName'"
-            (itemSelected)="onComboSelected($event)"
-            >
-          </app-combobox-search>
+            <app-combobox-search [apiPath]="'/users/search-teachers'" [dataFactory]="teacherDataFactory"
+              [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onTeacherSelected($event)">
+            </app-combobox-search>
           </div>
 
+          <!-- Optional: Course -->
+          <div>
+            <div class="header-label-line align-start">
+              <label class="form-label">{{ 'Reports.Course' | translate }}</label>
+            </div>
+            <app-combobox-search [apiPath]="'/teacherCourses/search'" [dataFactory]="courseDataFactory"
+              [primaryKey]="'teacherCoursePk'" [displayItemKey]="'teacherCourseName'"
+              (itemSelected)="onCourseSelected($event)">
+            </app-combobox-search>
+          </div>
 
         </div>
       </form>
-    <app-button
-      [label]="downloading ? 'Reports.Downloading' : 'Reports.Download'"
-      [imageSrc]="downloading ? '/assets/img/icon/spinner.svg' : '/assets/img/icon/download.svg'"
-      [onClick]="onDownloadReports"
-      [disabled]="downloading || !f.valid"
-      [showButton]="true">
-    </app-button>
-
+      <div class="form-actions">
+        <app-button [label]="(downloading ? 'Reports.Downloading' : 'Reports.Download') | translate"
+          [imageSrc]="downloading ? '/assets/img/icon/spinner.svg' : '/assets/img/icon/download.svg'"
+          [onClick]="onDownloadReports"
+          [disabled]="downloading || !f.valid || (!!endDate && !!startDate && (endDate < startDate))"
+          [showButton]="true">
+        </app-button>
+      </div>
 
     </app-custom-accordion>
 

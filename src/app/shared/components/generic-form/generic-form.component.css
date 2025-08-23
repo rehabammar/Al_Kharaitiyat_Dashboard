@@ -7,19 +7,20 @@
 }
 
 .custom-label {
-  display: block;             
   box-sizing: border-box;
-  padding: 0.9rem 0.75rem;     
+  height: var(--field-h);
+  padding: 0 var(--field-px);  
+  display: flex;              
+  align-items: center;        
   border: 1px solid #ddd;
   border-radius: 6px;
   background: #f5f5f5;
   font-size: 14px;
   color: #555;
   text-align: start;
-
-  min-height: calc(2.25rem + 2px); 
-  line-height: 1.2;
+  font-family: 'cairoFont';
 }
+
 
 .custom-label:empty::before {
   content: '\00a0';

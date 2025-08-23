@@ -10,7 +10,7 @@
 </select> -->
 
 <div class="combo-shell" [class.input-error]="hasError">
-  <select class="combo"
+  <select class="custom-input"
           [(ngModel)]="selected"
           (ngModelChange)="onSelect($event)">
     <option [ngValue]="null"></option>
