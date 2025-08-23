@@ -115,6 +115,11 @@ static buildCrudEndpoints = (basePath: string) => ({
   static courseLocationLookup = '/courseLocation';
   static qualificationType = '/qualification-type';
 
+  static getTeachersList = () => api('/users/search-teachers');
+ 
+  
+  
+
 
 
 }
