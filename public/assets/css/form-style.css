@@ -122,10 +122,90 @@
 
 
 /* styles.css (global) */
-.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label { color:#265b3b !important; font-weight:700; }
-.mat-mdc-tab-group .mdc-tab-indicator__content--underline { border-color:#265b3b !important; border-bottom-width:3px !important; }
-.mat-mdc-tab-body-content { padding-top:20px !important; }
+/* UNSELECTED tabs */
+.mat-mdc-tab:not(.mdc-tab--active) .mdc-tab__text-label {
+  color: hsl(var(--muted-foreground)) !important; /* choose your token */
+  font-weight: 500;
+  font-size: 14px;
+  opacity: .9; /* optional */
+}
 
+/* Hover/Focus for UNSELECTED tabs */
+.mat-mdc-tab:not(.mdc-tab--active):hover .mdc-tab__text-label,
+.mat-mdc-tab:not(.mdc-tab--active):focus .mdc-tab__text-label {
+  color: hsl(var(--fg)) !important;
+}
+
+/* Disabled tab (optional) */
+.mat-mdc-tab.mat-mdc-tab-disabled .mdc-tab__text-label {
+  color: hsl(var(--muted-foreground) / .6) !important;
+}
+
+/* ACTIVE tab */
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: hsl(var(--bg)) !important;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* Indicator */
+.mat-mdc-tab-group .mdc-tab-indicator__content--underline {
+  border-color: hsl(var(--bg)) !important;
+  border-bottom-width: 4px !important;
+}
+
+/* Body padding */
+.mat-mdc-tab-body-content { padding-top: 20px !important; }
+
+
+/* table pagantion style */
+
+/* Scope to your wrapper so it doesn't affect all paginators */
+
+.table-wrapper .mat-mdc-paginator {
+  color: hsl(var(--fg));                 /* default text color */
+  font-size: 10px;                       /* base font size */
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 4px;
+  background: white !important;
+}
+
+/* Arrows (prev/next/first/last) */
+.table-wrapper .mat-mdc-paginator .mat-mdc-icon-button {
+  color: hsl(var(--bg));                 /* arrow color */
+  font-size: 20px;                       /* hit-area/icon size */
+}
+
+.table-wrapper .mat-mdc-paginator .mat-mdc-icon-button:hover {
+  color: hsl(var(--fg));                 /* hover color */
+}
+
+.table-wrapper .mat-mdc-paginator .mat-mdc-icon-button[disabled] {
+  color: hsl(var(--muted-foreground));
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+/* Ensure SVG arrows pick up the color and size */
+.table-wrapper .mat-mdc-paginator .mat-mdc-paginator-icon {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;  /* use button color */
+}
+
+/* Range label & “Items per page” */
+.table-wrapper .mat-mdc-paginator-range-label,
+.table-wrapper .mat-mdc-paginator-page-size-label {
+  color: hsl(var(--bg));
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Page-size select value */
+.table-wrapper .mat-mdc-paginator-page-size .mat-mdc-select-value {
+  color: hsl(var(--fg));
+  font-size: 14px;
+}
 
 
 

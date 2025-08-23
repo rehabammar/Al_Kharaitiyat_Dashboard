@@ -29,9 +29,6 @@ export class GenericService<T extends Record<string, any>> {
     console.table(
       Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
     );
-    console.log("update  "+  this.apiMap.UPDATE());
-
-
   }
 
   // getAll(pageNumber: number, pageSize: number, filters?: any, extraParams?: Record<string, any>): Observable<ApiResponse<T[]>> {

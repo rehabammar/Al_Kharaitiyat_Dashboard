@@ -7,7 +7,7 @@
     "home": "Home",
     "courses": "Courses",
     "users": "Users",
-    "payment": "Payment",
+    "financial-transactions": "Financial Transactions",
     "reports": "Reports",
     "systemLookups": "System Lookups", 
     "delete": "Delete",
@@ -124,7 +124,25 @@
     "StudentAttendance.StudentName": "Student Name",
     "StudentAttendance.PaymentStatusName": "Payment Status",
     "StudentAttendance.ClassEvalution": "Class Evaluation",
-    "StudentAttendance.Comment": "comment"
+    "StudentAttendance.Comment": "comment",
+    "FinancialTransactions.TransactionPk": "Transaction #",
+    "FinancialTransactions.CreationDate": "Creation Date",
+    "FinancialTransactions.PaymentDate": "Payment Date",
+    "FinancialTransactions.TransactionType": "Transaction Type",
+    "FinancialTransactions.PaymentMethod": "Payment Method",
+    "FinancialTransactions.Status": "Status",
+    "FinancialTransactions.PayerName": "Payer Name",
+    "FinancialTransactions.PayeeName": "Payee Name",
+    "FinancialTransactions.ReceiverName": "Receiver Name",
+    "FinancialTransactions.AmountTotal": "Total Amount",
+    "FinancialTransactions.AmountPaid": "Amount Paid",
+    "FinancialTransactions.AmountRemaining": "Amount Remaining",
+    "FinancialTransactions.OrganizationName": "Organization",
+    "FinancialTransactions.ClassTitle": "Class Title",
+    "FinancialTransactions.CourseName": "Course Name",
+    "FinancialTransactions.SubjectName": "Subject Name",
+    "FinancialTransactions.ReferenceNo": "Reference No.",
+    "FinancialTransactions.Notes": "Notes"
 
 
 

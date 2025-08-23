@@ -19,7 +19,7 @@ import { AboutSection3Component } from './Features/home/about-section3/about-sec
 import { TopicsComponent } from './Features/home/topics/topics.component';
 import { TeamComponent } from './Features/home/team/team.component';
 import { HomeComponent } from './Features/home/home.component';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TemplateComponent } from './shared/template/template.component';
@@ -46,6 +46,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { UsersComponent } from './Features/users/components/users.component';
 import { SystemLookupsComponent } from './Features/system-lookups/components/system-lookups.component';
+import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
+import { AuthInterceptor } from '../auth.interceptor';
 // import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 
@@ -79,7 +81,8 @@ import { SystemLookupsComponent } from './Features/system-lookups/components/sys
     ConfirmPopupComponent,
     DateTimePickerComponent,
     UsersComponent,
-    SystemLookupsComponent
+    SystemLookupsComponent,
+    FinancialTransactionsPageComponent
     
   ],
   imports: [
@@ -94,6 +97,7 @@ import { SystemLookupsComponent } from './Features/system-lookups/components/sys
       }),
       fallbackLang: 'ar',
     }),
+   HttpClientModule,
    MatPaginatorModule ,
    MatPaginator,
    MatTableModule,
@@ -115,8 +119,11 @@ import { SystemLookupsComponent } from './Features/system-lookups/components/sys
   ],
   providers: [
   { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
-
-    provideHttpClient() 
+ {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],  bootstrap: [AppComponent]
 })
 export class AppModule { }

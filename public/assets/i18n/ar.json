@@ -7,7 +7,7 @@
     "home": "الرئيسية",
     "courses": "الدورات",
     "users": "المستخدمين",
-    "payment": "المدفوعات",
+    "financial-transactions": "المعاملات المالية",
     "reports": "التقارير", 
     "systemLookups": "قوائم النظام", 
     "delete": "حذف",
@@ -124,9 +124,25 @@
     "StudentAttendance.StudentName": "اسم الطالب",
     "StudentAttendance.PaymentStatusName": "حالة السداد",
     "StudentAttendance.ClassEvalution": "تقييم الحصة",
-    "StudentAttendance.Comment": "تعليق"
-
-
+    "StudentAttendance.Comment": "تعليق",
+    "FinancialTransactions.TransactionPk": "رقم العملية",
+    "FinancialTransactions.CreationDate": "تاريخ الإنشاء",
+    "FinancialTransactions.PaymentDate": "تاريخ الدفع",
+    "FinancialTransactions.TransactionType": "نوع العملية",
+    "FinancialTransactions.PaymentMethod": "طريقة الدفع",
+    "FinancialTransactions.Status": "الحالة",
+    "FinancialTransactions.PayerName": "اسم الدافع",
+    "FinancialTransactions.PayeeName": "اسم المستلم",
+    "FinancialTransactions.ReceiverName": "اسم المُحصِّل",
+    "FinancialTransactions.AmountTotal": "المبلغ الكلي",
+    "FinancialTransactions.AmountPaid": "المبلغ المدفوع",
+    "FinancialTransactions.AmountRemaining": "المبلغ المتبقي",
+    "FinancialTransactions.OrganizationName": "اسم المؤسسة",
+    "FinancialTransactions.ClassTitle": "عنوان الحصة",
+    "FinancialTransactions.CourseName": "اسم المقرر",
+    "FinancialTransactions.SubjectName": "اسم المادة",
+    "FinancialTransactions.ReferenceNo": "رقم المرجع",
+    "FinancialTransactions.Notes": "ملاحظات"
 
 
 }
