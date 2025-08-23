@@ -24,7 +24,7 @@ userColumns: TableColumn[] = [
     required: false,
     dataType: 'number',
     disabled: true,
-    width: '200px'
+    width: '300px'
   },
   {
     labelKey: 'User.FirstName',
