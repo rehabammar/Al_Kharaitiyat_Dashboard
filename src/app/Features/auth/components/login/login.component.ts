@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Language } from '../../models/language.interface';
 import { LanguageService } from '../../../../core/services/shared/language.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 
 
 
@@ -12,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'] // <- plural fix
 })
-export class LoginComponent {
+export class LoginComponent  implements OnInit{
   userName = '';
   password = '';
   loading = false;
@@ -24,11 +25,18 @@ export class LoginComponent {
   ];
 
 
-  selectedLanguage = this.languagesList[0];
+  selectedLanguage! : Language  ;
    direction!: 'rtl' | 'ltr';
 
-  constructor(private loginService: LoginService , private translateService: TranslateService,
+  constructor(
+    private loginService: LoginService , 
+    private translateService: TranslateService,
+    private titleService: Title ,
+
 ) { }
+  ngOnInit(): void {
+    this.LoadLanguage();
+  }
 
   // (optional) keep your console debug
   onSubmit() {
@@ -39,26 +47,38 @@ export class LoginComponent {
 
 
 
+  LoadLanguage() {
+    this.selectedLanguage = LanguageService.getLanguage() ?? this.languagesList[0] ;
+    this.direction = this.selectedLanguage.rtlFl === 1 ? 'rtl' : 'ltr';
+    this.translateService.setDefaultLang(this.selectedLanguage.langCode!);
+    this.translateService.use(this.selectedLanguage.langCode!);
+    this.setDirection(this.selectedLanguage.langCode!, this.direction);
+    this.translateService.get('app-name').subscribe((translatedTitle: string) => {
+      this.titleService.setTitle(translatedTitle);  
+    });
+
+  }
+
+
     changeLanguage(langCode: string) {
 
     if (this.selectedLanguage == this.languagesList[0]) {
       this.selectedLanguage = this.languagesList[1];
     } else {
       this.selectedLanguage = this.languagesList[0];
-
     }
 
     LanguageService.storeLanguage(this.selectedLanguage);
-    console.log("this.selectedLanguage.rtl " + this.selectedLanguage.rtlFl);
     this.direction = this.selectedLanguage.rtlFl === 1 ? 'rtl' : 'ltr';
     this.translateService.setDefaultLang(this.selectedLanguage.langCode!);
     this.translateService.use(this.selectedLanguage.langCode!);
     this.setDirection(this.selectedLanguage.langCode!, this.direction);
+    this.translateService.get('app-name').subscribe((translatedTitle: string) => {
+      this.titleService.setTitle(translatedTitle);  
+    });
+
     // this.changeCssFile(this.direction);
 
-    // this.translateService.get('label.userLogin').subscribe((translatedTitle: string) => {
-    //   this.titleService.setTitle(translatedTitle);  
-    // });
 
   }
 
