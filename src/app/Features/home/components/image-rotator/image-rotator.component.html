@@ -1,0 +1,36 @@
+<div class="rotator"
+     role="region"
+     aria-label="Image slideshow"
+     (mouseenter)="onEnter()"
+     (mouseleave)="onLeave()">
+
+  <!-- Image (clickable if href provided) -->
+  <a *ngIf="list[current]?.href; else imgOnly"
+     [href]="list[current]?.href"
+     class="img-wrap" target="_blank" rel="noopener">
+    <img [src]="list[current]?.src"
+         [alt]="list[current]?.alt || 'slide'"
+         loading="lazy" />
+  </a>
+  <ng-template #imgOnly>
+    <div class="img-wrap">
+      <img [src]="list[current]?.src"
+           [alt]="list[current]?.alt || 'slide'"
+           loading="lazy" />
+    </div>
+  </ng-template>
+
+  <!-- Arrows -->
+  <button *ngIf="showArrows && list.length > 1"
+          type="button" class="nav prev" aria-label="Previous" (click)="prev()">‹</button>
+  <button *ngIf="showArrows && list.length > 1"
+          type="button" class="nav next" aria-label="Next" (click)="next()">›</button>
+
+  <!-- Dots -->
+  <div *ngIf="showDots && list.length > 1" class="dots" role="tablist">
+    <button *ngFor="let _ of list; let i = index"
+            class="dot" [class.active]="i === current"
+            (click)="go(i)" [attr.aria-selected]="i === current"
+            [attr.aria-label]="'Go to slide ' + (i+1)"></button>
+  </div>
+</div>

@@ -53,7 +53,8 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
 import { MonthlyFinancialTransactionsComponent } from './Features/home/components/monthly-financial-transactions/monthly-financial-transactions.component';
 import { BaseChartDirective } from 'ng2-charts';
 import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';
-import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';              
+import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';
+import { ImageRotatorComponent } from './Features/home/components/image-rotator/image-rotator.component';              
 
 
 
@@ -92,7 +93,8 @@ import { DailyClassSummaryComponent } from './Features/home/components/daily-cla
     LoadingSpinnerComponent,
     MonthlyFinancialTransactionsComponent,
     CenterStatisticsComponent,
-    DailyClassSummaryComponent
+    DailyClassSummaryComponent,
+    ImageRotatorComponent
     
   ],
   imports: [

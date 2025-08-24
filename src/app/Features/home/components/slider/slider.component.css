@@ -1,0 +1,13 @@
+/* exact split on lg+ screens; stack on small screens */
+@media (min-width: 992px) {
+  .hero-text-30  { flex: 0 0 30%; max-width: 30%; }
+  .hero-media-70 { flex: 0 0 70%; max-width: 70%; }
+}
+
+/* ensure the rotator fills its column */
+.hero-media-70 app-image-rotator,
+.hero-media-70 .rotator {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
