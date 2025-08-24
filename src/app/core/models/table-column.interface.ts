@@ -14,6 +14,7 @@ export interface TableColumn {
   displayItemKey?: string;
   width?: string; 
   showWhen?: (row: any) => boolean;
+  showInTable? : boolean  ;
 
 
 }

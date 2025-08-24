@@ -71,8 +71,8 @@
           required
           [(ngModel)]="userName"
           #emailCtrl="ngModel" />
-        <small class="error" *ngIf="emailCtrl.invalid && (emailCtrl.touched || emailCtrl.dirty)">
-          Email is required
+        <small class="error-text" *ngIf="emailCtrl.invalid && (emailCtrl.touched || emailCtrl.dirty)">
+         {{'Validation.UsernameRequired'|translate}}
         </small>
       </div>
 
@@ -85,8 +85,8 @@
           required
           [(ngModel)]="password"
           #passCtrl="ngModel" />
-        <small class="error" *ngIf="passCtrl.invalid && (passCtrl.touched || passCtrl.dirty)">
-          Password is required
+        <small class="error-text"*ngIf="passCtrl.invalid && (passCtrl.touched || passCtrl.dirty)">
+         {{'Validation.PasswordRequired'|translate}}
         </small>
       </div>
 

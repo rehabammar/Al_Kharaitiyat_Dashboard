@@ -156,18 +156,19 @@ export class CoursesPageComponent {
       width: '220px'
     },
 
-    // {
-    //   labelKey: 'TeacherCourse.courseLocation',
-    //   field: 'courseTypeName',
-    //   fieldFK: 'courseTypeFk',
-    //   required: true,
-    //   isCombobox: true,
-    //   apiPath: "/lookupDetails/courseLocation",
-    //   displayItemKey: "lookupName",
-    //   primaryKey: "lookupDetailPk",
-    //   dataFactory: this.lookupDetailDataFactory,
-    //   width: '140px'
-    // },
+    {
+      labelKey: 'TeacherCourse.courseLocation',
+      field: 'courseTypeName',
+      fieldFK: 'courseTypeFk',
+      required: true,
+      isCombobox: true,
+      apiPath: "/lookupDetails/courseLocation",
+      displayItemKey: "lookupName",
+      primaryKey: "lookupDetailPk",
+      dataFactory: this.lookupDetailDataFactory,
+      width: '140px',
+      showInTable: false
+    },
     {
       labelKey: 'TeacherCourse.Status',
       field: 'courseStatusName',

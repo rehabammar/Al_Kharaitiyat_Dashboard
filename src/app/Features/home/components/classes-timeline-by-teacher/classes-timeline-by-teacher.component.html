@@ -1,5 +1,4 @@
-<!-- classes-timeline-by-teacher.component.html -->
- <app-custom-accordion title="Class.DailyClass">
+ <!-- <app-custom-accordion title="Class.DailyClass">
 <div class="teachers-grid">
   <div class="teacher-card" *ngFor="let g of groups">
     <div class="teacher-header">
@@ -27,4 +26,43 @@
     </ol>
   </div>
 </div>
+</app-custom-accordion> -->
+
+<app-custom-accordion title="Class.DailyClass">
+  <div class="schedule" dir="rtl">
+    <!-- header -->
+    <div class="header sticky">
+      <div class="left-cell"></div>
+      <div class="right-scroll">
+        <div class="time-row" [style.gridTemplateColumns]="'repeat(' + cols + ', 1fr)'">
+          <div class="hour" *ngFor="let h of hourLabels" [style.gridColumn]="h.col">
+            {{ h.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- rows -->
+    <div class="body">
+      <div class="row" *ngFor="let r of rows">
+        <div class="left-cell teacher">
+          <span class="teacher-name">{{ r.teacherLabel }}</span>
+        </div>
+
+        <div class="right-scroll">
+          <div class="grid" [style.gridTemplateColumns]="'repeat(' + cols + ', 1fr)'">
+            <div class="class-block"
+                 *ngFor="let b of r.blocks"
+                 [style.gridColumn]="b.col">
+              <div class="title">{{ b.title }}</div>
+              <div class="time">{{ b.time }}</div>
+              <span [class]="b.statusClass">{{ b.status }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">…</div>
+  </div>
 </app-custom-accordion>

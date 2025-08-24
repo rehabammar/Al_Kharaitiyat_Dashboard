@@ -1,15 +1,132 @@
-// classes-timeline-by-teacher.component.ts
+// // classes-timeline-by-teacher.component.ts
+// import { Component, OnDestroy, OnInit } from '@angular/core';
+// import { Subscription, of } from 'rxjs';
+// import { catchError } from 'rxjs/operators';
+// import { HomeService } from '../../services/home.servics';
+// import { Class } from '../../../courses/models/class.model';
+
+// type TeacherGroup = {
+//   teacherId: number | null;
+//   teacherLabel: string;
+//   items: Class[];
+// };
+
+// @Component({
+//   selector: 'app-classes-timeline-by-teacher',
+//   standalone: false,
+//   templateUrl: './classes-timeline-by-teacher.component.html',
+//   styleUrls: ['./classes-timeline-by-teacher.component.css']
+// })
+// export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
+//   groups: TeacherGroup[] = [];
+//   loading = false;
+//   private sub?: Subscription;
+
+//   constructor(private homeService: HomeService) {}
+
+//   ngOnInit(): void {
+//     this.loading = true;
+//     this.sub = this.homeService.getDailyClasses()
+//       .pipe(
+//         catchError(err => {
+//           console.error('getDailyClasses error:', err);
+//           this.groups = [];
+//           this.loading = false;
+//           return of([]); // empty list
+//         })
+//       )
+//       .subscribe(list => {
+//         const items = list ?? [];
+//         this.buildGroups(items);
+//         this.loading = false;
+//       });
+//   }
+
+//   ngOnDestroy(): void {
+//     this.sub?.unsubscribe();
+//   }
+
+//   /** Map API object -> ClassItem the timeline understands */
+//   // private mapToItem = (c: any): Class => ({
+//   //   classPk: c?.classPk,
+//   //   classTitle: c?.classTitle ?? null,
+//   //   // teacherCourseName: c?.teacherName ?? null,          // use if API provides it
+//   //   teacherFullName: c?.teacherFullName ?? null,
+//   //   coursesTeacherFk: c?.coursesTeacherFk ?? null,
+//   //   statusName: c?.statusName ?? null,
+//   //   expectedStartTime: c?.expectedStartTime ?? null,
+//   //   expectedEndTime: c?.expectedEndTime ?? null
+//   // });
+
+//   /** Build teacher groups and sort items by expectedStartTime */
+//   private buildGroups(items: Class[]): void {
+//     const map = new Map<number | null, TeacherGroup>();
+
+//     for (const c of items ?? []) {
+//       const id = c.coursesTeacherFk ?? null;
+//       const label =
+//         (c as any).teacherFullName ??
+//         c.teacherCourseName ??
+//         (id !== null ? `معلم #${id}` : 'غير مخصّص');
+
+//       if (!map.has(id)) {
+//         map.set(id, { teacherId: id, teacherLabel: String(label), items: [] });
+//       }
+//       map.get(id)!.items.push(c);
+//     }
+
+//     // Sort each teacher’s classes by start time
+//     for (const g of map.values()) {
+//       g.items.sort((a, b) =>
+//         new Date(a.expectedStartTime || 0).getTime() -
+//         new Date(b.expectedStartTime || 0).getTime()
+//       );
+//     }
+
+//     // Sort teachers alphabetically (Arabic)
+//     this.groups = Array.from(map.values()).sort((a, b) =>
+//       a.teacherLabel.localeCompare(b.teacherLabel, 'ar')
+//     );
+//   }
+
+//   formatTime(dt?: string | null): string {
+//     if (!dt) return '—';
+//     const d = new Date(dt);
+//     return new Intl.DateTimeFormat('ar-EG', {
+//       hour: '2-digit', minute: '2-digit'
+//     }).format(d);
+//   }
+
+//   statusClass(s?: string | null): string {
+//     switch (s?.trim()) {
+//       case 'مجدولة': return 'badge scheduled';
+//       case 'جارية':  return 'badge running';
+//       case 'انتهت':  return 'badge done';
+//       default:        return 'badge';
+//     }
+//   }
+// }
+
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HomeService } from '../../services/home.servics';
-import { Class } from '../../../courses/models/class.model';
 
-type TeacherGroup = {
+type ApiClass = any; // use your real type if you have it
+type Block = {
+  col: string;             // CSS grid-column: "start / end"
+  title: string;
+  time: string;
+  status: string;
+  statusClass: string;
+};
+type TeacherRow = {
   teacherId: number | null;
   teacherLabel: string;
-  items: Class[];
+  blocks: Block[];
 };
+type HourLabel = { col: string; label: string };
 
 @Component({
   selector: 'app-classes-timeline-by-teacher',
@@ -18,90 +135,136 @@ type TeacherGroup = {
   styleUrls: ['./classes-timeline-by-teacher.component.css']
 })
 export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
-  groups: TeacherGroup[] = [];
-  loading = false;
   private sub?: Subscription;
+
+  // ---- grid config ----
+  START_HOUR = 7;       // 07:00
+  END_HOUR   = 22;      // 10:00 PM
+  SLOT_MIN   = 10;      // slot granularity (10-minute steps like your data)
+
+  cols = 0;             // total grid columns
+  hourLabels: HourLabel[] = [];
+  rows: TeacherRow[] = [];
+  loading = false;
 
   constructor(private homeService: HomeService) {}
 
   ngOnInit(): void {
+    this.buildHeader();
     this.loading = true;
     this.sub = this.homeService.getDailyClasses()
       .pipe(
         catchError(err => {
-          console.error('getDailyClasses error:', err);
-          this.groups = [];
-          this.loading = false;
-          return of([]); // empty list
+          console.error('getDailyClasses error', err);
+          return of([] as ApiClass[]);
         })
       )
       .subscribe(list => {
-        const items = list ?? [];
-        this.buildGroups(items);
+        this.rows = this.buildRows(list ?? []);
         this.loading = false;
       });
   }
 
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
+  ngOnDestroy(): void { this.sub?.unsubscribe(); }
+
+  // ---------- helpers ----------
+  private buildHeader(): void {
+    this.cols = ((this.END_HOUR - this.START_HOUR) * 60) / this.SLOT_MIN;
+    this.hourLabels = [];
+    for (let h = this.START_HOUR; h < this.END_HOUR; h++) {
+      const startSlot = ((h - this.START_HOUR) * 60) / this.SLOT_MIN;
+      const endSlot   = ((h + 1 - this.START_HOUR) * 60) / this.SLOT_MIN;
+      const label = this.formatHour(h);
+      this.hourLabels.push({ col: `${startSlot + 1} / ${endSlot + 1}`, label });
+    }
   }
 
-  /** Map API object -> ClassItem the timeline understands */
-  // private mapToItem = (c: any): Class => ({
-  //   classPk: c?.classPk,
-  //   classTitle: c?.classTitle ?? null,
-  //   // teacherCourseName: c?.teacherName ?? null,          // use if API provides it
-  //   teacherFullName: c?.teacherFullName ?? null,
-  //   coursesTeacherFk: c?.coursesTeacherFk ?? null,
-  //   statusName: c?.statusName ?? null,
-  //   expectedStartTime: c?.expectedStartTime ?? null,
-  //   expectedEndTime: c?.expectedEndTime ?? null
-  // });
+  private buildRows(list: ApiClass[]): TeacherRow[] {
+    const map = new Map<number | null, TeacherRow>();
 
-  /** Build teacher groups and sort items by expectedStartTime */
-  private buildGroups(items: Class[]): void {
-    const map = new Map<number | null, TeacherGroup>();
-
-    for (const c of items ?? []) {
-      const id = c.coursesTeacherFk ?? null;
+    for (const c of list) {
+      // ID & label
+      const id = (c?.coursesTeacherFk ?? null) as number | null;
       const label =
-        (c as any).teacherFullName ??
-        c.teacherCourseName ??
+        c?.teacherFullName ??
+        c?.teacherCourseName ??
         (id !== null ? `معلم #${id}` : 'غير مخصّص');
 
-      if (!map.has(id)) {
-        map.set(id, { teacherId: id, teacherLabel: String(label), items: [] });
-      }
-      map.get(id)!.items.push(c);
+      if (!map.has(id)) map.set(id, { teacherId: id, teacherLabel: String(label), blocks: [] });
+
+      // Build a block for the row
+      const start = this.toDate(c?.expectedStartTime);
+      const end   = this.toDate(c?.expectedEndTime) ?? start;
+      const { colStart, colEnd } = this.toGridSpan(start, end);
+
+      const block: Block = {
+        col: `${colStart} / ${colEnd}`,
+        title: c?.classTitle || c?.teacherCourseName || '—',
+        time: this.formatTimeRange(start, end),
+        status: c?.statusName || '—',
+        statusClass: this.statusClass(c?.statusName)
+      };
+      map.get(id)!.blocks.push(block);
     }
 
-    // Sort each teacher’s classes by start time
-    for (const g of map.values()) {
-      g.items.sort((a, b) =>
-        new Date(a.expectedStartTime || 0).getTime() -
-        new Date(b.expectedStartTime || 0).getTime()
-      );
+    // Optional: sort blocks in each row by start column
+    for (const row of map.values()) {
+      row.blocks.sort((a, b) => {
+        const sA = Number(a.col.split('/')[0].trim());
+        const sB = Number(b.col.split('/')[0].trim());
+        return sA - sB;
+      });
     }
 
     // Sort teachers alphabetically (Arabic)
-    this.groups = Array.from(map.values()).sort((a, b) =>
+    return Array.from(map.values()).sort((a, b) =>
       a.teacherLabel.localeCompare(b.teacherLabel, 'ar')
     );
   }
 
-  formatTime(dt?: string | null): string {
-    if (!dt) return '—';
-    const d = new Date(dt);
-    return new Intl.DateTimeFormat('ar-EG', {
-      hour: '2-digit', minute: '2-digit'
-    }).format(d);
+  private toDate(x: any): Date {
+    return x ? new Date(x) : new Date();
   }
 
-  statusClass(s?: string | null): string {
-    switch (s?.trim()) {
+  private toGridSpan(start: Date, end: Date) {
+    // clamp to schedule bounds
+    const clamp = (d: Date) => {
+      const cl = new Date(d);
+      const s = new Date(d); s.setHours(this.START_HOUR, 0, 0, 0);
+      const e = new Date(d); e.setHours(this.END_HOUR, 0, 0, 0);
+      if (cl < s) cl.setTime(s.getTime());
+      if (cl > e) cl.setTime(e.getTime());
+      return cl;
+    };
+    const s = clamp(start);
+    const e = clamp(end);
+
+    const minutesFromStart = (d: Date) => (d.getHours() - this.START_HOUR) * 60 + d.getMinutes();
+    const sMin = Math.max(0, minutesFromStart(s));
+    const eMin = Math.max(sMin + this.SLOT_MIN, minutesFromStart(e)); // min 1 slot
+
+    const colStart = Math.floor(sMin / this.SLOT_MIN) + 1;
+    const colEnd   = Math.ceil(eMin / this.SLOT_MIN) + 1;
+
+    return { colStart, colEnd };
+  }
+
+  private formatHour(h: number): string {
+    const d = new Date(); d.setHours(h, 0, 0, 0);
+    return new Intl.DateTimeFormat('ar-EG', { hour: '2-digit' }).format(d);
+  }
+
+  private formatTimeRange(s: Date, e: Date): string {
+    const f = (d: Date) => new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(d);
+    return `${f(s)} – ${f(e)}`;
+  }
+
+  private statusClass(s?: string | null): string {
+    switch ((s || '').trim()) {
       case 'مجدولة': return 'badge scheduled';
       case 'جارية':  return 'badge running';
       case 'انتهت':  return 'badge done';
+      case 'ملغاة':  return 'badge canceled';
       default:        return 'badge';
     }
   }

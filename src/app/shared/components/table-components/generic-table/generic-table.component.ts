@@ -110,7 +110,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
 ngOnInit(): void {
   this.checkPrivileges();
   this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey);
-
+  this.columns = this.columns.filter(c => (c.showInTable ?? true)) ;
   this.displayedColumns = this.columns.map(col => col.field);
 
   // subscribe ONCE (avoid re-subscribing inside loadData)
