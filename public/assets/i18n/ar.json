@@ -64,6 +64,8 @@
     "Class.RemindedMeBefore": "تذكيري قبل (دقائق)",
     "Class.ActualStartTime": "بداية فعلية",
     "Class.ActualEndTime": "نهاية فعلية",
+    "Class.Finished": "المنتهية",
+    "Class.Remaining": "المتبقية",
     "Class.Notes": "ملاحظات",
     "Class.LocationStartLat": "خط عرض البداية",
     "Class.LocationStartLong": "خط طول البداية",
@@ -160,10 +162,20 @@
     "Reports.Types.Payments": "المدفوعات",
     "Reports.Types.TeacherCourses": "دورات المعلم",
     "Footer.Copyright": "حقوق النشر © {{year}} جميع الحقوق محفوظة",
-    "Home.CenterTeachingExperts": "خبراء التعليم في المركز"
+    "Home.CenterTeachingExperts": "خبراء التعليم في المركز",
+    "Home.CenterStats": "إحصائيات المركز",
+    "Charts": {
+        "CollectedByMonth": "المبالغ المُحصّلة حسب الشهر",
+        "Month": "الشهر",
+        "CollectedAmount": "المبلغ المُحصّل",
+        "DailyClassStatus": "حالة الحصص اليوم"
 
+    },
+    "Months": {
+        "Full": ["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"],
+        "Short": ["ينا","فبر","مار","أبر","ماي","يون","يول","أغس","سبت","أكت","نوف","ديس"]
+    }
 
-    
 
 
 

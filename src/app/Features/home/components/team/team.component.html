@@ -11,20 +11,23 @@
     <div class="team-active">
       <div class="single-cat text-center" *ngFor="let u of teachersList">
         <div class="cat-icon">
-          <img
-            [src]="photoUrl(u)"
-            [alt]="u.fullName"
-            (error)="fallbackImg($event)"
-          />
+          <img [src]="photoUrl(u)" [alt]="u.fullName" (error)="fallbackImg($event)" />
         </div>
         <div class="cat-cap">
-          <h5>
+          <h4>
             <a [routerLink]="['/teachers', u.userPk]">{{ u.fullName }}</a>
-          </h5>
+          </h4>
           <p>{{ u.specialization || u.jobTitle || ('Users.NoBio' | translate : {} : '—') }}</p>
+          <div class="stars" [attr.aria-label]="safeIntRating(u) + ' / 5'">
+            <ng-container *ngFor="let _ of five; let i = index">
+              <span class="star" [class.filled]="i < safeIntRating(u)">★</span>
+            </ng-container>
+            <!-- <span class="stars__text">{{ safeIntRating(u) }}/5</span> -->
+          </div>
+
         </div>
+        <br>
       </div>
     </div>
   </div>
 </section>
-

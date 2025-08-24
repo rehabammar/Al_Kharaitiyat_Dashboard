@@ -161,7 +161,15 @@
     "Reports.Types.TeacherCourses": "Courses",
     "Footer.Copyright": "Copyright © {{year}} All rights reserved",
     "Home.CenterTeachingExperts": "Teaching Experts at the Center",
-
-  
+    "Home.CenterStats": "Center Statistics",
+    "Charts": {
+        "CollectedByMonth": "Collected Amount by Month",
+        "Month": "Month",
+        "CollectedAmount": "Collected Amount"
+    },
+    "Months": {
+        "Full": ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        "Short": ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    }
 
 }

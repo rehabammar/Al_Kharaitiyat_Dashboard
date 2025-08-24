@@ -117,9 +117,9 @@ static buildCrudEndpoints = (basePath: string) => ({
 
   static getTeachersList = () => api('/users/search-teachers');
  
+  static getMonthlyfinancialTransactions =()=>api('/financialTransactions/monthly-academic-payment-dashboard');
   
-  
-
+  static getDailyClassSummary =()=>api('/classes/all-classes-today-for-dashboard');
 
 
 }

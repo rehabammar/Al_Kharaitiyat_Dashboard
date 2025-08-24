@@ -32,6 +32,18 @@
   font-style: normal;
 }
 
+/* default (EN/LTR) */
+/* html {
+  --font-base: "Inter", "Segoe UI", Arial, sans-serif;
+  --font-bold: "Inter", "Segoe UI", Arial, sans-serif;
+} */
+
+/* AR/RTL */
+/* html[lang="ar"] {
+  --font-base: "cairoFont", "Noto Kufi Arabic", Tahoma, sans-serif;
+  --font-bold: "cairoBoldFont", "Cairo", "Noto Kufi Arabic", Tahoma, sans-serif;
+} */
+
 
 
 .white-bg {
@@ -174,16 +186,18 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: "Josefin Sans", sans-serif;
+    font-family: "cairoBoldFont";
     color: #4255A4;
     margin-top: 0px;
     font-style: normal;
     font-weight: 400;
-    text-transform: normal
+    text-transform: normal ;
+    text-align: center;
+    
 }
 
 p {
-    font-family: "Mulish", sans-serif;
+    font-family: "cairoBoldFont";
     color: #10285d;
     font-size: 16px;
     line-height: 30px;
@@ -4036,7 +4050,9 @@ hr {
 .team-area .single-cat .cat-icon img {
     margin: 0 auto;
     margin-bottom: 30px;
-    width: 20%;
+    width: 15%;
+    border-radius: 50%;
+    box-shadow: 0px 16px 6px 0px rgba(103, 133, 255, 0.08);
 }
 
 .team-area .single-cat .cat-cap span {

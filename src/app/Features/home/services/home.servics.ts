@@ -6,6 +6,8 @@ import { User } from '../../auth/models/user.model';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { ApiResponse } from '../../../core/models/api-response.interface';
 import { ApiPage } from '../../../core/models/api.page.interface';
+import { MonthlyCollection } from '../models/monthly-collection.model';
+import { DailyClassSummary } from '../models/daily-class-summary.model';
 
 
 
@@ -24,6 +26,26 @@ getTeachersList(): Observable<{ items: User[]; total: number }> {
       total: res.data.totalElements
     })));
 }
+
+
+
+getMonthlyfinancialTransactions(): Observable<MonthlyCollection[]> {
+  return this.apiService.post<MonthlyCollection[]>(ApiEndpoints.getMonthlyfinancialTransactions(), {})
+    .pipe(map(res => res.data));
+}
+
+
+getDailyClassSummary(): Observable<DailyClassSummary> {
+  return this.apiService.post<DailyClassSummary>(ApiEndpoints.getDailyClassSummary(), {})
+    .pipe(
+      tap(res => console.log('Daily summary RAW response:', res.data)),   // logs the whole API response
+      map(res => res.data));
+
+
+}
+
+
+
 
 
 

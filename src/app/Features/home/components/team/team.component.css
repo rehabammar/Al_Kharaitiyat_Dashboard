@@ -1,0 +1,72 @@
+:root {
+  --star-size: 10px;
+  --star-gap: 0.15ch;
+  --star-empty: #d9d9d9;
+  --star-fill: #f59e0b;
+  --star-text: #666;
+}
+
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  line-height: 1;
+}
+
+.star {
+  font-size: 20px !important;
+  letter-spacing: var(--star-gap);
+  color:#d9d9d9 !important;
+  user-select: none;
+}
+
+.star.filled {
+  color: #f59e0b !important;
+}
+
+.stars__text {
+  font-size: 12px;
+  color: var(--star-text);
+}
+
+
+/* horizontal list with scroll */
+.team-active {
+  --card-w: clamp(300px, 26vw, 280px);
+
+  display: grid;
+  grid-auto-flow: column;              /* lay items left→right */
+  grid-auto-columns: var(--card-w);    /* each card width */
+  gap: 16px;
+
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 4px 6px 10px;
+
+  scroll-snap-type: x proximity;       /* nice snapping */
+  -webkit-overflow-scrolling: touch;   /* smooth on iOS */
+
+  /* scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: #c7c7c7 transparent;
+}
+.team-active::-webkit-scrollbar { height: 8px; }
+.team-active::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 999px;
+}
+
+/* each card snaps into place */
+.single-cat {
+  scroll-snap-align: start;
+  flex: 0 0 auto;                      /* harmless w/ grid, helps if you switch to flex */
+}
+
+.single-cat .cat-icon img {
+    margin: 0 auto;
+    margin-bottom: 30px;
+    width: 50%;
+    border-radius: 50%;
+    box-shadow: 0px 16px 6px 0px rgba(103, 133, 255, 0.08);
+}
+

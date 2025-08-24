@@ -47,10 +47,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UsersComponent } from './Features/users/components/users.component';
 import { SystemLookupsComponent } from './Features/system-lookups/components/system-lookups.component';
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
-import { AuthInterceptor } from '../auth.interceptor';
+import { AuthInterceptor } from './auth.interceptor';
 import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-// import { NgxMatDatetimePickerModule, NgxMatTimepickerModule, NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
+import { MonthlyFinancialTransactionsComponent } from './Features/home/components/monthly-financial-transactions/monthly-financial-transactions.component';
+import { BaseChartDirective } from 'ng2-charts';
+import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';
+import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';              
 
 
 
@@ -86,7 +89,10 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
     SystemLookupsComponent,
     FinancialTransactionsPageComponent,
     ReportsFormComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    MonthlyFinancialTransactionsComponent,
+    CenterStatisticsComponent,
+    DailyClassSummaryComponent
     
   ],
   imports: [
@@ -119,7 +125,7 @@ import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinne
   //  NgxMatDatetimePickerModule,
     // NgxMatTimepickerModule,
     // NgxMatNativeDateModule
-
+   BaseChartDirective
   ],
   providers: [
   { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
