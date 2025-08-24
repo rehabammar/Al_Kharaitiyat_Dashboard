@@ -566,6 +566,14 @@ pre code {
   margin-left: auto;
 }
 
+.container2 {
+  width: 90%;
+  padding-right: 2.5px;
+  padding-left: 2.5px; 
+  margin-right: auto;
+  margin-left: auto;
+}
+
 @media (min-width: 576px) {
   .container {
     max-width: 540px;

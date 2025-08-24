@@ -22,9 +22,9 @@
 
   <!-- Arrows -->
   <button *ngIf="showArrows && list.length > 1"
-          type="button" class="nav prev" aria-label="Previous" (click)="prev()">‹</button>
+          type="button" class="nav next " aria-label="Previous" (click)="prev()">‹</button>
   <button *ngIf="showArrows && list.length > 1"
-          type="button" class="nav next" aria-label="Next" (click)="next()">›</button>
+          type="button" class="nav prev" aria-label="Next" (click)="next()">›</button>
 
   <!-- Dots -->
   <div *ngIf="showDots && list.length > 1" class="dots" role="tablist">
