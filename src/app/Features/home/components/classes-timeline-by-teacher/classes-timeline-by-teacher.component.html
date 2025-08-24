@@ -1,0 +1,30 @@
+<!-- classes-timeline-by-teacher.component.html -->
+ <app-custom-accordion title="Class.DailyClass">
+<div class="teachers-grid">
+  <div class="teacher-card" *ngFor="let g of groups">
+    <div class="teacher-header">
+      <h4 class="teacher-name">{{ g.teacherLabel }}</h4>
+      <span class="count">{{ g.items.length }} حصة</span>
+    </div>
+
+    <ol class="timeline">
+      <li class="entry" *ngFor="let c of g.items">
+        <div class="dot"></div>
+        <div class="content">
+          <div class="row1">
+            <span class="time">
+              {{ formatTime(c.expectedStartTime) }} – {{ formatTime(c.expectedEndTime) }}
+            </span>
+            <span class="{{ statusClass(c.statusName) }}">
+              {{ c.statusName || '—' }}
+            </span>
+          </div>
+          <div class="row2">
+            <span class="title">{{ c.classTitle || c.teacherCourseName || '—' }}</span>
+          </div>
+        </div>
+      </li>
+    </ol>
+  </div>
+</div>
+</app-custom-accordion>

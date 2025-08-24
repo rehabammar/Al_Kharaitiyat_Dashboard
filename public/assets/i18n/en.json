@@ -65,6 +65,9 @@
     "Class.RemindedMeBefore": "Remind Me Before (min)",
     "Class.ActualStartTime": "Actual Start Time",
     "Class.ActualEndTime": "Actual End Time",
+    "Class.Finished": "Finished",
+    "Class.Remaining": "Remaining",
+    "Class.DailyClass": "Daily Classes",
     "Class.Notes": "Notes",
     "Class.LocationStartLat": "Start Latitude",
     "Class.LocationStartLong": "Start Longitude",
@@ -166,7 +169,9 @@
     "Charts": {
         "CollectedByMonth": "Collected Amount by Month",
         "Month": "Month",
-        "CollectedAmount": "Collected Amount"
+        "CollectedAmount": "Collected Amount",
+        "DailyClassStatus": "Daily Class Status"
+
     },
     "Months": {
         "Full": ["January","February","March","April","May","June","July","August","September","October","November","December"],

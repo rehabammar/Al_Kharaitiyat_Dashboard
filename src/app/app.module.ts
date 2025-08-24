@@ -54,7 +54,8 @@ import { MonthlyFinancialTransactionsComponent } from './Features/home/component
 import { BaseChartDirective } from 'ng2-charts';
 import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';
 import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';
-import { ImageRotatorComponent } from './Features/home/components/image-rotator/image-rotator.component';              
+import { ImageRotatorComponent } from './Features/home/components/image-rotator/image-rotator.component';
+import { ClassesTimelineByTeacherComponent } from './Features/home/components/classes-timeline-by-teacher/classes-timeline-by-teacher.component';              
 
 
 
@@ -94,7 +95,8 @@ import { ImageRotatorComponent } from './Features/home/components/image-rotator/
     MonthlyFinancialTransactionsComponent,
     CenterStatisticsComponent,
     DailyClassSummaryComponent,
-    ImageRotatorComponent
+    ImageRotatorComponent,
+    ClassesTimelineByTeacherComponent
     
   ],
   imports: [
