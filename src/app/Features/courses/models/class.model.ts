@@ -46,6 +46,7 @@ export class Class{
 
   notes?: string | null;
   classCostForStudent?: number | null;
+  teacherFullName? : string ;
 
   constructor(init?: Partial<Class>) {
     Object.assign(this, init);

@@ -36,7 +36,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(list => {
-        const items = (list ?? []).map(this.mapToItem);
+        const items = list ?? [];
         this.buildGroups(items);
         this.loading = false;
       });
@@ -47,16 +47,16 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   }
 
   /** Map API object -> ClassItem the timeline understands */
-  private mapToItem = (c: any): Class => ({
-    classPk: c?.classPk,
-    classTitle: c?.classTitle ?? null,
-    // teacherCourseName: c?.teacherName ?? null,          // use if API provides it
-    teacherCourseName: c?.teacherCourseName ?? null,
-    coursesTeacherFk: c?.coursesTeacherFk ?? null,
-    statusName: c?.statusName ?? null,
-    expectedStartTime: c?.expectedStartTime ?? null,
-    expectedEndTime: c?.expectedEndTime ?? null
-  });
+  // private mapToItem = (c: any): Class => ({
+  //   classPk: c?.classPk,
+  //   classTitle: c?.classTitle ?? null,
+  //   // teacherCourseName: c?.teacherName ?? null,          // use if API provides it
+  //   teacherFullName: c?.teacherFullName ?? null,
+  //   coursesTeacherFk: c?.coursesTeacherFk ?? null,
+  //   statusName: c?.statusName ?? null,
+  //   expectedStartTime: c?.expectedStartTime ?? null,
+  //   expectedEndTime: c?.expectedEndTime ?? null
+  // });
 
   /** Build teacher groups and sort items by expectedStartTime */
   private buildGroups(items: Class[]): void {
@@ -65,7 +65,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
     for (const c of items ?? []) {
       const id = c.coursesTeacherFk ?? null;
       const label =
-        (c as any).teacherName ??
+        (c as any).teacherFullName ??
         c.teacherCourseName ??
         (id !== null ? `معلم #${id}` : 'غير مخصّص');
 

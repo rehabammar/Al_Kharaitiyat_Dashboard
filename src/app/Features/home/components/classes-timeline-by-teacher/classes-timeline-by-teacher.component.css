@@ -82,3 +82,8 @@
   margin-top: 2px;
   display: inline-block;
 }
+
+.teacher-card .timeline::before,
+.teacher-card .timeline::after {
+  content: none !important;
+}
