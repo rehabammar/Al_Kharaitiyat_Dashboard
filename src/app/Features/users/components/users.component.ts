@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { User } from '../../auth/models/user.model';
 import { TableColumn } from '../../../core/models/table-column.interface';
 import { LookupDetail } from '../../../core/models/lookup-detail.model';
 import { AppComponent } from '../../../app.component';
 import { AppConstants } from '../../../core/constants/app_constants';
+import { GenericTableComponent } from '../../../shared/components/table-components/generic-table/generic-table.component';
 
 @Component({
   selector: 'app-users',
@@ -12,6 +13,9 @@ import { AppConstants } from '../../../core/constants/app_constants';
   styleUrl: './users.component.css'
 })
 export class UsersComponent {
+
+@ViewChild('usersTable') usersTable!: GenericTableComponent<User>;
+
 userDataFactory = () => new User();
 
 lookupDetailDataFactory = () => ({ lookupDetailPk: null, lookupName: null });
@@ -96,18 +100,18 @@ userColumns: TableColumn[] = [
   // },
 
   // Comboboxes: Gender / Nationality / UserType
-  // {
-  //   labelKey: 'User.Gender',
-  //   field: 'genderName',
-  //   fieldFK: 'genderFk',
-  //   isCombobox: true,
-  //   required: true,
-  //   apiPath: '/lookupDetails/gender',         // عدّلي لو مختلف
-  //   displayItemKey: 'lookupName',
-  //   primaryKey: 'lookupDetailPk',
-  //   dataFactory: this.lookupDetailDataFactory,
-  //   width: '140px'
-  // },
+  {
+    labelKey: 'User.Gender',
+    field: 'genderName',
+    fieldFK: 'genderFk',
+    isCombobox: true,
+    required: true,
+    apiPath: '/lookupDetails/gender',         // عدّلي لو مختلف
+    displayItemKey: 'lookupName',
+    primaryKey: 'lookupDetailPk',
+    dataFactory: this.lookupDetailDataFactory,
+    width: '140px'
+  },
   {
     labelKey: 'User.UserType',
     field: 'userTypeName',
@@ -235,19 +239,34 @@ onUserSelected = (row: User) => {
   this.selectedUser = row;
 };
 
-onUserFieldChanged = (e: { field: string; value: any }) => {
-  if (!this.selectedUser) return;
-  (this.selectedUser as any)[e.field] = e.value;
-};
 
-// بعد الحفظ من الفورم: حدّث صف الجدول + selectedUser
-onUserSaved = (saved: User) => {
-  // لو عندك دالة patchRowById في الجدول:
-  // this.table.patchRowById(saved.userPk, saved);
+  onselectedUserRowChanged(e: { field: string; value: any }) {
+    if (!this.selectedUser) return;
+    this.selectedUser = {
+      ...this.selectedUser,
+      [e.field]: e.value
+    };
+    const id = this.selectedUser.userPk;
+    this.usersTable.patchRowById(id, { [e.field]: e.value } as Partial<User>);
+  }
 
-  // أو حدّث الـ selectedUser مباشرة:
-  this.selectedUser = { ...(this.selectedUser ?? {}), ...saved };
-};
+  onUserSaved(row: User) {
+    this.usersTable.patchRowById(row.userPk, row);
+  }
+
+  onNewUserRow(row: User) {
+    this.selectedUser = row;
+    this.usersTable.prependRow(row);
+  }
+
+  onUserRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
+    if (e.type === 'new') {
+      this.usersTable.removeRow(e.row);
+    } else {
+      this.usersTable.removeRow(e.id);
+    }
+    this.selectedUser = null;
+  }
 
 
 

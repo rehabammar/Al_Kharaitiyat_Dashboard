@@ -159,7 +159,9 @@
     "Reports.Types.Attendance": "الحضور",
     "Reports.Types.Payments": "المدفوعات",
     "Reports.Types.TeacherCourses": "دورات المعلم",
-    "Footer.Copyright": "حقوق النشر © {{year}} جميع الحقوق محفوظة"
+    "Footer.Copyright": "حقوق النشر © {{year}} جميع الحقوق محفوظة",
+    "Home.CenterTeachingExperts": "خبراء التعليم في المركز"
+
 
     
 

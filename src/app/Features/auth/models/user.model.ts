@@ -40,6 +40,7 @@ export class User {
   stageFkDesc?: string;
   levelFk?: number;
   levelFkDesc?: string;
+  profileUrl?: string ;
 
   constructor(init?: Partial<User>) {
     Object.assign(this, init);

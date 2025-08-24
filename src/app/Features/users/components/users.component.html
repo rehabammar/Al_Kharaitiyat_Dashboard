@@ -12,6 +12,7 @@
 
 <app-custom-accordion title="User.Users">
   <app-generic-table
+    #usersTable
     [screenId]="'users'"
     [primaryKey]="'userPk'"
     [columns]="userColumns"
@@ -31,7 +32,9 @@
     [primaryKey]="'userPk'"
     [dataFactory]="userDataFactory"
     [apiPath]="'users'"
-    (rowChanged)="onUserFieldChanged($event)"
+    (rowChanged)="onselectedUserRowChanged($event)"
+    (newRowCreated)="onNewUserRow($event)"
+    (rowDeleted)="onUserRowDeleted($event)"
     (rowSaved)="onUserSaved($event)">
   </app-generic-form>
 </app-custom-accordion>

@@ -159,7 +159,9 @@
     "Reports.Types.Attendance": "Attendance",
     "Reports.Types.Payments": "Payments",
     "Reports.Types.TeacherCourses": "Courses",
-    "Footer.Copyright": "Copyright © {{year}} All rights reserved"
+    "Footer.Copyright": "Copyright © {{year}} All rights reserved",
+    "Home.CenterTeachingExperts": "Teaching Experts at the Center",
+
   
 
 }

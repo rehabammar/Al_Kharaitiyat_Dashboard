@@ -4035,7 +4035,8 @@ hr {
 
 .team-area .single-cat .cat-icon img {
     margin: 0 auto;
-    margin-bottom: 30px
+    margin-bottom: 30px;
+    width: 20%;
 }
 
 .team-area .single-cat .cat-cap span {
