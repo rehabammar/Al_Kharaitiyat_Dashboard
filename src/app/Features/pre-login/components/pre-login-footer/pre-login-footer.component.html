@@ -1,0 +1,88 @@
+<footer>
+  <div class="footer-wrappper footer-bg">
+    <!-- Footer Start-->
+    <div class="footer-area footer-padding">
+      <div class="container">
+        <div class="row justify-content-between">
+          
+          <!-- Logo + About -->
+          <div class="col-xl-4 col-lg-5 col-md-4 col-sm-6">
+            <div class="single-footer-caption mb-50">
+              <div class="single-footer-caption mb-30">
+                <!-- logo -->
+                <div class="footer-logo mb-25">
+                  <a href="/">
+                    <img src="{{organization.logoUrl}}" alt="{{organization.organizationNameEn}}" style="max-height:60px;" />
+                  </a>
+                </div>
+                <div class="footer-tittle">
+                  <div class="footer-pera">
+                    <p>{{organization.organizationNameEn}} <br/> {{organization.organizationNameAr}}</p>
+                    <p>{{organization.address}}</p>
+                  </div>
+                </div>
+                <!-- social -->
+                <div class="footer-social">
+                  <a [href]="'mailto:' + organization.email"><i class="fa fa-envelope"></i></a>
+                  <a [href]="'tel:' + organization.phoneNumber"><i class="fa fa-phone"></i></a>
+                  <a [href]="'https://wa.me/' + organization.whatsappNumber"><i class="fab fa-whatsapp"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+            <div class="single-footer-caption mb-50">
+              <div class="footer-tittle">
+                <h4>Contact</h4>
+                <ul>
+                  <li>Email: <a [href]="'mailto:' + organization.email">{{organization.email}}</a></li>
+                  <li>Phone: <a [href]="'tel:' + organization.phoneNumber">{{organization.phoneNumber}}</a></li>
+                  <li>WhatsApp: <a [href]="'https://wa.me/' + organization.whatsappNumber">{{organization.whatsappNumber}}</a></li>
+                  <li>License: {{organization.licenseNumber}}</li>
+                  <li>Address: {{organization.address}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company Info -->
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+            <div class="single-footer-caption mb-50">
+              <div class="footer-tittle">
+                <h4>About Us</h4>
+                <ul>
+                  <li>Joining Date: {{organization.joiningDate | date}}</li>
+                  <li>Expires: {{organization.expirationDate | date}}</li>
+                  <li>Status: {{organization.statusFl === 1 ? 'Active' : 'Inactive'}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- footer-bottom area -->
+    <div class="footer-bottom-area">
+      <div class="container">
+        <div class="footer-border">
+          <div class="row d-flex align-items-center">
+            <div class="col-xl-12">
+              <div class="footer-copy-right text-center">
+                <p>
+                  &copy; <script>document.write(new Date().getFullYear());</script> 
+                  {{organization.organizationNameEn}} — {{organization.organizationNameAr}}
+                  | All rights reserved
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer End-->
+  </div>
+</footer>

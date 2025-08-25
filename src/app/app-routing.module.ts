@@ -9,9 +9,12 @@ import { SystemLookupsComponent } from './Features/system-lookups/components/sys
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
 import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
 import { HomeComponent } from './Features/home/components/main-page/home.component';
+import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
 
 
 const routes: Routes = [
+    { path: '', component: PreLoginPageComponent },      
+  { path: 'MainPage', component: PreLoginPageComponent },
   { path: 'login', component: LoginComponent },
     {
     path: '',

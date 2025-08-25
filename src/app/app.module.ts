@@ -55,7 +55,10 @@ import { BaseChartDirective } from 'ng2-charts';
 import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';
 import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';
 import { ImageRotatorComponent } from './Features/home/components/image-rotator/image-rotator.component';
-import { ClassesTimelineByTeacherComponent } from './Features/home/components/classes-timeline-by-teacher/classes-timeline-by-teacher.component';              
+import { ClassesTimelineByTeacherComponent } from './Features/home/components/classes-timeline-by-teacher/classes-timeline-by-teacher.component';
+import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
+import { PreLoginFooterComponent } from './Features/pre-login/components/pre-login-footer/pre-login-footer.component';
+import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-login-header/pre-login-header.component';              
 
 
 
@@ -96,7 +99,10 @@ import { ClassesTimelineByTeacherComponent } from './Features/home/components/cl
     CenterStatisticsComponent,
     DailyClassSummaryComponent,
     ImageRotatorComponent,
-    ClassesTimelineByTeacherComponent
+    ClassesTimelineByTeacherComponent,
+    PreLoginPageComponent,
+    PreLoginFooterComponent,
+    PreLoginHeaderComponent
     
   ],
   imports: [
