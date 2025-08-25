@@ -164,6 +164,13 @@
     "Reports.Types.Payments": "Payments",
     "Reports.Types.TeacherCourses": "Courses",
     "Footer.Copyright": "Copyright © {{year}} All rights reserved",
+    "Footer.Contact": "Contact",
+    "Footer.Email": "Email",
+    "Footer.Phone": "Phone",
+    "Footer.WhatsApp": "WhatsApp",
+    "Footer.License": "License",
+    "Footer.Address": "Address",
+    "Footer.AllRights": "All rights reserved",
     "Home.CenterTeachingExperts": "Teaching Experts at the Center",
     "Home.CenterStats": "Center Statistics",
     "Charts": {

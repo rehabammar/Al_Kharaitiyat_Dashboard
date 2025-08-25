@@ -14,8 +14,10 @@ export class PreLoginService {
   }
 
   getOrganizations(): Observable<Organization> {
-    return this.apiService.post<Organization>(ApiEndpoints.getOrganizations(), {"organizationId":1})
-      .pipe(map(res => res.data));
+    return this.apiService.post<Organization>(ApiEndpoints.getOrganizations(), {"organizationsPk":1})
+      .pipe(map(res => res.data),
+      tap(res => console.log("Orgnization" + JSON.stringify(res)))
+    );
   }
 
 
