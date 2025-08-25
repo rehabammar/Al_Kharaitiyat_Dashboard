@@ -238,8 +238,9 @@ markTouched() { this.touched = true; }
 
     this.service.save(this.selectedRow).subscribe({
       next: (res) => {
+        this.selectedRow = res ;
         this.resetBaseline();
-        this.rowSaved.emit(res.data); 
+        this.rowSaved.emit(res); 
       }
     });
   };

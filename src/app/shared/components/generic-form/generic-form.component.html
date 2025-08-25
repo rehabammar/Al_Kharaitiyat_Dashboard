@@ -82,7 +82,15 @@
                    (change)="onDateInput(column, $any($event.target).value)"
                    (blur)="markTouched()"
                    [class.input-error]="isInvalid(column)" />
+            <!-- password INPUT -->
 
+            <input *ngSwitchCase="'password'"
+                   type="password"
+                   class="custom-input"
+                   [attr.name]="column.field"
+                   [(ngModel)]="row[column.field]"
+                   (ngModelChange)="onFieldChanged(column, $event)"
+                   [class.input-error]="isInvalid(column)" />
             <!-- DEFAULT (STRING/NUMBER/ETC) -->
             <input *ngSwitchDefault
                    class="custom-input"
@@ -91,6 +99,7 @@
                    (ngModelChange)="onFieldChanged(column, $event)"
                    [class.input-error]="isInvalid(column)" />
           </ng-container>
+
 
           <div class="error-text" *ngIf="isInvalid(column)">
             {{ 'validation.required' | translate }}

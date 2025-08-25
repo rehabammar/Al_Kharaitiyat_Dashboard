@@ -4686,10 +4686,11 @@ hr {
 }
 
 .login-form .form-input label {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     color: #fff ;
     text-align: end;
+    font-family: 'cairoFont';
 
 }
 
@@ -4721,13 +4722,17 @@ hr {
     font-size: 18px;
     font-weight: 700;
     border-radius: 20px;
-    transition: .4s
+    transition: .4s ;
+    font-family: 'cairoFont';
+
 }
 
 .login-form .form-input input[type="submit"]:hover {
     background: #000;
     color: #000;
-    background: #ffffff00
+    background: #ffffff00 ;
+    font-family: 'cairoFont';
+
 }
 
 .login-form .forget {
@@ -4736,7 +4741,10 @@ hr {
     color: #fff;
     font-weight: 600;
     text-decoration: underline;
-    margin-bottom: 5px
+    margin-bottom: 5px ;
+    font-family: 'cairoBoldFont';
+    font-size: 14px ;
+
 }
 
 .login-form .forget:hover {

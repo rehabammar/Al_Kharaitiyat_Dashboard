@@ -189,18 +189,20 @@ export class CoursesPageComponent {
       disabled: false,
       width: '110px'
     },
-    // {
-    //   labelKey: 'TeacherCourse.PriceType',
-    //   field: 'priceTypeFkName',
-    //   fieldFK: 'priceTypeFk',
-    //   required: true,
-    //   isCombobox: true,
-    //   apiPath: "/lookupDetails/price-type",
-    //   displayItemKey: "lookupName",
-    //   primaryKey: "lookupDetailPk",
-    //   dataFactory: this.lookupDetailDataFactory,
-    //   width: '130px'
-    // },
+    {
+      labelKey: 'TeacherCourse.PriceType',
+      field: 'priceTypeFkName',
+      fieldFK: 'priceTypeFk',
+      required: true,
+      isCombobox: true,
+      apiPath: "/lookupDetails/price-type",
+      displayItemKey: "lookupName",
+      primaryKey: "lookupDetailPk",
+      dataFactory: this.lookupDetailDataFactory,
+      width: '130px',
+      showInTable: false
+
+    },
     // {
     //   labelKey: 'TeacherCourse.CenterPercentage',
     //   field: 'centerPercentage',

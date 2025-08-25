@@ -6,16 +6,16 @@
 
   <!-- Image (clickable if href provided) -->
   <a *ngIf="list[current]?.href; else imgOnly"
-     [href]="list[current]?.href"
+     [href]="list[current].href"
      class="img-wrap" target="_blank" rel="noopener">
-    <img [src]="list[current]?.src"
-         [alt]="list[current]?.alt || 'slide'"
+    <img [src]="list[current].src"
+         [alt]="list[current].alt || 'slide'"
          loading="lazy" />
   </a>
   <ng-template #imgOnly>
     <div class="img-wrap">
-      <img [src]="list[current]?.src"
-           [alt]="list[current]?.alt || 'slide'"
+      <img [src]="list[current].src"
+           [alt]="list[current].alt || 'slide'"
            loading="lazy" />
     </div>
   </ng-template>

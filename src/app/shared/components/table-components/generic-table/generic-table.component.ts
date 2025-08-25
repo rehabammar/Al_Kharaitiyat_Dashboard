@@ -291,7 +291,8 @@ clearAllFilters = ()=> {
         if(this.searchParameterKey && this.selectedId){
            (this.selectedRow as Record<string, any>)[this.searchParameterKey] = this.selectedId;
         }
-        this.service.save(this.selectedRow).subscribe(() => {
+        this.service.save(this.selectedRow).subscribe((updatedRow) => {
+          this.selectRow(updatedRow);
           this.changeDetectorRef.markForCheck();
           this.checkPrivileges();
         });

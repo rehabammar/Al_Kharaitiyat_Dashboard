@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { Observable, BehaviorSubject, tap, map } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../api/api-service.service';
 import { ApiResponse } from '../../models/api-response.interface';
@@ -68,7 +68,7 @@ export class GenericService<T extends Record<string, any>> {
 
 
 
-  add(item: T): Observable<ApiResponse<T>> {
+  add(item: T): Observable<T> {
     return this.apiService.post<T>(this.apiMap.ADD!(), item).pipe(
       tap(response => {
         console.log("INSERT ITEMS" + JSON.stringify(response.data));
@@ -76,11 +76,12 @@ export class GenericService<T extends Record<string, any>> {
         this.dataSubject.next(updated);
         this.totalElementsSubject.next(updated.length);
         this.showSuccessPopup()
-      })
+      }),
+      map((res)=> res.data)
     );
   }
 
-  update(item: T): Observable<ApiResponse<T>> {
+  update(item: T): Observable<T> {
     const obj: Record<string, any> = item;
     obj['id'] = obj[this.primaryKey as string];
     return this.apiService.post<T>(this.apiMap.UPDATE(), obj).pipe(
@@ -90,7 +91,8 @@ export class GenericService<T extends Record<string, any>> {
         );
         this.dataSubject.next(updated);
         this.showSuccessPopup()
-      })
+      }),
+      map((res)=> res.data)
     );
   }
 
@@ -104,7 +106,7 @@ export class GenericService<T extends Record<string, any>> {
     );
   }
 
-  save(item: T): Observable<ApiResponse<T>> {
+  save(item: T): Observable<T> {
     const newItem = {
       ...item,
       languagesFk: LanguageService.getLanguage()?.langCode
