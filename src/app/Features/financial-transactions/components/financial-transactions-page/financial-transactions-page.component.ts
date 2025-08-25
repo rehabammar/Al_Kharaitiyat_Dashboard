@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../../core/models/table-column.interface';
 import { FinancialTransaction } from '../../model/financial-transactions.model';
+import { GenericTableComponent } from '../../../../shared/components/table-components/generic-table/generic-table.component';
 
 @Component({
   selector: 'app-financial-transactions-page',
@@ -9,6 +10,7 @@ import { FinancialTransaction } from '../../model/financial-transactions.model';
   styleUrl: './financial-transactions-page.component.css'
 })
 export class FinancialTransactionsPageComponent {
+@ViewChild('financialTransactionTable') table!: GenericTableComponent<FinancialTransaction>;
 
 
   financialTransactionDataFactory = () => new FinancialTransaction();
@@ -156,6 +158,42 @@ export class FinancialTransactionsPageComponent {
   //   width: '280px',
   // },
 ];
+
+
+  selectedFinancialTransactions: FinancialTransaction | null = null;
+  onTransactionSelected(row: FinancialTransaction) {
+    this.selectedFinancialTransactions = row;
+  }
+
+  onTransactionRowChanged(e: { field: string; value: any }) {
+    if (!this.selectedFinancialTransactions) return;
+    this.selectedFinancialTransactions = {
+      ...this.selectedFinancialTransactions,
+      [e.field]: e.value
+    };
+
+    const id = this.selectedFinancialTransactions.transactionPk;
+    this.table.patchRowById(id, { [e.field]: e.value } as Partial<FinancialTransaction>);
+  }
+
+  onTransactionSaved(row: FinancialTransaction) {
+    this.table.patchRowById(row.transactionPk, row);
+  }
+
+  onNewTransactionRow(row: FinancialTransaction) {
+    this.selectedFinancialTransactions = row;
+    this.table.prependRow(row);
+  }
+
+  onTeacherCourseRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
+    if (e.type === 'new') {
+      this.table.removeRow(e.row);
+    } else {
+      this.table.removeRow(e.id);
+    }
+    this.selectedFinancialTransactions = null;
+  }
+
 
 
 }

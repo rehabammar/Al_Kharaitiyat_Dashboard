@@ -8,16 +8,29 @@
   </section>
   
   <div class="accordion-container">
-      <!-- Courses -->
     <app-custom-accordion title="financial-transactions">
       <app-generic-table
+       #financialTransactionTable
        [primaryKey]="'transactionPk'"
        [columns]="financialTransactionsColumns"
        [dataFactory]="financialTransactionDataFactory"
        [apiPath]="'financialTransactions'"
+       (rowSelected)="onTransactionSelected($event)"
        >
       </app-generic-table>
     </app-custom-accordion>
+    <br>
+    <app-custom-accordion title="financial-transactions">
+      <app-generic-form
+       [primaryKey]="'transactionPk'"
+       [columns]="financialTransactionsColumns"
+       [dataFactory]="financialTransactionDataFactory"
+       [apiPath]="'financialTransactions'"
+       [selectedRow]="selectedFinancialTransactions"
+       (rowChanged)="onTransactionRowChanged($event)"
+       >
+      </app-generic-form>
+    </app-custom-accordion>
 
-    </div>
+  </div>
   </main>

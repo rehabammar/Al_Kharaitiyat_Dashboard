@@ -50,6 +50,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
     this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey);
+    this.setLocalMobile();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -324,6 +325,17 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   // نحتفظ بالجزء المحلي فقط (بدون +966)
   localMobile = '';  // 9 digits max
+
+  setLocalMobile() {
+  // const full = (this.selectedRow?.[this.column.field] ?? '') as string;
+
+  // if (full && full.startsWith('+966')) {
+  //   this.localMobile = full.substring(4); // بعد +966
+  // } else {
+  //   this.localMobile = '';
+  // }
+}
+
 
   onLocalChanged(value: string, column: TableColumn) {
     // إزالة أي رموز غير أرقام + تحويل الأرقام العربية لو موجودة
