@@ -99,7 +99,7 @@ export class UsersComponent  {
       labelKey: 'User.Phone',
       field: 'phoneNumber',
       required: true,
-      dataType: 'string',
+      dataType: 'mobile',
       width: '170px'
     },
     {

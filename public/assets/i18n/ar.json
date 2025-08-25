@@ -22,6 +22,7 @@
     "message.areYouSure": "هل انت متأكد من الحذف",
     "validation.required": "هذا الحقل مطلوب",
     "validation.requiredSelect": "يرجى اختيار قيمة",
+    "validation.invalid": "قيمة غير صحيحة" ,
     "TeacherCourse.courseDetails": "تفاصيل الكورس",
     "TeacherCourse.classes-students": "الحصص / الطلاب",
     "TeacherCourse.TeacherCoursePk": "رمز",

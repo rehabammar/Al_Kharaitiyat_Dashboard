@@ -41,7 +41,7 @@ export class FinancialTransactionsPageComponent {
   // },
   {
     labelKey: 'FinancialTransactions.PaymentMethod',
-    field: 'paymentMethodName',
+    field: 'paymentMethodFkName',
     required: false,
     dataType: 'string',
     disabled: true,
@@ -58,7 +58,7 @@ export class FinancialTransactionsPageComponent {
 
   {
     labelKey: 'FinancialTransactions.PayerName',
-    field: 'payerName',
+    field: 'payerFkName',
     required: false,
     dataType: 'string',
     disabled: true,
@@ -66,7 +66,7 @@ export class FinancialTransactionsPageComponent {
   },
   {
     labelKey: 'FinancialTransactions.PayeeName',
-    field: 'payeeName',
+    field: 'payeeFkName',
     required: false,
     dataType: 'string',
     disabled: true,

@@ -74,6 +74,32 @@
   padding: 2px ;
   
 }
+.phone-field {
+  
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  direction: ltr;
+}
+.prefix {
+  height: var(--field-h);
+  padding: 0 var(--field-px); 
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px; 
+  white-space: nowrap;
+  display: flex;              /* ✅ تشغيل flex */
+  align-items: center;        /* ✅ محاذاة عمودية */
+  justify-content: center;    /* ✅ محاذاة أفقية */
+  font-family: 'cairoFont';
+}
+.ltr-input {
+  direction: ltr;
+  text-align: left;
+  flex: 1;
+}
+
 
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */

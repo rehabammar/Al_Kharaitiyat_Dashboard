@@ -91,6 +91,35 @@
                    [(ngModel)]="row[column.field]"
                    (ngModelChange)="onFieldChanged(column, $event)"
                    [class.input-error]="isInvalid(column)" />
+          
+            <!-- MOBILE INPUT -->
+          <!-- <input *ngSwitchCase="'mobile'"
+                type="tel"
+                class="custom-input ltr-input"
+                dir="ltr"
+                inputmode="numeric"
+                placeholder="+9665XXXXXXXX"
+                [attr.name]="column.field"
+                [ngModel]="row[column.field]"
+         
+                [attr.pattern]="saMobilePattern"
+                maxlength="13"
+                [class.input-error]="isInvalid(column)" /> -->
+
+          <div class="phone-field" *ngSwitchCase="'mobile'">
+          <span class="prefix">+966</span>
+          <input
+            type="tel"
+            class="custom-input ltr-input"
+            dir="ltr"
+            inputmode="numeric"
+            placeholder="5XXXXXXXX"
+            [ngModel]="localMobile"
+            (ngModelChange)="onLocalChanged($event, column)"
+            maxlength="9"
+            [class.input-error]="isInvalid(column)" />
+            </div>
+    
             <!-- DEFAULT (STRING/NUMBER/ETC) -->
             <input *ngSwitchDefault
                    class="custom-input"
@@ -104,6 +133,19 @@
           <div class="error-text" *ngIf="isInvalid(column)">
             {{ 'validation.required' | translate }}
           </div>
+
+          <!-- <div class="error-text" *ngIf="isRequiredError(column)">
+            {{ 'validation.required' | translate }}
+          </div>
+
+          <div class="error-text" *ngIf="isInvalid(column)">
+            {{ column.dataType === 'mobile' 
+                ? ('validation.invalid' | translate) 
+                : ('validation.required' | translate) }}
+          </div> -->
+
+
+                    
         </div>
 
         <!-- READ ONLY -->
