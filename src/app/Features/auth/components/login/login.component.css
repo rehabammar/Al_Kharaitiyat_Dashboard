@@ -97,7 +97,7 @@
 .lang-box{
   position: fixed;
   top: 16px;
-  inset-inline-start: 16px; /* RTL = يمين, LTR = شمال */
+  inset-inline-start: 16px; 
   z-index: 10;
   display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
   padding: 8px 12px;
@@ -105,7 +105,7 @@
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,.15);
   backdrop-filter: blur(2px);
-  margin: 0;                    /* مهم: إلغاء التوسيط */
+  margin: 0;                    
   max-width: max-content;
   direction: rtl !important;
 }
@@ -126,6 +126,21 @@
 /* لو الصفحة بالإنجليزي (LTR) الصندوق في الشمال */
 [dir="ltr"] .lang-box {
   margin-right: auto;
+}
+.main-page-box{
+  position: fixed;
+  top: 16px;
+  inset-inline-end: 16px; 
+  z-index: 10;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,.35);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  backdrop-filter: blur(2px);
+  margin: 0;                    
+  max-width: max-content;
+  direction: rtl !important;
 }
 
 /* =================== LANGUAGE LINKS =================== */
@@ -207,13 +222,14 @@
     font-family: 'cairoFont';
   }
 
-  /* زرار تغيير اللغة: صغّر وابعِده عن الفورم */
-  .lang-box{
-    top: 10px;
-    inset-inline-start: 10px;
-    gap: 8px;
-    padding: 6px 8px;
-    border-radius: 8px;
-  }
-  .langStyle{ padding: 4px 8px; font-size: .9rem; }
+
+  .button-container{
+  position: static;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 10px 0;
+}
+
+
 }

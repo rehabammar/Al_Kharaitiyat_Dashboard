@@ -2,6 +2,8 @@
     "app-name":"AL-Kharaitiyat Educational Center",
     "taglineOne": "Specialist male and female teachers for all grades and curricula, with foundation courses for children and adults in English, Math, Arabic, and all subjects.",
     "login": "Login",
+    "adminLogin": "Admin Login",
+    "homePage": "Home Page",
     "username": "Username",
     "password": "Password",
     "logout": "Logout",
