@@ -158,9 +158,9 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   private statusClass(s?: string | null): string {
     switch ((s || '').trim()) {
       case 'مجدولة': return 'badge scheduled';
-      case 'جارية': return 'badge running';
+      case 'بدأت': return 'badge running';
       case 'انتهت': return 'badge done';
-      case 'ملغاة': return 'badge canceled';
+      case 'الغيت': return 'badge canceled';
       default: return 'badge';
     }
   }
