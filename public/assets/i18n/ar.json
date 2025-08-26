@@ -20,6 +20,7 @@
     "label.ok": "موافق",
     "label.cancel": "إلغاء",
     "label.reset": "إعادة تعيين",
+    "label.find":"بحث",
     "message.success": "تمت العملية بنجاح",
     "message.areYouSure": "هل انت متأكد من الحذف",
     "validation.required": "هذا الحقل مطلوب",

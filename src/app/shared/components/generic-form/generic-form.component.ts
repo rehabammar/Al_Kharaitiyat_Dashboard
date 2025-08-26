@@ -45,17 +45,23 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   service!: GenericService<T>;
 
+  private mobileColumn?: TableColumn;
+
+
   constructor(private genericServiceFactory: GenericServiceFactory, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
     this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey);
-    this.setLocalMobile();
+    this.mobileColumn = this.findMobileColumn();
+    this.syncLocalFromRow();  
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['selectedRow'] && !changes['selectedRow'].firstChange) {
       this.resetBaseline();
+      this.mobileColumn = this.findMobileColumn(); 
+      this.syncLocalFromRow();  
     }
   }
 
@@ -71,10 +77,7 @@ export class GenericFormComponent<T extends Record<string, any>>
     (this.selectedRow as unknown as Record<string, any>)[key] = value;
   }
 
-  // ========= show and hied fields =========
-  shouldShow(c: TableColumn, row: any): boolean {
-    return c?.showWhen ? !!c.showWhen(row) : true;
-  }
+
 
   // ========== check for required fields =========
 
@@ -91,7 +94,6 @@ export class GenericFormComponent<T extends Record<string, any>>
   private isMissingRequired(column: TableColumn): boolean {
     if (!column.required) return false;
     if (!this.selectedRow) return false;
-    if (!this.shouldShow(column, this.selectedRow)) return false;
     const v = this.getFieldValue(column);
     if (column.isFlag) return !(v === 1 || v === true);
     if (column.dataType === 'number')
@@ -101,7 +103,8 @@ export class GenericFormComponent<T extends Record<string, any>>
   isInvalid(column: TableColumn): boolean {
       const val = (this.selectedRow?.[column.field] ?? '') as string;
     if (column.dataType === 'mobile') {
-      const ok = /^\+9665\d{8}$/.test(val);
+    // قطر: يبدأ بـ +974 ثم 8 أرقام (أول رقم 3 أو 5 أو 6 أو 7)
+    const ok = /^\+974[3567]\d{7}$/.test(val);
     return this.showErrors && (column.required ? !ok : (val ? !ok : false));
     }
     return this.showErrors && this.isMissingRequired(column);
@@ -323,47 +326,53 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   // =========== mobile validtion ===============
 
-  // نحتفظ بالجزء المحلي فقط (بدون +966)
-  localMobile = '';  // 9 digits max
-
-  setLocalMobile() {
-  // const full = (this.selectedRow?.[this.column.field] ?? '') as string;
-
-  // if (full && full.startsWith('+966')) {
-  //   this.localMobile = full.substring(4); // بعد +966
-  // } else {
-  //   this.localMobile = '';
-  // }
+  private findMobileColumn(): TableColumn | undefined {
+  return this.columns.find(c => c.dataType === 'mobile');
 }
 
 
-  onLocalChanged(value: string, column: TableColumn) {
-    // إزالة أي رموز غير أرقام + تحويل الأرقام العربية لو موجودة
-    const map: Record<string, string> = { '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9' };
-    value = (value || '').replace(/[٠-٩]/g, d => map[d]).replace(/\D/g, '');
 
-    // لازم يبدأ بـ 5
-    if (value && value[0] !== '5') {
-      // لو كتب 0 أو 966... صححيه تلقائيًا
-      if (value.startsWith('9665')) value = value.slice(3);
-      else if (value.startsWith('05')) value = value.slice(1);
-      else if (value.startsWith('5') === false) {
-        // لو مش 5، حاولي تلاقي "5" + 8 أرقام بعده
-        const m = value.match(/5\d{0,8}/);
-        value = m ? m[0] : '';
-      }
-    }
+localMobile = '';  // 9 digits max
 
-    // قصّ إلى 9 أرقام كحد أقصى
-    value = value.slice(0, 9);
-
-    this.localMobile = value;
-
-    // خزّن القيمة كاملة في الموديل: +966 + 9 أرقام
-    const full = value ? `+966${value}` : '';
-
-    this.onFieldChanged(column, full);
+private syncLocalFromRow(): void {
+  if (!this.selectedRow || !this.mobileColumn) {
+    this.localMobile = '';
+    return;
   }
+  const full = (this.selectedRow as any)[this.mobileColumn.field] as string | null | undefined;
+
+  if (typeof full === 'string' && full.startsWith('+974') && full.length >= 5) {
+    this.localMobile = full.substring(4).slice(0, 8); 
+  } else {
+    this.localMobile = '';
+  }
+}
+
+onLocalChanged(value: string, column: TableColumn) {
+  // إزالة أي رموز غير أرقام + تحويل الأرقام العربية لو موجودة
+  const map: Record<string, string> = { 
+    '٠': '0','١':'1','٢':'2','٣':'3','٤':'4',
+    '٥':'5','٦':'6','٧':'7','٨':'8','٩':'9' 
+  };
+  value = (value || '').replace(/[٠-٩]/g, d => map[d]).replace(/\D/g, '');
+
+  // قص لأقصى 8 أرقام
+  value = value.slice(0, 8);
+
+  // لازم يبدأ بـ 3 أو 5 أو 6 أو 7
+  if (value && !/^[3567]/.test(value)) {
+    const m = value.match(/[3567]\d{0,7}/); // أول رقم صح + باقي الأرقام
+    value = m ? m[0] : '';
+  }
+
+  this.localMobile = value;
+
+  // القيمة الكاملة مع +974
+  const full = value ? `+974${value}` : null; // null لو فارغ
+  this.onFieldChanged(column, full);
+}
+
+
 
 
 }

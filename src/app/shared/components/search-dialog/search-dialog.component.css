@@ -1,0 +1,65 @@
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end; 
+  align-items: center;
+  width: 100%;
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+}
+/* 
+.selected-row {
+  background-color: #e0f7fa !important;
+  cursor: pointer;
+} */
+
+
+
+.filter-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: auto; /* or use fixed width like 150px if preferred */
+}
+
+.filter-label {
+  width: 120px; 
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+  
+}
+
+.filter-input {
+  width: 200px; 
+  height: 30px;
+  padding: 6px 8px;
+  font-size: 14px;
+  text-align: center;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white !important;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+}
+
+
+

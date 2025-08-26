@@ -59,6 +59,7 @@ import { ClassesTimelineByTeacherComponent } from './Features/home/components/cl
 import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
 import { PreLoginFooterComponent } from './Features/pre-login/components/pre-login-footer/pre-login-footer.component';
 import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-login-header/pre-login-header.component';              
+import { SearchDialogComponent } from './shared/components/search-dialog/search-dialog.component';
 
 
 
@@ -88,6 +89,7 @@ import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-log
     CustomAccordionComponent,
     GenericFormComponent,
     ComboboxSearchComponent,
+    SearchDialogComponent,
     ConfirmPopupComponent,
     DateTimePickerComponent,
     UsersComponent,

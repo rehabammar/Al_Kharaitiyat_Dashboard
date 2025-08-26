@@ -11,6 +11,9 @@ import { Class } from '../models/class.model';
 import { GenericTableComponent } from '../../../shared/components/table-components/generic-table/generic-table.component';
 import { CourseStudent } from '../models/course-student.model';
 import { StudentAttendance } from '../models/student-attendance.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchDialogComponent } from '../../../shared/components/search-dialog/search-dialog.component';
+import { ApiEndpoints } from '../../../core/constants/api-endpoints';
 
 interface Course {
   category: string;
@@ -40,6 +43,8 @@ interface ServiceItem {
 })
 export class CoursesPageComponent {
 
+  constructor(private dialog : MatDialog) {}
+
   @ViewChild('teacherCourseTable') table!: GenericTableComponent<TeacherCourse>;
   @ViewChild('classesTableRef') classesTable!: GenericTableComponent<Class>;
 
@@ -60,7 +65,7 @@ export class CoursesPageComponent {
   StudentAttendanceDataFactory = () => new StudentAttendance();
 
 
-  // course class 
+  // course student 
 
   courseStudentDataFactory = () => new CourseStudent();
 
@@ -502,11 +507,12 @@ export class CoursesPageComponent {
       field: 'studentFullName',
       fieldFK: 'studentFk',
       required: true,
-      isCombobox: true,
-      apiPath: '/students/searchAll',
-      displayItemKey: 'fullName',
-      primaryKey: 'studentPk',
-      dataFactory: () => ({} as any),
+      searchField: true,
+      onSearch: (currentRow : any )=> this.openUsersSearchDialog(currentRow) ,
+      // apiPath: '/students/searchAll',
+      // displayItemKey: 'fullName',
+      // primaryKey: 'studentPk',
+      // dataFactory: () => ({} as any),
       width: '240px',
     },
     {
@@ -515,10 +521,10 @@ export class CoursesPageComponent {
       fieldFK: 'joinStatusFk',
       required: false,
       isCombobox: true,
-      apiPath: '/lookupDetails/join-status',
+      apiPath: '/lookupDetails/joining-status',
       displayItemKey: 'lookupName',
       primaryKey: 'lookupDetailPk',
-      dataFactory: () => ({} as any),
+      dataFactory: () => new LookupDetail(),
       width: '180px',
     },
     {
@@ -526,28 +532,28 @@ export class CoursesPageComponent {
       field: 'courseStudentRegistrationDate',
       required: false,
       dataType: 'date',
-      disabled: false,
+      disabled: true,
       width: '200px',
     },
 
     // الحضور (فلاج)
-    {
-      labelKey: 'CourseStudent.Attendance',
-      field: 'attendanceStatusFl',
-      required: false,
-      isFlag: true,
-      width: '140px',
-    },
+    // {
+    //   labelKey: 'CourseStudent.Attendance',
+    //   field: 'attendanceStatusFl',
+    //   required: false,
+    //   isFlag: true,
+    //   width: '140px',
+    // },
 
     // ملاحظات
-    {
-      labelKey: 'CourseStudent.Notes',
-      field: 'notes',
-      required: false,
-      dataType: 'string',
-      disabled: false,
-      width: '240px',
-    }
+    // {
+    //   labelKey: 'CourseStudent.Notes',
+    //   field: 'notes',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: false,
+    //   width: '240px',
+    // }
   ];
 
 
@@ -667,6 +673,45 @@ export class CoursesPageComponent {
     this.selectedClass = null;
   }
 
+  // ======== add new student to course ========= 
+
+   openUsersSearchDialog( currentRow : any ): void {
+
+    const dialogRef = this.dialog.open(SearchDialogComponent,
+      {
+        maxWidth: "80vw",
+        width: '50vw',
+        data: {
+          apiEndpoint : ApiEndpoints.findStudentsNotInCourse , 
+          columns: [
+             {
+              labelKey: 'User.UserPk',
+              field: 'userPk',
+              required: false,
+              dataType: 'number',
+              disabled: true,
+              width: '300px'
+            },
+             {
+              labelKey: 'User.FullName',
+              field: 'fullName',
+              required: false,
+              dataType: 'string',
+              disabled: true,
+              width: '220px'
+            },
+          ],
+          dataFactory: ()=> new User(),
+          // id: this.selectedGroupId,
+          label: 'CourseStudent.Students' 
+        }
+      }
+
+    );
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("SEEEEEEEEEEELECTD USERR " + JSON.stringify(result));
+    });
+  }
 
 
 

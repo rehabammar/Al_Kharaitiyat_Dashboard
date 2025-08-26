@@ -23,8 +23,6 @@
 <div class="generic-form-container" *ngIf="selectedRow as row">
   <div class="form-grid">
     <div *ngFor="let column of columns">
-    <ng-container *ngIf="shouldShow(column, row)">
-
       <!-- Label -->
       <div class="header-label-line align-start">
         <label class="form-label">{{ column.labelKey | translate }}</label>
@@ -91,32 +89,18 @@
                    [(ngModel)]="row[column.field]"
                    (ngModelChange)="onFieldChanged(column, $event)"
                    [class.input-error]="isInvalid(column)" />
-          
-            <!-- MOBILE INPUT -->
-          <!-- <input *ngSwitchCase="'mobile'"
-                type="tel"
-                class="custom-input ltr-input"
-                dir="ltr"
-                inputmode="numeric"
-                placeholder="+9665XXXXXXXX"
-                [attr.name]="column.field"
-                [ngModel]="row[column.field]"
-         
-                [attr.pattern]="saMobilePattern"
-                maxlength="13"
-                [class.input-error]="isInvalid(column)" /> -->
-
+        
           <div class="phone-field" *ngSwitchCase="'mobile'">
-          <span class="prefix">+966</span>
+          <span class="prefix">+974</span>
           <input
             type="tel"
             class="custom-input ltr-input"
             dir="ltr"
             inputmode="numeric"
-            placeholder="5XXXXXXXX"
+            placeholder="XXXXXXXX"
             [ngModel]="localMobile"
             (ngModelChange)="onLocalChanged($event, column)"
-            maxlength="9"
+            maxlength="8"
             [class.input-error]="isInvalid(column)" />
             </div>
     
@@ -160,7 +144,6 @@
           </span>
         </ng-template>
       </ng-template>
-    </ng-container>
     </div>
   </div>
 </div>

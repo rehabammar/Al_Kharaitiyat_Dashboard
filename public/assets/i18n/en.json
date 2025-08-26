@@ -20,6 +20,7 @@
     "label.ok": "OK",
     "label.cancel": "Cancel",
     "label.reset": "Reset",
+    "label.find":"Find",
     "message.success": "Operation completed successfully",
     "message.areYouSure": "Are you sure you want to delete?",
     "validation.required": "This field is required",

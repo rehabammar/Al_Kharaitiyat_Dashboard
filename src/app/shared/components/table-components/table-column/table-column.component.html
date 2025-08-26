@@ -1,152 +1,86 @@
-<!-- 
-
-
-
- <ng-container *ngIf="!isEditableTable; else EditableCloumn">
-  <ng-container *ngIf="!column.isFlag; else readOnlyIcon">
-
-    <div class="input-icon-wrapper"  >
-      <span class="custom-label">{{ currentRow[column.field] }}</span>
-    </div>
-  </ng-container>
-    <ng-template #readOnlyIcon>
-    <div class="icon-wrapper">
-      <img
-        *ngIf="currentRow[column.field] == 1"
-        src="/assets/img/icon/tick.png"
-        class="status-image"
-        alt="Checked"
-      />
-      <img
-        *ngIf="currentRow[column.field] != 1"
-        src="/assets/img/icon/untick.png"
-        class="status-image"
-        alt="Unchecked"
-      />
-    </div>
-  </ng-template>
- </ng-container>
-
-
-
-<ng-template #EditableCloumn>
-<ng-container *ngIf="column.isFlag; else normalColumn">
-  <ng-container *ngIf="selectedRow === currentRow; else readOnlyIcon">
-    <div class="icon-wrapper" (click)="toggleStatus()">
-      
-      <img
-        *ngIf="currentRow[column.field] == 1"
-        src="/assets/img/icon/tick.png"
-        class="status-image"
-        alt="Checked"
-      />
-      <img
-        *ngIf="currentRow[column.field] != 1"
-        src="/assets/img/icon/untick.png"
-        class="status-image"
-        alt="Unchecked"
-      />
-    </div>
-  </ng-container>
-
-  <ng-template #readOnlyIcon>
-    <div class="icon-wrapper">
-      <img
-        *ngIf="currentRow[column.field] == 1"
-        src="/assets/img/icon/tick.png"
-        class="status-image"
-        alt="Checked"
-      />
-      <img
-        *ngIf="currentRow[column.field] != 1"
-        src="/assets/img/icon/untick.png"
-        class="status-image"
-        alt="Unchecked"
-      />
-    </div>
-  </ng-template>
-</ng-container>
-
-<ng-template #normalColumn>
-  <ng-container *ngIf="selectedRow === currentRow && !column.disabled; else readOnly">
-    <div class="input-icon-wrapper">
-      <input
-        matInput
-        [(ngModel)]="currentRow[column.field]"
-        (change)="updateColumnData($event)"
-        [class.input-error]="isFieldInvalid()"
-        class="custom-input"
-      />
-      <mat-icon
-        *ngIf="column.searchIcon"
-        class="search-icon"
-        (click)="column.onTap?.()"
-      >
-        search
-      </mat-icon>
-    </div>
-  </ng-container>
-
-  <ng-template #readOnly>
-    <div class="input-icon-wrapper"  >
-      <span class="custom-label">{{ currentRow[column.field] }}</span>
-    </div>
-  </ng-template>
-</ng-template>
-
-</ng-template> -->
-
-
-<!-- خلية واحدة لكل الحالات -->
+<!-- خلية فلاج -->
 <ng-container *ngIf="column.isFlag; else valueCell">
-
-  <!-- أيقونة فلاج -->
   <div class="icon-wrapper"
        [class.disabled]="!(isEditableTable && selectedRow === currentRow)"
        (click)="isEditableTable && selectedRow === currentRow && toggleStatus()">
-    <img *ngIf="currentRow[column.field] == 1"
-         src="/assets/img/icon/tick.png" class="status-image" alt="Checked" />
-    <img *ngIf="currentRow[column.field] != 1"
-         src="/assets/img/icon/untick.png" class="status-image" alt="Unchecked" />
+    <img *ngIf="currentRow[column.field] == 1" src="/assets/img/icon/tick.png" class="status-image" alt="Checked" />
+    <img *ngIf="currentRow[column.field] != 1" src="/assets/img/icon/untick.png" class="status-image" alt="Unchecked" />
   </div>
-
 </ng-container>
 
-<!-- حقل قيمة (input أو قراءة فقط) -->
+<!-- خلية قيمة -->
 <ng-template #valueCell>
   <ng-container *ngIf="isEditableTable && selectedRow === currentRow && !column.disabled; else readOnlyCell">
-    <div class="input-icon-wrapper">
-      <input
-        matInput
-        class="custom-input"
-        [attr.name]="column.field"
-        [type]="column.dataType === 'number' ? 'number' : 'text'"
-        [placeholder]="column.labelKey | translate"
-        [(ngModel)]="currentRow[column.field]"
-        (ngModelChange)="updateColumnData($event)"
-        [class.input-error]="isFieldInvalid()">
-      <mat-icon *ngIf="column.searchIcon"
-                class="search-icon"
-                (click)="column.onTap?.(currentRow)">
-        search
-      </mat-icon>
-    </div>
+
+    <!-- نختار نوع الإدخال -->
+    <ng-container [ngSwitch]="true">
+
+      <!-- 1) ComboBox / Autocomplete -->
+      <div *ngSwitchCase="column.isCombobox" class="input-icon-wrapper">
+       <app-combobox-search
+            [apiPath]="column.apiPath!"
+            [dataFactory]="column.dataFactory!"
+            [primaryKey]="column.primaryKey!"
+            [displayItemKey]="column.displayItemKey!"
+            [selectedKey]="selectedRow[column.fieldFK!]"
+            (itemSelected)="onComboSelected(column, $event)"
+            >
+          </app-combobox-search>
+      </div>
+
+
+      <!-- 2) Search field (input + أيقونة/زر) -->
+      <div *ngSwitchCase="column.searchField" class="input-icon-wrapper">
+        <input
+          matInput
+          class="custom-input"
+          [attr.name]="column.field"
+          [placeholder]="column.labelKey | translate"
+          [ngModel]="currentRow[column.field]"
+          (ngModelChange)="updateColumnData($event)"
+          (keyup.enter)="column.onSearch?.(currentRow)"
+          [class.input-error]="isFieldInvalid()"
+          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+        <button type="button" class="search-icon" (click)="column.onSearch?.(currentRow)">
+          <mat-icon>search</mat-icon>
+        </button>
+      </div>
+
+      <!-- 3) Input عادي -->
+      <div *ngSwitchDefault class="input-icon-wrapper">
+        <input
+          matInput
+          class="custom-input"
+          [attr.name]="column.field"
+          [type]="column.dataType === 'number' ? 'number' : 'text'"
+          [placeholder]="column.labelKey | translate"
+          [(ngModel)]="currentRow[column.field]"
+          (ngModelChange)="updateColumnData($event)"
+          [class.input-error]="isFieldInvalid()"
+          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+        <mat-icon *ngIf="column.searchIcon" class="search-icon" (click)="column.onTap?.(currentRow)">search</mat-icon>
+      </div>
+
+    </ng-container>
+
   </ng-container>
 </ng-template>
 
-<!-- قراءة فقط (يُعاد استخدامه) -->
+<!-- عرض فقط -->
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
     <ng-container *ngIf="column.dataType === 'date'; else plain">
       <span class="custom-label" dir="ltr">
-        <ng-container *ngIf="currentRow[column.field]; else dash" class="t">
+        <ng-container *ngIf="currentRow[column.field]; else dash">
           {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
         </ng-container>
         <ng-template #dash>—</ng-template>
       </span>
     </ng-container>
     <ng-template #plain>
-      <span class="custom-label">{{ currentRow[column.field] }}</span>
+      <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+        {{ currentRow[column.field] || '—' }}
+      </span>
     </ng-template>
   </div>
 </ng-template>

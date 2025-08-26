@@ -1,6 +1,6 @@
 export interface TableColumn {
   field: string;
-  searchField?: string;
+  searchField?: boolean;
   labelKey: string;
   required?: boolean;
   dataType?: string;
@@ -15,6 +15,7 @@ export interface TableColumn {
   width?: string; 
   showWhen?: (row: any) => boolean;
   showInTable? : boolean  ;
+  onSearch?: (row : any) => any
 
 
 }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { TableColumn } from '../../../../core/models/table-column.interface';
 
 
 @Component({
@@ -47,4 +48,6 @@ export class TableColumnComponent {
   isFieldInvalid(): boolean {
     return this.isSaveAttempted && this.column.required && !this.currentRow[this.column.field];
   }
+
+  onComboSelected( column : TableColumn , event : any){}
 }

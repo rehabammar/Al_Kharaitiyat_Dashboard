@@ -1,0 +1,112 @@
+<h1 mat-dialog-title>{{ label | translate}}</h1>
+
+<mat-dialog-content class="dialog-content">
+    <div class="form-container">
+        <div class="filter-row">
+            <div class="filter-item" *ngFor="let column of columns">
+                <span class="filter-label">{{ column.labelKey | translate }}</span>
+                <input class="filter-input"
+                    (keyup.enter)="applyFilter(column.field!, $event, 'asc', column.dataType, false)" />
+            </div>
+        </div>
+
+
+        <div class="form-buttons">
+            <app-button
+                [label]="'label.find'"
+                [onClick]="search">
+            </app-button>
+            <app-button
+                [label]="'label.reset'"
+                [onClick]="reset">
+            </app-button>
+        </div>
+    </div>
+
+    <div class="table-container" #scrollContainer (scroll)="onScroll($event)">
+        <!-- <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+
+            <ng-container *ngFor="let column of columns" [matColumnDef]="column.field!">
+                <th mat-header-cell *matHeaderCellDef>
+
+                    <div class="header-content">
+                        <span class="column-label">{{ column.labelKey | translate }}</span>
+
+                        <div class="sort-icons">
+                            <mat-icon class="sort-icon"
+                                (click)="applyFilter(column.field!, null, 'asc', column.dataType, true)">
+                                arrow_drop_up
+                            </mat-icon>
+                            <mat-icon class="sort-icon"
+                                (click)="applyFilter(column.field!, null, 'desc', column.dataType, true)">
+                                arrow_drop_down
+                            </mat-icon>
+                        </div>
+                    </div>
+
+                </th>
+
+                <td mat-cell *matCellDef="let row">
+                    <span class="custom-label">{{ row[column.field!] }}</span>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let currerntRow; columns: displayedColumns;" (click)="selectRow(currerntRow)"
+                [class.selected-row]="selectedRow === currerntRow">
+            </tr>
+        </table> -->
+    
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+
+    <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
+      <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
+        <div class="header-container" [ngClass]="'no-filter'">
+    
+          <div class="header-label-line">
+        
+            <span class="column-label">{{ column.labelKey | translate }}</span>
+
+            <span *ngIf="column.required " class="required-indicator">*</span>
+
+            <!-- <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
+              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'asc')"
+                (click)="applyFilter(column.field, null, 'asc', column.dataType, true)">▲</span>
+              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'desc')"
+                (click)="applyFilter(column.field, null, 'desc', column.dataType, true)">▼</span>
+            </div> -->
+          </div>
+        </div>
+
+
+      </th>
+
+      <td mat-cell *matCellDef="let row" [style.width]="column.width" >
+        <app-table-column
+         [column]="column" 
+         [currentRow]="row" 
+         [selectedRow]="selectedRow"
+        >
+        </app-table-column>
+      </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let system; columns: displayedColumns;" (click)="selectRow(system)"
+      [class.selected-row]="selectedRow === system">
+    </tr>
+  </table>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+     <app-button
+        [label]="'label.ok'"
+        [onClick]="confirm">
+    </app-button>
+        <app-button
+        [label]="'label.cancel'"
+        [onClick]="cancel">
+    </app-button>
+</mat-dialog-actions>

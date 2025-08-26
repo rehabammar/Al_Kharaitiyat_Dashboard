@@ -114,12 +114,19 @@ static buildCrudEndpoints = (basePath: string) => ({
   static userTypeLookup = '/userType';
   static courseLocationLookup = '/courseLocation';
   static qualificationType = '/qualification-type';
+  static findStudentsNotInCourse = '/users/findStudentsNotInCourse';
 
-  static getTeachersList = () => api('/users/search-teachers');
+//  static getStudentsList = '/users/search-students' ;
+
  
+  static getTeachersList = () => api('/users/search-teachers');
+
   static getMonthlyfinancialTransactions =()=>api('/financialTransactions/monthly-academic-payment-dashboard');
   
   static getDailyClassSummary =()=>api('/classes/all-classes-today-for-dashboard');
+
+
+  
 
 
 }

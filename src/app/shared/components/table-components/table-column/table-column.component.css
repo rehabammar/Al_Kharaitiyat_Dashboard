@@ -78,8 +78,10 @@
 }
 
 .search-icon {
+  border: none;
+  background-color: transparent;
   cursor: pointer;
-  color: #265b3b;
+  color: hsl(var(--bg)) !important;
   font-size: 22px;
   flex-shrink: 0;
 }

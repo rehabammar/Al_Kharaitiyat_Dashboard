@@ -143,14 +143,13 @@ export class UsersComponent  {
       dataFactory: this.lookupDetailDataFactory,
       width: '160px'
     },
-    // Status flag
-    // {
-    //   labelKey: 'User.Status',
-    //   field: 'statusFl',
-    //   required: false,
-    //   isFlag: true,
-    //   width: '120px'
-    // },
+    {
+      labelKey: 'User.Status',
+      field: 'statusFl',
+      required: false,
+      isFlag: true,
+      width: '120px'
+    },
     // Guardian (اختياري)
     // {
     //   labelKey: 'User.GuardianName',
