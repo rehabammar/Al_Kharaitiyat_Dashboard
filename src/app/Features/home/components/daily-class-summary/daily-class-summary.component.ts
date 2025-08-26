@@ -26,7 +26,7 @@ export class DailyClassSummaryComponent implements OnInit, OnDestroy {
     labels: ['Finished', 'Remaining'], // will be replaced by translations at runtime
     datasets: [{
       data: [0, 0],
-      backgroundColor: ['#2a538984', '#e5e7eb'],
+      backgroundColor: [ '#b2ebc7','#bbd3fc'],
       borderWidth: 0
     }]
   };
