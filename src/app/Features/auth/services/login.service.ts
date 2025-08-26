@@ -29,7 +29,9 @@ export class LoginService  {
         next: (response) => {
           const user: User = response.data; 
           this.userService.setUser(user);  
-          this.router.navigate(['/homePage']);  
+          this.router.navigate(['/homePage'],{ replaceUrl: true }); 
+          history.go(1); // يمنع الرجوع لورا
+ 
         },
         error: (error) => {
          console.log("Login api error"+error);

@@ -642,7 +642,6 @@ export class CoursesPageComponent {
     } else {
       this.table.removeRow(e.id);
     }
-    this.selectedCourse = null;
   }
 
   // ======= Classes bussinces ========= 
@@ -675,7 +674,6 @@ export class CoursesPageComponent {
     } else {
       this.classesTable.removeRow(e.id);
     }
-    this.selectedClass = null;
   }
 
   // ======== add new student to course ========= 

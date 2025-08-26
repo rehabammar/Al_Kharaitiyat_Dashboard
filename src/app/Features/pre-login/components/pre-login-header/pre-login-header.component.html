@@ -23,7 +23,7 @@
                                         <ul id="navigation">
                                             <!-- Button -->
                                             <!-- <li class="button-header margin-left "><a href="#" class="btn">Join</a></li> -->
-                                            <li class="button-header"  [routerLink]="['/login']">
+                                            <li class="button-header"  (click)="goToLogin($event)">
                                                 <a  class="btn btn3">{{ 'adminLogin' |
                                                     translate }}</a>
                                             </li>

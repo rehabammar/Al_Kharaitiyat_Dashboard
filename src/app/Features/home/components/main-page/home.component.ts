@@ -23,7 +23,6 @@ export class HomeComponent {
   constructor(private bridge: MessagingBridgeService) {}
 
   ngAfterViewInit(): void {
-    // اسمع حدث الريفريش اللي بنبعتُه من SW أو onMessage
     this.sub = this.bridge.events$.subscribe(e => {
       if (e?.type === 'REFRESH') {
         this.monthlyFinancialTransactions?.loadData?.();

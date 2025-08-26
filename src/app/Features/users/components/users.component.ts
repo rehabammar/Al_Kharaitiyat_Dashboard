@@ -289,7 +289,6 @@ export class UsersComponent  {
     } else {
       this.usersTable.removeRow(e.id);
     }
-    this.selectedUser = null;
   }
 
 

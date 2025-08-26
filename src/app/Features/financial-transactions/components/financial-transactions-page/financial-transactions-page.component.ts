@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../../core/models/table-column.interface';
 import { FinancialTransaction } from '../../model/financial-transactions.model';
 import { GenericTableComponent } from '../../../../shared/components/table-components/generic-table/generic-table.component';
+import { LookupDetail } from '../../../../core/models/lookup-detail.model';
 
 @Component({
   selector: 'app-financial-transactions-page',
@@ -24,40 +25,7 @@ export class FinancialTransactionsPageComponent {
     disabled: true,
     width: '110px',
   },
-  {
-    labelKey: 'FinancialTransactions.PaymentDate',
-    field: 'paymentDate',
-    required: false,
-    dataType: 'date',
-    disabled: true,
-    width: '150px',
-  },
-
-  // {
-  //   labelKey: 'FinancialTransactions.TransactionType',
-  //   field: 'transactionTypeName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '140px',
-  // },
-  {
-    labelKey: 'FinancialTransactions.PaymentMethod',
-    field: 'paymentMethodFkName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '130px',
-  },
-  {
-    labelKey: 'FinancialTransactions.Status',
-    field: 'transactionStatusFkName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '120px',
-  },
-
+  
   {
     labelKey: 'FinancialTransactions.PayerName',
     field: 'payerFkName',
@@ -73,6 +41,52 @@ export class FinancialTransactionsPageComponent {
     dataType: 'string',
     disabled: true,
     width: '220px',
+  },
+  {
+    labelKey: 'FinancialTransactions.PaymentDate',
+    field: 'paymentDate',
+    required: true,
+    dataType: 'date',
+    disabled: false,
+    width: '150px',
+  },
+
+  // {
+  //   labelKey: 'FinancialTransactions.TransactionType',
+  //   field: 'transactionTypeName',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: true,
+  //   width: '140px',
+  // },
+  {
+    labelKey: 'FinancialTransactions.PaymentMethod',
+    field: 'paymentMethodFkName',
+    fieldFK:'paymentMethodFk',
+    required: true,
+    showInTable: false ,
+    dataType: 'string',
+    disabled: false,
+    isCombobox: true,
+    apiPath: '/lookupDetails/payment-type',
+    displayItemKey: 'lookupName',
+    primaryKey: 'lookupDetailPk',
+    dataFactory: () => new LookupDetail(),
+    width: '130px',
+  },
+  {
+    labelKey: 'FinancialTransactions.Status',
+    field: 'transactionStatusFkName',
+    fieldFK: 'transactionStatusFk',
+    required: true,
+    dataType: 'string',
+    disabled: false,
+    isCombobox: true,
+    apiPath: '/lookupDetails/payment-status',
+    displayItemKey: 'lookupName',
+    primaryKey: 'lookupDetailPk',
+    dataFactory: () => new LookupDetail(),
+    width: '120px',
   },
   // {
   //   labelKey: 'FinancialTransactions.ReceiverName',
@@ -108,30 +122,41 @@ export class FinancialTransactionsPageComponent {
     width: '140px',
   },
 
-  // {
-  //   labelKey: 'FinancialTransactions.OrganizationName',
-  //   field: 'organizationName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '220px',
-  // },
+   {
+    labelKey: 'Class.PaidToTeacher',
+    field: 'teacherReceivedMoneyFl',
+    required: true,
+    dataType: 'number',
+    disabled: false,
+    isFlag: true ,
+    width: '150px',
+  },
   {
+    labelKey: 'Class.PaidToCenter',
+    field: 'centerReceivedMoneyFl',
+    required: true,
+    dataType: 'number',
+    disabled: false,
+    isFlag: true ,
+    width: '150px',
+  },
+  {
+    labelKey: 'TeacherCourse.Name',
+    field: 'courseFkName',
+    required: false,
+    dataType: 'string',
+    disabled: true,
+    width: '240px',
+  },
+    {
     labelKey: 'FinancialTransactions.ClassTitle',
     field: 'classTitle',
     required: false,
     dataType: 'string',
     disabled: true,
     width: '240px',
+    showInTable : false ,
   },
-  // {
-  //   labelKey: 'FinancialTransactions.CourseName',
-  //   field: 'courseName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '240px',
-  // },
   // {
   //   labelKey: 'FinancialTransactions.SubjectName',
   //   field: 'subjectName',
@@ -141,14 +166,14 @@ export class FinancialTransactionsPageComponent {
   //   width: '180px',
   // },
 
-  {
-    labelKey: 'FinancialTransactions.ReferenceNo',
-    field: 'referenceNo',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '160px',
-  },
+  // {
+  //   labelKey: 'FinancialTransactions.ReferenceNo',
+  //   field: 'referenceNo',
+  //   required: false,
+  //   dataType: 'string',
+  //   disabled: true,
+  //   width: '160px',
+  // },
   // {
   //   labelKey: 'FinancialTransactions.Notes',
   //   field: 'notes',

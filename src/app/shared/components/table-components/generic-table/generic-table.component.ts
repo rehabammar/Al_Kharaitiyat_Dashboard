@@ -437,6 +437,8 @@ clearAllFilters = ()=> {
         } else if (data.length > 0) {
           this.selectedRow = data[0];
         }
+      // this.rowSelected.emit(this.selectedRow);
+
       }
       this.changeDetectorRef.markForCheck();
     });
@@ -517,7 +519,7 @@ public removeRow(rowOrId: any) {
 
   const next = newData[idx] ?? newData[idx - 1] ?? null;
   this.selectedRow = next as any;
-  this.rowSelected.emit(next as any);
+  this.rowSelected.emit(this.selectedRow);
   this.changeDetectorRef.markForCheck();
 }
 

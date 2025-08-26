@@ -13,7 +13,7 @@ import { PreLoginPageComponent } from './Features/pre-login/components/pre-login
 
 
 const routes: Routes = [
-    { path: '', component: PreLoginPageComponent },      
+  { path: '', redirectTo: '/MainPage', pathMatch: 'full' }, 
   { path: 'MainPage', component: PreLoginPageComponent },
   { path: 'login', component: LoginComponent },
     {

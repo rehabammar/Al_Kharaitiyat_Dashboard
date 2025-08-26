@@ -14,8 +14,10 @@ export class HeaderComponent {
 constructor(private router: Router , private userService : UserService ) {}
 
 handleLogoutClick() {
-      this.userService.clearUser();
-    this.router.navigate(['/login']);
+    this.userService.clearUser();
+    // this.router.navigate(['/login']);
+    window.location.replace('/login');
+
 }
 
 }
