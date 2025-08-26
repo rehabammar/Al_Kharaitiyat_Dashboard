@@ -2943,6 +2943,7 @@ hr {
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
     .button-header.margin-left {
+        padding-top: 150px;
         margin-left: 0px !important;
         margin-bottom: 8px !important
     }
@@ -2950,6 +2951,7 @@ hr {
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
     .button-header.margin-left {
+        padding-top: 150px;
         margin-left: 0px !important;
         margin-bottom: 8px !important
     }
@@ -3268,7 +3270,7 @@ hr {
 
     .slider-area .hero__caption.hero__caption2,
     .slider-area2 .hero__caption.hero__caption2 {
-        padding-top: 0px
+        padding-top: 184px
     }
 }
 
@@ -4686,11 +4688,10 @@ hr {
 }
 
 .login-form .form-input label {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 600;
     color: #fff ;
     text-align: end;
-    font-family: 'cairoFont';
 
 }
 
@@ -4722,17 +4723,13 @@ hr {
     font-size: 18px;
     font-weight: 700;
     border-radius: 20px;
-    transition: .4s ;
-    font-family: 'cairoFont';
-
+    transition: .4s
 }
 
 .login-form .form-input input[type="submit"]:hover {
     background: #000;
     color: #000;
-    background: #ffffff00 ;
-    font-family: 'cairoFont';
-
+    background: #ffffff00
 }
 
 .login-form .forget {
@@ -4741,10 +4738,7 @@ hr {
     color: #fff;
     font-weight: 600;
     text-decoration: underline;
-    margin-bottom: 5px ;
-    font-family: 'cairoBoldFont';
-    font-size: 14px ;
-
+    margin-bottom: 5px
 }
 
 .login-form .forget:hover {
