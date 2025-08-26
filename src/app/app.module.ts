@@ -52,7 +52,6 @@ import { ReportsFormComponent } from './Features/reports/components/reports-form
 import { LoadingSpinnerComponent } from './shared/app-template/loading-spinner/loading-spinner.component';
 import { MonthlyFinancialTransactionsComponent } from './Features/home/components/monthly-financial-transactions/monthly-financial-transactions.component';
 import { BaseChartDirective } from 'ng2-charts';
-import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';
 import { DailyClassSummaryComponent } from './Features/home/components/daily-class-summary/daily-class-summary.component';
 import { ImageRotatorComponent } from './Features/home/components/image-rotator/image-rotator.component';
 import { ClassesTimelineByTeacherComponent } from './Features/home/components/classes-timeline-by-teacher/classes-timeline-by-teacher.component';
@@ -60,7 +59,9 @@ import { PreLoginPageComponent } from './Features/pre-login/components/pre-login
 import { PreLoginFooterComponent } from './Features/pre-login/components/pre-login-footer/pre-login-footer.component';
 import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-login-header/pre-login-header.component';              
 import { SearchDialogComponent } from './shared/components/search-dialog/search-dialog.component';
-
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 
 
 
@@ -98,7 +99,6 @@ import { SearchDialogComponent } from './shared/components/search-dialog/search-
     ReportsFormComponent,
     LoadingSpinnerComponent,
     MonthlyFinancialTransactionsComponent,
-    CenterStatisticsComponent,
     DailyClassSummaryComponent,
     ImageRotatorComponent,
     ClassesTimelineByTeacherComponent,
@@ -134,18 +134,19 @@ import { SearchDialogComponent } from './shared/components/search-dialog/search-
    MatFormFieldModule,
    MatInputModule,
    MatNativeDateModule,
-  //  NgxMatDatetimePickerModule,
-    // NgxMatTimepickerModule,
-    // NgxMatNativeDateModule
-   BaseChartDirective
+   BaseChartDirective,
+
   ],
   providers: [
   { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
- {
+  {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },
+  },
+  provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+  provideMessaging(() => getMessaging()),
+  
   ],  bootstrap: [AppComponent]
 })
 export class AppModule { }

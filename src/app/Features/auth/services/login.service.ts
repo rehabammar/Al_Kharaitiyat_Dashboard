@@ -17,10 +17,11 @@ export class LoginService  {
   }
 
 
-  login(username: String, password: String) {
+  login(username: String, password: String , fbToken: String) {
     const loginRequestBody = {
         "username": username,
         "password": password,
+        "fbToken":fbToken
     };
 
     this.apiService.post<User>(ApiEndpoints.userLogin(), loginRequestBody)

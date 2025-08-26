@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +8,11 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'eduction_center_project';
+export class AppComponent implements OnInit {
+  constructor( private titleService: Title , private translateService: TranslateService ){}
+  ngOnInit(): void {
+    this.translateService.get('app-name').subscribe((translatedTitle: string) => {
+      this.titleService.setTitle(translatedTitle);  
+    });
+  }
 }

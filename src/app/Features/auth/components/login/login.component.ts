@@ -4,6 +4,9 @@ import { Language } from '../../models/language.interface';
 import { LanguageService } from '../../../../core/services/shared/language.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
+import { Messaging } from '@angular/fire/messaging';
+import { getToken, onMessage } from 'firebase/messaging';
+import { MessagingBridgeService } from '../../../../core/services/shared/messaging-bridge.service';
 
 
 
@@ -13,28 +16,32 @@ import { Title } from '@angular/platform-browser';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'] // <- plural fix
 })
-export class LoginComponent  implements OnInit{
+export class LoginComponent implements OnInit {
   userName = '';
   password = '';
   loading = false;
   showError = false;
   errorMessage = '';
   languagesList: Language[] = [
-  { langCode: 'ar', langName: 'عربي'  , rtlFl : 1},
-  { langCode: 'en', langName: 'English' , rtlFl : 0 },
+    { langCode: 'ar', langName: 'عربي', rtlFl: 1 },
+    { langCode: 'en', langName: 'English', rtlFl: 0 },
   ];
 
 
-  selectedLanguage! : Language  ;
-   direction!: 'rtl' | 'ltr';
+  selectedLanguage!: Language;
+  direction!: 'rtl' | 'ltr';
+  firebaseToken: string = "";
 
   constructor(
-    private loginService: LoginService , 
+    private loginService: LoginService,
     private translateService: TranslateService,
-    private titleService: Title ,
+    private titleService: Title,
+    private messaging: Messaging,
+    private bridge: MessagingBridgeService
 
-) { }
+  ) { }
   ngOnInit(): void {
+    this.requestPermission();
     this.LoadLanguage();
   }
 
@@ -48,19 +55,19 @@ export class LoginComponent  implements OnInit{
 
 
   LoadLanguage() {
-    this.selectedLanguage = LanguageService.getLanguage() ?? this.languagesList[0] ;
+    this.selectedLanguage = LanguageService.getLanguage() ?? this.languagesList[0];
     this.direction = this.selectedLanguage.rtlFl === 1 ? 'rtl' : 'ltr';
     this.translateService.setDefaultLang(this.selectedLanguage.langCode!);
     this.translateService.use(this.selectedLanguage.langCode!);
     this.setDirection(this.selectedLanguage.langCode!, this.direction);
     this.translateService.get('app-name').subscribe((translatedTitle: string) => {
-      this.titleService.setTitle(translatedTitle);  
+      this.titleService.setTitle(translatedTitle);
     });
 
   }
 
 
-    changeLanguage(langCode: string) {
+  changeLanguage(langCode: string) {
 
     if (this.selectedLanguage == this.languagesList[0]) {
       this.selectedLanguage = this.languagesList[1];
@@ -74,7 +81,7 @@ export class LoginComponent  implements OnInit{
     this.translateService.use(this.selectedLanguage.langCode!);
     this.setDirection(this.selectedLanguage.langCode!, this.direction);
     this.translateService.get('app-name').subscribe((translatedTitle: string) => {
-      this.titleService.setTitle(translatedTitle);  
+      this.titleService.setTitle(translatedTitle);
     });
 
     // this.changeCssFile(this.direction);
@@ -100,6 +107,30 @@ export class LoginComponent  implements OnInit{
     this.showError = false;
     this.errorMessage = '';
 
-    this.loginService.login(this.userName, this.password);
+    this.loginService.login(this.userName, this.password , this.firebaseToken);
+  }
+
+  requestPermission() {
+    getToken(this.messaging, {
+      vapidKey: "BBGADUbR7r84W8iKcirY5DgLDee33UQkila-2xZ_j--luznCg9ZflgatJBjH5hV3GKn7l-O5qDFgGum45f5F73Q" // من Firebase Console
+    }).then((currentToken) => {
+      if (currentToken) {
+        console.log("Got FCM token:", currentToken);
+        // ابعته للسيرفر بتاعك
+        this.firebaseToken = currentToken;
+      } else {
+        console.log("No registration token available.");
+      }
+    }).catch((err) => {
+      console.error("An error occurred while retrieving token. ", err);
+    });
+
+    // استقبال رسالة foreground
+    onMessage(this.messaging, (payload) => {
+      console.log("Message received in foreground: ", payload);
+      alert(payload.notification?.title + ": " + payload.notification?.body);
+      this.bridge.emit({ type: 'REFRESH', payload, source: 'foreground' });
+
+    });
   }
 }

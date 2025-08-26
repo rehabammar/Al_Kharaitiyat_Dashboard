@@ -99,7 +99,7 @@ export class MonthlyFinancialTransactionsComponent implements OnInit, OnDestroy 
     this.langSub?.unsubscribe();
   }
 
-  private loadData(): void {
+   loadData(): void {
     this.homeService.getMonthlyfinancialTransactions().subscribe({
       next: (list) => this.applyData(list ?? []),
       error: () => this.applyData([])

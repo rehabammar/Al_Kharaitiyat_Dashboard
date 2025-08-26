@@ -83,7 +83,11 @@ export class DailyClassSummaryComponent implements OnInit, OnDestroy {
       this.applyTranslations();
     });
 
-    // fetch data from API
+   this.loadDate();
+  }
+
+  loadDate(){
+ // fetch data from API
     this.sub = this.homeService.getDailyClassSummary()
       .pipe(
         catchError(err => {

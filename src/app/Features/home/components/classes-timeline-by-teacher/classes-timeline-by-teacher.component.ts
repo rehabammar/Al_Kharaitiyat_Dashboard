@@ -30,18 +30,23 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
 
   // ---- grid config ----
   START_HOUR = 7;       // 07:00
-  END_HOUR   = 22;      // 10:00 PM
-  SLOT_MIN   = 10;      // slot granularity (10-minute steps like your data)
+  END_HOUR = 22;      // 10:00 PM
+  SLOT_MIN = 10;      // slot granularity (10-minute steps like your data)
 
   cols = 0;             // total grid columns
   hourLabels: HourLabel[] = [];
   rows: TeacherRow[] = [];
   loading = false;
 
-  constructor(private homeService: HomeService) {}
+  constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
     this.buildHeader();
+    this.loadData();
+  }
+
+  loadData() {
+
     this.loading = true;
     this.sub = this.homeService.getDailyClasses()
       .pipe(
@@ -64,7 +69,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
     this.hourLabels = [];
     for (let h = this.START_HOUR; h < this.END_HOUR; h++) {
       const startSlot = ((h - this.START_HOUR) * 60) / this.SLOT_MIN;
-      const endSlot   = ((h + 1 - this.START_HOUR) * 60) / this.SLOT_MIN;
+      const endSlot = ((h + 1 - this.START_HOUR) * 60) / this.SLOT_MIN;
       const label = this.formatHour(h);
       this.hourLabels.push({ col: `${startSlot + 1} / ${endSlot + 1}`, label });
     }
@@ -85,7 +90,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
 
       // Build a block for the row
       const start = this.toDate(c?.expectedStartTime);
-      const end   = this.toDate(c?.expectedEndTime) ?? start;
+      const end = this.toDate(c?.expectedEndTime) ?? start;
       const { colStart, colEnd } = this.toGridSpan(start, end);
 
       const block: Block = {
@@ -135,7 +140,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
     const eMin = Math.max(sMin + this.SLOT_MIN, minutesFromStart(e)); // min 1 slot
 
     const colStart = Math.floor(sMin / this.SLOT_MIN) + 1;
-    const colEnd   = Math.ceil(eMin / this.SLOT_MIN) + 1;
+    const colEnd = Math.ceil(eMin / this.SLOT_MIN) + 1;
 
     return { colStart, colEnd };
   }
@@ -153,10 +158,10 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   private statusClass(s?: string | null): string {
     switch ((s || '').trim()) {
       case 'مجدولة': return 'badge scheduled';
-      case 'جارية':  return 'badge running';
-      case 'انتهت':  return 'badge done';
-      case 'ملغاة':  return 'badge canceled';
-      default:        return 'badge';
+      case 'جارية': return 'badge running';
+      case 'انتهت': return 'badge done';
+      case 'ملغاة': return 'badge canceled';
+      default: return 'badge';
     }
   }
 }

@@ -23,8 +23,7 @@ static buildCrudEndpoints = (basePath: string) => ({
   static userApi = `${baseUrl}/users`;
 
   static getImage = (path: string) => api(`/api/images/getImage?path=${path}`);
-
-  static userLogin = () => api('/register/auth/login');
+  static userLogin = () => api('/register/auth/loginAdmins');
   static resetPasswordRequest = () => api('/users/request-reset-password');
   static resetPasswordVerification = () => api('/users/reset-password-verification');
   static resetPassword = () => api('/users/reset-password');
