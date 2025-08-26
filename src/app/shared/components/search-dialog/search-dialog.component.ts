@@ -23,8 +23,9 @@ export class SearchDialogComponent<T extends Record<string, any>> {
       apiEndpoint: string;
       columns: TableColumn[];
       dataFactory: () => T;
-      id: number;
       label: string;
+     parameter: Record<string, any> ;
+
     },
     private changeDetectorRef: ChangeDetectorRef,
     private searchFactory: SearchServiceFactory,
@@ -32,10 +33,8 @@ export class SearchDialogComponent<T extends Record<string, any>> {
 
   dataSource = new MatTableDataSource<T>([]);
   displayedColumns: string[] = [];
-  filters: Set<any> = new Set();
   totalCount: number = 0;
   selectedRow: T | null = null;
-  Id?: number;
   parameter: Record<string, any> = {};
 
 
@@ -49,20 +48,43 @@ export class SearchDialogComponent<T extends Record<string, any>> {
 
   public searchService!: SearchService<T>;
 
+    isHovered: string | null = null;
+
+  filters: Record<string, any> = {};   // e.g. { teacherCourseName: 'شرح' }
+  sort: Array<{ property: string; direction: 'asc' | 'desc' }> = [];
+  activeSort: { field: string; direction: 'asc' | 'desc' } | null = null;
+
+  lastSelectedId?: number;
+  lastPageIndex: number = 0;
+
 
 
   ngOnInit(): void {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + this.data.apiEndpoint);
     this.label = this.data.label;
     this.searchService = this.searchFactory.create<T>(this.data.apiEndpoint);
     this.columns = this.data.columns;
     this.dataFactory = this.data.dataFactory;
-    this.Id = this.data.id;
+    this.parameter = this.data.parameter ;
     this.displayedColumns = this.columns.map(col => col.field!);
 
-    if (this.Id) {
-      this.parameter = { id: this.Id }
-    }
+    // if (this.selectedId) {
+    //   this.parameter = { [this.searchParameterKey!]: this.selectedId };
+    // }
+
+    this.searchService.data$.subscribe((systems: T[]) => {
+      this.dataSource.data = systems;
+      if (!this.selectedRow && systems.length > 0) {
+        this.selectedRow = systems[0];
+      }else{
+        this.selectedRow = undefined as any;
+      }
+      this.changeDetectorRef.markForCheck();
+    });
+
+    this.searchService.totalElements$.subscribe((count: number) => {
+      this.totalCount = count;
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -83,85 +105,100 @@ export class SearchDialogComponent<T extends Record<string, any>> {
 
     if (position > height - threshold && !this.isLoading && this.totalCount != this.dataSource.data.length) {
       this.currentPage++;
-      this.loadData(Array.from(this.filters), true);
+      this.loadData();
     }
   }
 
 
 
 
-  loadData(filters?: any, append: boolean = false): void {
-    this.isLoading = true;
+  loadData(): void {
+  const pageIndex = this.currentPage ?? 0;
+  const pageSize = this.pageSize ?? 10;
 
-    this.searchService.getAll(this.currentPage, this.pageSize, filters, this.parameter).subscribe(() => {
-      this.searchService.data$.pipe(take(1)).subscribe((newItems: T[]) => {
-        this.dataSource.data = append ? [...this.dataSource.data, ...newItems] : newItems;
+  // build the new body shape
+  const body = this.buildRequest(pageIndex, pageSize);
 
-        if (!this.selectedRow && this.dataSource.data.length > 0) {
-          this.selectedRow = this.dataSource.data[0];
-        }
+  this.searchService.getAll(pageIndex, pageSize, undefined, body).subscribe();
+}
 
-        this.searchService.totalElements$.pipe(take(1)).subscribe((total: number) => {
-          this.totalCount = total;
-          this.isLoading = false;
-          this.changeDetectorRef.markForCheck();
-        });
-      });
-    });
+
+  private buildRequest(page: number, size: number) {
+  return {
+    page,
+    size,
+    ...this.parameter,           
+    ...this.filters,             
+    ...(this.sort.length ? { sort: this.sort } : {})
+  };
+}
+
+getSortClass(field: string, dir: 'asc' | 'desc'): string {
+  const s = this.sort[0];
+  return s && s.property === field && s.direction === dir
+    ? 'sort-arrow active'
+    : 'sort-arrow';
+}
+
+isSorted(field: string): boolean {
+  const s = this.sort[0];
+  return !!s && s.property === field;
+}
+
+getSortDirection(field: string): 'asc' | 'desc' | null {
+  const s = this.sort[0];
+  return s && s.property === field ? s.direction : null;
+}
+
+
+  private coerceByType(value: any, dataType?: string) {
+  if (value == null || value === '') return '';
+  if (dataType === 'number') {
+    const n = Number(value);
+    return Number.isNaN(n) ? '' : n;
   }
+  return String(value).trim();
+}
 
 
 
-  applyFilter(
-    field: string,
-    event: Event | null,
-    direction: 'asc' | 'desc' = 'asc',
-    dataType?: string,
-    isSorting: boolean = false
-  ): void {
-
-    let value = "";
-
+ applyFilter(
+  field: string,
+  event: Event | null,
+  direction: 'asc' | 'desc' = 'asc',
+  dataType?: string,
+  isSorting: boolean = false
+): void {
+  if (isSorting) {
+    this.activeSort = { field, direction };
+    // single-sort; if you want multi-sort, push instead of replace
+    this.sort = [{ property: field, direction }];
+  } else {
+    let value: any = '';
     if (event) {
-      const inputElement = event.target as HTMLInputElement;
-      if (inputElement) {
-        value = inputElement.value.trim();
-      }
+      const el = event.target as HTMLInputElement | null;
+      value = el?.value ?? '';
     }
+    const coerced = this.coerceByType(value, dataType);
 
-    const newFilter = {
-      field: field,
-      value: value,
-      dataType: dataType,
-      sortDirection: isSorting ? direction : ''
-    };
-
-    const existingFilterIndex = Array.from(this.filters).findIndex(
-      (filter: any) => filter.field === field
-    );
-
-    if (isSorting) {
-      this.filters = new Set(
-        Array.from(this.filters).filter((filter: any) => !filter.sortDirection)
-      );
-
-      if (value !== "" || !event) {
-        this.filters.add(newFilter);
-      }
-
+    if (coerced === '' || coerced == null) {
+      delete this.filters[field];
     } else {
-      if (existingFilterIndex !== -1) {
-        const existingFilter = Array.from(this.filters)[existingFilterIndex];
-        this.filters.delete(existingFilter);
-      }
-
-      if (value !== "" || !event) {
-        this.filters.add(newFilter);
-      }
+      this.filters[field] = coerced;
     }
-
-    this.loadData(Array.from(this.filters));
   }
+
+  this.loadData(); 
+}
+
+
+reset = ()=> {
+  this.filters = {};
+  this.sort = [];
+  this.activeSort = null;
+  this.currentPage = 0 ;
+  this.loadData();
+}
 
   selectRow(row: T): void {
     this.selectedRow = row;
@@ -170,14 +207,6 @@ export class SearchDialogComponent<T extends Record<string, any>> {
 
   search = ()=> {
   }
-
-  reset = ()=> {
-    this.filters.clear();
-    this.currentPage = 0;
-    this.loadData();
-
-  }
-
 
 
   confirm = ()=> {

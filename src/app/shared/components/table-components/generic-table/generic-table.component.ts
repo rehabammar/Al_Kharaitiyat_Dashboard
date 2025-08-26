@@ -145,6 +145,9 @@ ngOnInit(): void {
     }
   }
 
+  trackByPrimaryKey = (_: number, row: any) => row?.[this.primaryKey];
+
+
   // loadData(filters?: any): void {
   //   const pageIndex = this.paginator.pageIndex || 0;
   //   const pageSize = this.paginator.pageSize || 10;

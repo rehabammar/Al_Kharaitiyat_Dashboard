@@ -24,19 +24,39 @@ export class SearchService<T> {
 
   }
 
-  getAll(page: number, size: number, filters?: any ,  extraParams?: Record<string, any>) {
-    const requestBody = {
-      lang: LanguageService.getLanguage()?.langCode,
-      // page,
-      // size,
-      // filters,
-    };
+  // getAll(page: number, size: number, filters?: any ,  extraParams?: Record<string, any>) {
+  //   const requestBody = {
+  //     lang: LanguageService.getLanguage()?.langCode,
+  //     // page,
+  //     // size,
+  //     // filters,
+  //   };
+  //   return this.apiService.post<ApiPage<T>>(this.fullPath, requestBody).pipe(
+  //     tap(response => {
+  //       this.dataSubject.next(response.data.content);
+  //       this.totalElementsSubject.next(response.data.totalElements);
+  //     })
+  //   );
+  // }
+
+  
+  getAll(
+    pageNumber: number,
+    pageSize: number,
+    filters?: any,
+    extraParams?: Record<string, any>
+  ) {
+    const requestBody = { "page" : pageNumber, "size":pageSize, filters, ...(extraParams ?? {}) };
+
     return this.apiService.post<ApiPage<T>>(this.fullPath, requestBody).pipe(
-      tap(response => {
-        this.dataSubject.next(response.data.content);
-        this.totalElementsSubject.next(response.data.totalElements);
-      })
+      // handle content + totals here
+      tap(res => {
+        const page = res.data; // ApiPage<T>
+        this.dataSubject.next(page.content);
+        this.totalElementsSubject.next(page.totalElements);
+      }),
     );
   }
+
 
 }

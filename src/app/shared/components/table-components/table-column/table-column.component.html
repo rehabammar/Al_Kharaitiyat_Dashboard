@@ -16,7 +16,7 @@
     <ng-container [ngSwitch]="true">
 
       <!-- 1) ComboBox / Autocomplete -->
-      <div *ngSwitchCase="column.isCombobox" class="input-icon-wrapper">
+      <div *ngSwitchCase="column.isCombobox">
        <app-combobox-search
             [apiPath]="column.apiPath!"
             [dataFactory]="column.dataFactory!"
@@ -35,13 +35,15 @@
           matInput
           class="custom-input"
           [attr.name]="column.field"
-          [placeholder]="column.labelKey | translate"
+          [placeholder]="column.searchFieldplaceholder | translate"
           [ngModel]="currentRow[column.field]"
           (ngModelChange)="updateColumnData($event)"
           (keyup.enter)="column.onSearch?.(currentRow)"
           [class.input-error]="isFieldInvalid()"
-          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
-        <button type="button" class="search-icon" (click)="column.onSearch?.(currentRow)">
+          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'"
+          [disabled]="selectedRow[primaryKey] != null">
+        
+        <button type="button" class="search-icon" (click)="updateCurrentRowAfterSelection()" *ngIf="selectedRow[primaryKey] == null">
           <mat-icon>search</mat-icon>
         </button>
       </div>

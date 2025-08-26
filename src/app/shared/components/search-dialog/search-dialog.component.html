@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ label | translate}}</h1>
+<h1 mat-dialog-title style="padding: 5px;">{{ label | translate}}</h1>
 
 <mat-dialog-content class="dialog-content">
     <div class="form-container">
@@ -69,12 +69,12 @@
 
             <span *ngIf="column.required " class="required-indicator">*</span>
 
-            <!-- <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
+            <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
               <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'asc')"
                 (click)="applyFilter(column.field, null, 'asc', column.dataType, true)">▲</span>
               <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'desc')"
                 (click)="applyFilter(column.field, null, 'desc', column.dataType, true)">▼</span>
-            </div> -->
+            </div>
           </div>
         </div>
 

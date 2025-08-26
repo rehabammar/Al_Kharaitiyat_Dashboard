@@ -78,6 +78,7 @@
     "Class.LocationEndLat": "خط عرض النهاية",
     "Class.LocationEndLong": "خط طول النهاية",
     "CourseStudent.Students": "الطلاب",
+    "CourseStudent.SelectStudent": "اختر الطالب",
     "CourseStudent.CourseStudentPk": "رمز الطالب",
     "CourseStudent.Student": "الطالب",
     "CourseStudent.TeacherCourse": "الكورس / الشعبة",

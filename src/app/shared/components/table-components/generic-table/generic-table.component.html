@@ -13,15 +13,7 @@
     </app-button>
 
     <ng-container *ngIf="isEditableTable">
-        <app-button 
-          [label]="'delete'" 
-          [imageSrc]="'/assets/img/icon/delete.svg'"
-          [color]="'#dc3545'"
-          [onClick]="openDeletePopup"
-          [showButton]="buttonVisibility.showDelete!"
-          [disabled]="buttonDisabled['delete']">
-        </app-button>
-
+       
         <app-button
           [label]="'createInsert'" 
           [imageSrc]="'/assets/img/icon/createInsert.png'"
@@ -35,8 +27,17 @@
           [imageSrc]="'/assets/img/icon/save.svg'" 
           [onClick]="save"
           [showButton]="buttonVisibility.showSave!"
-          [disabled]="buttonDisabled['save']">
+          [disabled]="buttonDisabled['save'] || selectedRow==null">
         </app-button> 
+         <app-button 
+          [label]="'delete'" 
+          [imageSrc]="'/assets/img/icon/delete.svg'"
+          [color]="'#dc3545'"
+          [onClick]="openDeletePopup"
+          [showButton]="buttonVisibility.showDelete!"
+          [disabled]="buttonDisabled['delete'] || selectedRow==null">
+        </app-button>
+
       </ng-container>
 
     <!-- <app-button 
@@ -77,7 +78,9 @@
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
 
-    <ng-container *ngFor="let column of columns" [matColumnDef]="column.field">
+    <!-- <ng-container *ngFor="let column of columns" [matColumnDef]="column.field"> -->
+    <ng-container *ngFor="let column of columns; trackBy: trackByPrimaryKey " [matColumnDef]="column.field">
+
       <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
         <div class="header-container" [ngClass]="showFilter ? 'with-filter' : 'no-filter'">
           <div class="filter-container" *ngIf="showFilter">
@@ -110,6 +113,7 @@
          [selectedRow]="selectedRow"
          [isSaveAttempted]="isSaveAttempted"
          [isEditableTable]="isEditableTable"
+         [primaryKey]="primaryKey"
          (fieldChanged)="onFieldChanged(row, $event)"
         >
         </app-table-column>

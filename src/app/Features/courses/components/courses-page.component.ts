@@ -14,6 +14,8 @@ import { StudentAttendance } from '../models/student-attendance.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from '../../../shared/components/search-dialog/search-dialog.component';
 import { ApiEndpoints } from '../../../core/constants/api-endpoints';
+import { Observable } from 'rxjs/internal/Observable';
+import { map, take } from 'rxjs';
 
 interface Course {
   category: string;
@@ -43,7 +45,7 @@ interface ServiceItem {
 })
 export class CoursesPageComponent {
 
-  constructor(private dialog : MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
   @ViewChild('teacherCourseTable') table!: GenericTableComponent<TeacherCourse>;
   @ViewChild('classesTableRef') classesTable!: GenericTableComponent<Class>;
@@ -192,7 +194,7 @@ export class CoursesPageComponent {
       required: true,
       dataType: 'number',
       disabled: false,
-      width: '110px'
+      width: '120px'
     },
     {
       labelKey: 'TeacherCourse.PriceType',
@@ -216,20 +218,21 @@ export class CoursesPageComponent {
     //   disabled: false,
     //   width: '130px'
     // },
-    // {
-    //   labelKey: 'TeacherCourse.MaxStudents',
-    //   field: 'maxStudents',
-    //   required: true,
-    //   dataType: 'number',
-    //   disabled: false,
-    //   width: '120px'
-    // },
     {
-      labelKey: 'TeacherCourse.ActualStudentsCount',
-      field: 'actualStudentsCount',
+      labelKey: 'TeacherCourse.MaxStudents',
+      field: 'maxStudents',
       required: true,
       dataType: 'number',
       disabled: false,
+      width: '120px',
+      showInTable : false ,
+    },
+    {
+      labelKey: 'TeacherCourse.ActualStudentsCount',
+      field: 'actualStudentsCount',
+      required: false,
+      dataType: 'number',
+      disabled: true,
       width: '230px'
     },
     // {
@@ -391,7 +394,7 @@ export class CoursesPageComponent {
       field: 'actualPayedAmount',
       required: false,
       dataType: 'number',
-      disabled: false,
+      disabled: true,
       width: '170px'
     },
     // {
@@ -500,7 +503,6 @@ export class CoursesPageComponent {
       required: false,
       dataType: 'number',
       disabled: true,
-      width: '110px',
     },
     {
       labelKey: 'CourseStudent.Student',
@@ -508,12 +510,8 @@ export class CoursesPageComponent {
       fieldFK: 'studentFk',
       required: true,
       searchField: true,
-      onSearch: (currentRow : any )=> this.openUsersSearchDialog(currentRow) ,
-      // apiPath: '/students/searchAll',
-      // displayItemKey: 'fullName',
-      // primaryKey: 'studentPk',
-      // dataFactory: () => ({} as any),
-      width: '240px',
+      searchFieldplaceholder: 'CourseStudent.SelectStudent',
+      onSearch: () => this.openUsersSearchDialog()
     },
     {
       labelKey: 'CourseStudent.JoinStatus',
@@ -525,7 +523,6 @@ export class CoursesPageComponent {
       displayItemKey: 'lookupName',
       primaryKey: 'lookupDetailPk',
       dataFactory: () => new LookupDetail(),
-      width: '180px',
     },
     {
       labelKey: 'CourseStudent.RegistrationDate',
@@ -533,7 +530,6 @@ export class CoursesPageComponent {
       required: false,
       dataType: 'date',
       disabled: true,
-      width: '200px',
     },
 
     // الحضور (فلاج)
@@ -572,14 +568,23 @@ export class CoursesPageComponent {
       required: true,
       dataType: 'string',
       disabled: false,
-      width: '220px'
+      width: '220px',
+      searchField: true,
+      searchFieldplaceholder: 'CourseStudent.SelectStudent',
+      onSearch: () => this.openStudentAttendencSearchDialog()  
     },
     {
       labelKey: 'StudentAttendance.PaymentStatusName',
       field: 'paymentStatusName',
+      fieldFK:'paymentStatusFk',
       required: false,
       dataType: 'string',
-      disabled: true,
+      disabled: false,
+      isCombobox: true,
+      apiPath: '/lookupDetails/payment-status',
+      displayItemKey: 'lookupName',
+      primaryKey: 'lookupDetailPk',
+      dataFactory: () => new LookupDetail(),
       width: '180px'
     },
     {
@@ -675,16 +680,16 @@ export class CoursesPageComponent {
 
   // ======== add new student to course ========= 
 
-   openUsersSearchDialog( currentRow : any ): void {
+  openUsersSearchDialog(): Observable<CourseStudent | null>  {
 
     const dialogRef = this.dialog.open(SearchDialogComponent,
       {
         maxWidth: "80vw",
         width: '50vw',
         data: {
-          apiEndpoint : ApiEndpoints.findStudentsNotInCourse , 
+          apiEndpoint: ApiEndpoints.findStudentsNotInCourse,
           columns: [
-             {
+            {
               labelKey: 'User.UserPk',
               field: 'userPk',
               required: false,
@@ -692,7 +697,7 @@ export class CoursesPageComponent {
               disabled: true,
               width: '300px'
             },
-             {
+            {
               labelKey: 'User.FullName',
               field: 'fullName',
               required: false,
@@ -701,17 +706,79 @@ export class CoursesPageComponent {
               width: '220px'
             },
           ],
-          dataFactory: ()=> new User(),
-          // id: this.selectedGroupId,
-          label: 'CourseStudent.Students' 
+          dataFactory: () => new User(),
+          parameter : {teacherCourseFk : this.selectedCourse?.teacherCoursePk},
+          label: 'CourseStudent.Students'
         }
       }
 
     );
-    dialogRef.afterClosed().subscribe(result => {
-      console.log("SEEEEEEEEEEELECTD USERR " + JSON.stringify(result));
-    });
+    return dialogRef.afterClosed().pipe(
+    take(1),
+    map((pickedUser: User | null) => {
+      if (!pickedUser) return null;
+      return new CourseStudent({
+        studentFk: pickedUser.userPk,
+        studentFullName: pickedUser.fullName,
+        joinStatusFk: 85 ,
+        teacherCourseFk: this.selectedCourse?.teacherCoursePk ?? null,
+        teacherCourseName: `${this.selectedCourse?.subjectName} - ${this.selectedCourse?.teacherCourseName}`
+      });
+    })
+  );
   }
+
+
+    // ======== add student attendence to class ========= 
+
+  openStudentAttendencSearchDialog(): Observable<StudentAttendance | null>  {
+
+    const dialogRef = this.dialog.open(SearchDialogComponent,
+      {
+        maxWidth: "80vw",
+        width: '50vw',
+        data: {
+          apiEndpoint: ApiEndpoints.findStudentsNotInClass,
+          columns: [
+            {
+              labelKey: 'User.UserPk',
+              field: 'userPk',
+              required: false,
+              dataType: 'number',
+              disabled: true,
+              width: '300px'
+            },
+            {
+              labelKey: 'User.FullName',
+              field: 'fullName',
+              required: false,
+              dataType: 'string',
+              disabled: true,
+              width: '220px'
+            },
+          ],
+          dataFactory: () => new User(),
+          parameter : {
+            teacherCourseFk : this.selectedCourse?.teacherCoursePk ,
+            classFk : this.selectedClass?.classPk
+          },
+          label: 'CourseStudent.Students'
+        }
+      }
+
+    );
+    return dialogRef.afterClosed().pipe(
+    take(1),
+    map((pickedUser: User | null) => {
+      if (!pickedUser) return null;
+      return new StudentAttendance({
+        studentFk: pickedUser.userPk,
+        studentName: pickedUser.fullName,
+      });
+    })
+  );
+  }
+
 
 
 

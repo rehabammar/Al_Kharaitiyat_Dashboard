@@ -115,6 +115,8 @@ static buildCrudEndpoints = (basePath: string) => ({
   static courseLocationLookup = '/courseLocation';
   static qualificationType = '/qualification-type';
   static findStudentsNotInCourse = '/users/findStudentsNotInCourse';
+  static findStudentsNotInClass = '/users/findStudentsNotInClass';
+
 
 //  static getStudentsList = '/users/search-students' ;
 
