@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { LoadingService } from '../../core/services/shared/loading.service';
+import { LoadingService } from '../../../core/services/shared/loading.service';
 
 @Component({
   selector: 'app-loading-spinner',

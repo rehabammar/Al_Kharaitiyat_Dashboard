@@ -3,10 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PreloaderComponent } from './shared/preloader/preloader.component';
-import { HeaderComponent } from './shared/header/header.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { BackToTopComponent } from './shared/back-to-top/back-to-top.component';
+import { PreloaderComponent } from './shared/app-template/preloader/preloader.component';
+import { HeaderComponent } from './shared/app-template/header/header.component';
+import { FooterComponent } from './shared/app-template/footer/footer.component';
+import { BackToTopComponent } from './shared/app-template/back-to-top/back-to-top.component';
 import { LoginComponent } from './Features/auth/components/login/login.component';
 
 import { FormsModule } from '@angular/forms';
@@ -22,7 +22,7 @@ import { HomeComponent } from './Features/home/components/main-page/home.compone
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
-import { TemplateComponent } from './shared/template/template.component';
+import { TemplateComponent } from './shared/app-template/template/template.component';
 import { CoursesPageComponent } from './Features/courses/components/courses-page.component';
 import { MatPaginatorIntl, MatPaginatorModule , MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -49,7 +49,7 @@ import { SystemLookupsComponent } from './Features/system-lookups/components/sys
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from './shared/app-template/loading-spinner/loading-spinner.component';
 import { MonthlyFinancialTransactionsComponent } from './Features/home/components/monthly-financial-transactions/monthly-financial-transactions.component';
 import { BaseChartDirective } from 'ng2-charts';
 import { CenterStatisticsComponent } from './Features/home/components/center-statistics/center-statistics.component';

@@ -7463,3 +7463,31 @@ del {
 .switch-wrap {
     margin-bottom: 10px
 }
+
+
+.app-logo {
+    height: 60px;
+    padding: 5px;
+}
+
+.app-header {
+    padding: 2px;
+    width: 200px;
+     display: flex;
+    flex-direction: column;   /* ✅ يخلي العناصر تحت بعض */
+    align-items: center;
+    /* يوسّطهم عموديًا */
+    gap: 5px;
+    /* مسافة بسيطة بينهم */
+}
+
+.app-title {
+  color: white;
+  margin: 0;
+  font-size: 12px;          /* الحجم المناسب */
+  white-space: nowrap;      /* يمنع الكسر لسطور متعددة */
+  overflow: hidden;         /* يخفي أي زيادة */
+  text-overflow: ellipsis;  /* يحط ... لو النص طويل */
+}
+
+

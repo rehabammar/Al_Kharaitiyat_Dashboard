@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './Features/auth/components/login/login.component';
-import { TemplateComponent } from './shared/template/template.component';
+import { TemplateComponent } from './shared/app-template/template/template.component';
 import { AuthGuard } from './auth.guard';
 import { CoursesPageComponent } from './Features/courses/components/courses-page.component';
 import { UsersComponent } from './Features/users/components/users.component';
