@@ -1,0 +1,81 @@
+.contact-icons {
+  display: flex;
+  justify-content: center;   /* يخليهم في النص */
+  gap: 20px;                 /* مسافة بين الأيقونات */
+  margin-top: 20px;
+}
+
+.contact-icons a {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;        /* يخليها دائرة */
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+.contact-icons a:hover {
+  background: white;
+  color: #205080;            /* لون عند الهوفر */
+  transform: scale(1.1);     /* تكبير بسيط عند المرور */
+}
+
+
+.org-info {
+  text-align: center;         /* يوسّط النص أفقي */
+  margin: 15px 0;             /* مسافة فوق وتحت */
+}
+
+.org-info p {
+  font-size: 18px;            /* حجم الخط */
+  font-weight: 600;           /* تخانة */
+  color: #fff;                /* أبيض أو اللون اللي يناسب الخلفية */
+  line-height: 1.6;           /* مسافة بين السطور */
+}
+
+.org-info p br {
+  margin-bottom: 5px;         /* مسافة صغيرة بين السطرين */
+}
+
+.footer-tittle h4 {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #eee;
+}
+
+.contact-list i {
+  margin-left: 8px;          /* للمحاذاة بالعربي */
+  margin-right: 8px;         /* لو إنجليزي */
+  color: #ffd369;            /* لون مميز للأيقونات */
+  font-size: 16px;
+}
+
+.contact-list a {
+  color: #eee;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contact-list a:hover {
+  color: #ffd369;            /* لون مميز عند الهوفر */
+}
+
