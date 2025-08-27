@@ -43,10 +43,34 @@
   border-radius:5px; 
   display:flex; flex-direction:column; gap:4px;
   min-width: 0; /* avoid overflow */
+
+    /* تأثيرات الهوفر */ 
 }
 .class-block .title { color: #082f6c; font-weight:600; font-size: 11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding: 1px 2px 1px 1px; text-align: start; }
 .class-block .time  { font-size:10px; color:rgb(10, 40, 114); text-align: center; font-family: "cairoBoldFont"; }
 
+.class-block{
+  transition-duration: 920ms; /* دخول بطيء */
+}
+.class-block:hover{
+  transition-duration: 140ms; /* خروج أسرع */
+}
+
+/* --- hover / focus --- */
+@media (hover:hover) {
+  .class-block:hover{
+    transform: translateY(-1px) scale(1.01);
+    box-shadow:
+      0 8px 16px rgba(0,0,0,0.12),
+      0 2px 6px rgba(0,0,0,0.08);
+    background:#ffffff;     /* إضاءة بسيطة */
+    border-color:#cdd4ea;   /* حد أفتح بسيط */
+    z-index: 3;             /* يطلع فوق جيرانه لو متراكبين */
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  .class-block{ transition: none; }
+}
 /* status badges */
 /* .badge { align-self:center; font-size:12px; padding:2px 8px; border-radius:4px; }
 .badge.scheduled { background:#e0f2fe; color:#0369a1; }

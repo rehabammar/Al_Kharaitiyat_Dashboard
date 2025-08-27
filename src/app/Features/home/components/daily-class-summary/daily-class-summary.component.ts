@@ -34,6 +34,10 @@ export class DailyClassSummaryComponent implements OnInit, OnDestroy {
   pieOptions: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
+      animation: {
+    duration: 2200,             // 👈 كبّر المدة (جرب 2000–3000ms)
+    easing: 'easeOutQuart', 
+  },
     plugins: {
       legend: {
         position: 'bottom',
