@@ -285,6 +285,27 @@
   gap: 1rem 2rem; /* row gap | column gap */
 }
 
+/* شاشة لابتوب */
+@media (max-width: 1200px) {
+  .form-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* شاشة تابلت */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* شاشة موبايل */
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form-item {
   display: flex;
   flex-direction: column;
