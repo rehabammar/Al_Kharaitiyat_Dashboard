@@ -16,11 +16,39 @@
 
 .app-title {
   color: white;
-  margin: 0;
+  padding-bottom: 10px;
   font-size: 12px;          /* الحجم المناسب */
   white-space: nowrap;      /* يمنع الكسر لسطور متعددة */
   overflow: hidden;         /* يخفي أي زيادة */
   text-overflow: ellipsis;  /* يحط ... لو النص طويل */
+}
+
+/* لازم يكون العنصر الأب position: relative */
+.header-bottom,
+.header-row {
+  position: relative;
+}
+
+/* تثبيت زر الدخول في أقصى الشمال ووسط رأسيًا */
+.login-container {
+  position: absolute;
+  left: 12px;          /* المسافة من الشمال */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9;
+  display: flex;
+  align-items: center;
+}
+
+/* لو فيه أي ستايل من الـ ul/li كان بيزقّه، نحيّده */
+.login-container button,
+.login-container .btn {
+  margin: 0;
+}
+
+/* تقدر تزود مسافة من الهيدر عشان الزر ما يغطي اللوجو في الشاشات الصغيرة */
+@media (max-width: 768px) {
+  .header-bottom { padding-left: 10px; }  /* زوّد حسب الحاجة */
 }
 
 

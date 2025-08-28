@@ -44,7 +44,28 @@
   --font-bold: "cairoBoldFont", "Cairo", "Noto Kufi Arabic", Tahoma, sans-serif;
 } */
 
+@media (min-width: 992px) {
+    .col-lg-10 {
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    .col-lg-10 {
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
 
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .col-lg-10 {
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
 
 .white-bg {
     background: #ffffff
@@ -473,11 +494,12 @@ hr {
 }
 
 .btn.btn3 {
-    background: none;
+    background: #ffffff16;
     border: 1px solid #fff;
-    margin-left: 20px;
+    margin-left: 10px;
     color: #fff;
-    padding: 25px 30px !important
+    font-family: "cairoBoldFont";
+    padding: 25px 15px !important
 }
 
 .btn.btn3::before {

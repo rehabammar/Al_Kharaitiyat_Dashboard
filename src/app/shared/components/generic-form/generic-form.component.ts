@@ -124,7 +124,9 @@ export class GenericFormComponent<T extends Record<string, any>>
   toggleFlag(field: string) {
     if (!this.selectedRow) return;
     const current = Number((this.selectedRow as any)[field]) === 1 ? 1 : 0;
+    console.log('Current flag value:', current);
     const next = current === 1 ? 0 : 1;
+    console.log('Next flag value:', next);
     this.setField(field, next);
     this.markChanged(field);
     this.rowChanged.emit({ field, value: next });
@@ -244,7 +246,7 @@ export class GenericFormComponent<T extends Record<string, any>>
       this.showErrors = true;
       return;
     }
-
+  console.log('Saving row:', JSON.stringify(this.selectedRow));
     this.service.save(this.selectedRow).subscribe({
       next: (res) => {
         this.selectedRow = res;

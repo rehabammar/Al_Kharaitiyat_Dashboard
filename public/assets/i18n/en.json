@@ -31,6 +31,7 @@
     "TeacherCourse.Name": "Course name",
     "TeacherCourse.AcademicYear": "Academic year",
     "TeacherCourse.AcademicTerm": "Term",
+    "TeacherCourse.students": "Students enrolled in the course",
     "TeacherCourse.Teacher": "Teacher",
     "TeacherCourse.Subject": "Subject",
     "TeacherCourse.Stage": "Stage",
