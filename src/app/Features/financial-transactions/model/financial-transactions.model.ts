@@ -33,6 +33,7 @@ export class FinancialTransaction {
 
   centerReceivedMoneyFl?: boolean;
   teacherReceivedMoneyFl?: boolean;
+  studentPaidFl?:boolean;
 
   relatedClassFk?: number;
   relatedCourseFk?: number;

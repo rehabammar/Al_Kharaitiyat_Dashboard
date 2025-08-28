@@ -8,26 +8,78 @@
   </section>
   
   <div class="accordion-container">
-    <app-custom-accordion title="financial-transactions">
-      <app-generic-table
-       #financialTransactionTable
-       [primaryKey]="'transactionPk'"
-       [columns]="financialTransactionsColumns"
-       [dataFactory]="financialTransactionDataFactory"
-       [apiPath]="'financialTransactions'"
-       (rowSelected)="onTransactionSelected($event)"
-       >
-      </app-generic-table>
+  <app-custom-accordion title="financial-transactions">
+     <!-- Financial Transactions -->
+          <app-button
+            [label]="'FinancialTransactions.PayAll'"
+            [onClick]="openPayAllPopup">
+          </app-button>
+        <mat-tab-group mat-stretch-tabs="false" (selectedTabChange)="onTabChange($event)">
+          <!-- Center Due -->
+          <mat-tab label='{{ "FinancialTransactions.CenterDue" | translate }}'>
+            <ng-template matTabContent>
+              <app-generic-table
+                *ngIf="activeTabIndex === 0"
+                #centerTable
+                [primaryKey]="'transactionPk'"
+                [columns]="financialTransactionsColumns"
+                [dataFactory]="financialTransactionDataFactory"
+                [apiPath]="'financialTransactions'"
+                [searchParameterKey]="'payeeFk'"
+                [selectedId]="orgnizationId"
+                (rowSelected)="onTransactionSelected($event)">
+              </app-generic-table>
+            </ng-template>
+          </mat-tab>
+
+          <!-- Teacher Due -->
+          <mat-tab label='{{ "FinancialTransactions.TeacherDue" | translate }}'>
+            <ng-template matTabContent>
+              <app-generic-table
+                *ngIf="activeTabIndex === 1"
+                #teacherTable
+                [primaryKey]="'transactionPk'"
+                [columns]="financialTransactionsColumns"
+                [dataFactory]="financialTransactionDataFactory"
+                [apiPath]="'financialTransactions'"
+                [searchParameterKey]="'payerFk'"
+                [selectedId]="orgnizationId"
+                (rowSelected)="onTransactionSelected($event)">
+              </app-generic-table>
+            </ng-template>
+          </mat-tab>
+
+          <!-- Student Payments -->
+          <mat-tab label='{{ "FinancialTransactions.StudentPayments" | translate }}'>
+            <ng-template matTabContent>
+              <app-generic-table
+                *ngIf="activeTabIndex === 2"
+                #studentsTable
+                [primaryKey]="'transactionPk'"
+                [columns]="financialTransactionsColumns"
+                [dataFactory]="financialTransactionDataFactory"
+                [apiPath]="'financialTransactions'"
+                [customSearchPath]="'search-students-payments'"
+                (rowSelected)="onTransactionSelected($event)">
+              </app-generic-table>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+
     </app-custom-accordion>
     <br>
-    <app-custom-accordion title="financial-transactions">
+    <!--financial Transaction Details -->
+    <app-custom-accordion title="FinancialTransactions.Details">
       <app-generic-form
        [primaryKey]="'transactionPk'"
        [columns]="financialTransactionsColumns"
        [dataFactory]="financialTransactionDataFactory"
        [apiPath]="'financialTransactions'"
        [selectedRow]="selectedFinancialTransactions"
+       [commitLabel]="'FinancialTransactions.PayTransaction'"
+       [customUpatedPath]="'pay-single-transaction'"
        (rowChanged)="onTransactionRowChanged($event)"
+        [buttonVisibility]="buttonVisibility"
        >
       </app-generic-form>
     </app-custom-accordion>

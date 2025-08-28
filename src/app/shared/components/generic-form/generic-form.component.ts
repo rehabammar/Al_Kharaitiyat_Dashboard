@@ -6,6 +6,7 @@ import { GenericServiceFactory } from '../../../core/factories/generic-service-f
 import { GenericService } from '../../../core/services/crud/generic.service';
 import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ButtonVisibilityConfig } from '../../../core/models/button-visibility-config.interface';
 
 type Row = Record<string, any>;
 
@@ -27,9 +28,13 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: Extract<keyof T, string>;
   @Input() apiPath!: string;
-
+  @Input() customSearchPath?: string;
+  @Input() customUpatedPath?: string;
   @Input() selectedId: string | number | null | undefined = null;
   @Input() searchParameterKey!: string;
+
+  @Input() commitLabel!: string;
+
 
   @Output() rowChanged = new EventEmitter<{ field: string; value: any }>();
   @Output() newRowCreated = new EventEmitter<T>();
@@ -37,6 +42,14 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Output() rowSaved = new EventEmitter<T>();
 
   @Input() context?: string;
+
+  @Input() buttonVisibility: ButtonVisibilityConfig = {
+      showDelete: true,
+      showInsert: true,
+      showSave: true,
+      showRollback: true,
+      showTranslation: true,
+    };
 
 
   isDirty = false;
@@ -52,7 +65,7 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
-    this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey);
+    this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey , this.customSearchPath , this.customUpatedPath );
     this.mobileColumn = this.findMobileColumn();
     this.syncLocalFromRow();  
   }
@@ -126,7 +139,11 @@ export class GenericFormComponent<T extends Record<string, any>>
     const current = Number((this.selectedRow as any)[field]) === 1 ? 1 : 0;
     console.log('Current flag value:', current);
     const next = current === 1 ? 0 : 1;
+<<<<<<< HEAD
     console.log('Next flag value:', next);
+=======
+    console.log('toggleFlag', field, current, '->', next);
+>>>>>>> b798679 (last edit)
     this.setField(field, next);
     this.markChanged(field);
     this.rowChanged.emit({ field, value: next });
