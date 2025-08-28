@@ -62,6 +62,7 @@ import { SearchDialogComponent } from './shared/components/search-dialog/search-
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideMessaging, getMessaging } from '@angular/fire/messaging';
+import { PayAllPopupComponent } from './Features/financial-transactions/components/pay-all-popup/pay-all-popup.component';
 
 
 
@@ -104,7 +105,8 @@ import { provideMessaging, getMessaging } from '@angular/fire/messaging';
     ClassesTimelineByTeacherComponent,
     PreLoginPageComponent,
     PreLoginFooterComponent,
-    PreLoginHeaderComponent
+    PreLoginHeaderComponent,
+    PayAllPopupComponent
     
   ],
   imports: [

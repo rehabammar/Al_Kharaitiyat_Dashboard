@@ -2,20 +2,23 @@
   <app-button
     [label]="'createInsert'"
     [imageSrc]="'/assets/img/icon/createInsert.png'"
-    [onClick]="addNewRow">
+    [onClick]="addNewRow"
+    [showButton]="buttonVisibility.showInsert!">
   </app-button>
 
   <app-button
-    [label]="'commit'"
+    [label]="commitLabel || 'commit'"
     [imageSrc]="'/assets/img/icon/save.svg'"
-    [onClick]="save">
+    [onClick]="save"
+    [showButton]="buttonVisibility.showSave!">
   </app-button>
 
   <app-button
     [label]="'delete'"
     [imageSrc]="'/assets/img/icon/delete.svg'"
     [color]="'#dc3545'"
-    [onClick]="openDeletePopup">
+    [onClick]="openDeletePopup"
+    [showButton]="buttonVisibility.showDelete!">
   </app-button>
 </div>
 
@@ -30,10 +33,10 @@
       </div>
 
       <!-- FLAG -->
-      <ng-container *ngIf="column.isFlag; else notFlag">
+      <ng-container *ngIf="column.isFlag; else notFlag" >
         <div class="icon-wrapper"
              (click)="toggleFlag(column.field)"
-             [class.disabled]="!editable">
+             [class.disabled]="!editable || column.disabled">
           <img *ngIf="row[column.field] == 1"
                src="/assets/img/icon/tick.png"
                class="status-image" alt="Checked" />
@@ -133,16 +136,24 @@
         </div>
 
         <!-- READ ONLY -->
-        <ng-template #readOnly>
-          <span class="custom-label bidi-inherit">
-            <ng-container *ngIf="column.dataType === 'date'; else plain">
-              {{ row[column.field] | date:'MM/dd/yyyy hh:mm a' }}
-            </ng-container>
-            <ng-template #plain>
-              {{ row[column.field] }}
-            </ng-template>
-          </span>
-        </ng-template>
+       
+    <ng-template #readOnly>
+    <ng-container *ngIf="column.dataType === 'date'; else plain">
+      <span class="custom-label">
+        <ng-container *ngIf="row[column.field]; else dash">
+          {{ row[column.field] | date:'yyyy-MM-dd hh:mm a' }}
+        </ng-container>
+        <ng-template #dash>—</ng-template>
+      </span>
+    </ng-container>
+    <ng-template #plain>
+      <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+        {{row[column.field]}}
+      </span>
+    </ng-template>
+
+
+</ng-template>
       </ng-template>
     </div>
   </div>

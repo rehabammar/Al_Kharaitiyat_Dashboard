@@ -145,7 +145,7 @@ export class UsersComponent  {
     },
     {
       labelKey: 'User.Status',
-      field: 'statusFl',
+      field: 'isActiveFl',
       required: false,
       isFlag: true,
       width: '120px'

@@ -1,5 +1,7 @@
 export class AppConstants {
     static readonly CURRENT_USER_KEY: string = "currentUserKey";
+    static readonly CURRENT_ORGNIZATION_KEY: string = "currentOrgnizationKey";
+
     static readonly LANG_KEY = 'selectedLanguage';
 
     
