@@ -8,3 +8,65 @@
     display: block;
     margin: 0 auto;
 } */
+
+
+
+/* يظهر بس على الشاشات الصغيرة */
+@media (max-width: 991.98px){
+  .hamburger{
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+
+    position: fixed;             /* ثابت بالنسبة للنافذة */
+    top: calc(10px + env(safe-area-inset-top));
+    left: calc(12px + env(safe-area-inset-left));
+    z-index: 2000;               /* فوق أي هيدر أو سلايدر */
+    padding: 4px 8px;
+  }
+
+  /* لو RTL خليه أقصى يمين */
+  html[dir="rtl"] .hamburger{
+    left: auto;
+    right: calc(12px + env(safe-area-inset-right));
+  }
+
+  /* لو عندك قائمة منسدلة تحت الهيدر، ادّيلها margin-top مناسب */
+  .mobile-nav.open{
+    margin-top: 56px; /* عدّلها حسب ارتفاع الهيدر */
+  }
+}
+
+/* أخفيه على الشاشات الكبيرة */
+@media (min-width: 992px){
+  .hamburger { display: none; }
+}
+
+/* القايمة الافتراضية مخفية */
+.mobile-nav { 
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: #1d3a64;   /* خلفية داكنة للقائمة */
+}
+
+.mobile-nav li a {
+  display: block;
+  padding: 12px 16px;
+  color: #fff;
+  font-family: 'cairoBoldFont';
+  text-decoration: none;
+}
+
+.mobile-nav li a:hover {
+  background: #367FFF;
+  color: #fff;
+}
+
+/* لما نفتحه */
+.mobile-nav.open {
+  display: block;
+}

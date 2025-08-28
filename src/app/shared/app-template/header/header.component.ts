@@ -16,8 +16,16 @@ constructor(private router: Router , private userService : UserService ) {}
 handleLogoutClick() {
     this.userService.clearUser();
     // this.router.navigate(['/login']);
-    window.location.replace('/login');
+    window.location.replace('/login'); 
+}
+mobileMenuOpen = false;
 
+toggleMobileMenu() {
+  this.mobileMenuOpen = !this.mobileMenuOpen;
+}
+
+closeMobileMenu() {
+  this.mobileMenuOpen = false;
 }
 
 }

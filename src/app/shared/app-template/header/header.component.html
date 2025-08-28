@@ -41,7 +41,7 @@
                                             </li>
 
                                             <li routerLinkActive="active"> 
-                                                <a class="hover-underline" [routerLink]="['/reports']">{{ 'reports' | translate }}</a>
+                                                <a  class="hover-underline"  [routerLink]="['/reports']">{{ 'reports' | translate }} </a>
                                             </li>
 
                                             <!-- Button -->
@@ -55,10 +55,28 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Mobile Menu -->
-                        <div class="col-12">
-                            <div class="mobile_menu d-block d-lg-none"></div>
-                        </div>
+                        <!-- Mobile Menu -->  
+                         <div class="col-12 d-block d-lg-none">
+                            <div class="mobile_menu">
+                                <button class="hamburger" (click)="toggleMobileMenu()">
+                                ☰
+                                </button>
+                                <ul class="mobile-nav" [class.open]="mobileMenuOpen">
+                                <li><a [routerLink]="['/homePage']" (click)="closeMobileMenu()">{{ 'home' | translate }}</a></li>
+                                <li><a [routerLink]="['/courses']" (click)="closeMobileMenu()">{{ 'courses' | translate }}</a></li>
+                                <li><a [routerLink]="['/users']" (click)="closeMobileMenu()">{{ 'users' | translate }}</a></li>
+                                <li><a [routerLink]="['/system-lookups']" (click)="closeMobileMenu()">{{ 'systemLookups' | translate }}</a></li>
+                                <li><a [routerLink]="['/financial-transactions']" (click)="closeMobileMenu()">{{ 'financial-transactions' | translate }}</a></li>
+                                <li><a [routerLink]="['/reports']" (click)="closeMobileMenu()">{{ 'reports' | translate }}</a></li>
+                                <li>
+                                    <a (click)="handleLogoutClick(); closeMobileMenu()">
+                                    {{ 'logout' | translate }}
+                                    </a>
+                                </li>
+                                </ul>
+                            </div>
+                            </div>
+
                     </div>
                 </div>
             </div>
