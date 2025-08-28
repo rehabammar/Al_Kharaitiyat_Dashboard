@@ -139,11 +139,8 @@ export class GenericFormComponent<T extends Record<string, any>>
     const current = Number((this.selectedRow as any)[field]) === 1 ? 1 : 0;
     console.log('Current flag value:', current);
     const next = current === 1 ? 0 : 1;
-<<<<<<< HEAD
-    console.log('Next flag value:', next);
-=======
+
     console.log('toggleFlag', field, current, '->', next);
->>>>>>> b798679 (last edit)
     this.setField(field, next);
     this.markChanged(field);
     this.rowChanged.emit({ field, value: next });
