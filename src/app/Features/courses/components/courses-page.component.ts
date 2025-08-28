@@ -80,7 +80,7 @@ export class CoursesPageComponent {
       required: false,
       dataType: 'number',
       disabled: true,
-      width: '100px'
+      width: '140px'
     },
     {
       labelKey: 'TeacherCourse.Name',
@@ -136,7 +136,7 @@ export class CoursesPageComponent {
       displayItemKey: "lookupName",
       primaryKey: "lookupDetailPk",
       dataFactory: this.lookupDetailDataFactory,
-      width: '180px'
+      width: '100px'
     },
     {
       labelKey: 'TeacherCourse.Stage',

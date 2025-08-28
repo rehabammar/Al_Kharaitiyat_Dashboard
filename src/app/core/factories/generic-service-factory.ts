@@ -13,13 +13,18 @@ export class GenericServiceFactory {
 
   create<T extends Record<string, any>>(
     apiPath: string , 
-    primaryKey: keyof T
+    primaryKey: keyof T,
+    searchPath?: string , 
+    updatePath?: string,
+
   ): GenericService<T> {
     return new GenericService<T>(
       this.apiService,
       this.dialog,
       apiPath,
       primaryKey ,
+      searchPath,
+      updatePath
      
     );
   }

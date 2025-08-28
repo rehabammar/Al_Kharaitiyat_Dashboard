@@ -11,10 +11,10 @@ export function api(path: string): string {
 export class ApiEndpoints {
 
   // Generic CRUD endpoint builder for common operations
-static buildCrudEndpoints = (basePath: string) => ({
-  GET: () => api(`/${basePath}/search`),
+static buildCrudEndpoints = (basePath: string  , searchPath?: string , updatePath?:string) => ({
+  GET: () => api(`/${basePath}/${searchPath ?? 'search'}`),
   ADD: () => api(`/${basePath}/save`),
-  UPDATE: () => api(`/${basePath}/update`),
+  UPDATE: () => api(`/${basePath}/${updatePath ?? 'update'}`),
   DELETE: () => api(`/${basePath}/delete`),
   EXPORT_EXCEL: () => api(`/${basePath}/excel`)
 });
@@ -126,6 +126,10 @@ static buildCrudEndpoints = (basePath: string) => ({
   
   static getDailyClassSummary =()=>api('/classes/all-classes-today-for-dashboard');
 
+  static payAllFinancialTransactions =()=>api('/financialTransactions/pay-all-from-payer-to-payee');
+  static payAllFinancialTransactionsforStudent =()=>api('/financialTransactions/pay-all-from-payer-to-payee-from-student');
+
+  
 
   
 

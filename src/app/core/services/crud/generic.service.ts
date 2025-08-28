@@ -24,8 +24,11 @@ export class GenericService<T extends Record<string, any>> {
     private dialog: MatDialog,
     private apiPath: string,
     private primaryKey: keyof T,
+    private searchPath?: string,
+    private updatePath?: string,
+
   ) {
-    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath);
+    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath , this.searchPath , this.updatePath);
     console.table(
       Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
     );

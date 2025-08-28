@@ -1,8 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../../core/models/table-column.interface';
 import { FinancialTransaction } from '../../model/financial-transactions.model';
 import { GenericTableComponent } from '../../../../shared/components/table-components/generic-table/generic-table.component';
 import { LookupDetail } from '../../../../core/models/lookup-detail.model';
+import { SessionStorageUtil } from '../../../../core/util/session-storage';
+import { AppConstants } from '../../../../core/constants/app_constants';
+import { ButtonVisibilityConfig } from '../../../../core/models/button-visibility-config.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { PayAllPopupComponent } from '../pay-all-popup/pay-all-popup.component';
+import { FinancialTransactionsService } from '../../services/financial-transactions.service';
 
 @Component({
   selector: 'app-financial-transactions-page',
@@ -10,182 +16,256 @@ import { LookupDetail } from '../../../../core/models/lookup-detail.model';
   templateUrl: './financial-transactions-page.component.html',
   styleUrl: './financial-transactions-page.component.css'
 })
-export class FinancialTransactionsPageComponent {
-@ViewChild('financialTransactionTable') table!: GenericTableComponent<FinancialTransaction>;
+export class FinancialTransactionsPageComponent implements OnInit {
 
+  @ViewChild('centerTable') centerTable!: GenericTableComponent<FinancialTransaction>;
+  @ViewChild('teacherTable') teacherTable!: GenericTableComponent<FinancialTransaction>;
+  @ViewChild('studentsTable') studentsTable!: GenericTableComponent<FinancialTransaction>;
 
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef ,
+    private dialog: MatDialog,
+    private transactionsService : FinancialTransactionsService) { }
   financialTransactionDataFactory = () => new FinancialTransaction();
 
- financialTransactionsColumns: TableColumn[] = [
-  {
-    labelKey: 'FinancialTransactions.TransactionPk',
-    field: 'transactionPk',
-    required: false,
-    dataType: 'number',
-    disabled: true,
-    width: '110px',
-  },
-  
-  {
-    labelKey: 'FinancialTransactions.PayerName',
-    field: 'payerFkName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '220px',
-  },
-  {
-    labelKey: 'FinancialTransactions.PayeeName',
-    field: 'payeeFkName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '220px',
-  },
-  {
-    labelKey: 'FinancialTransactions.PaymentDate',
-    field: 'paymentDate',
-    required: true,
-    dataType: 'date',
-    disabled: false,
-    width: '150px',
-  },
+  orgnizationId: number = 1;
+  activeTabIndex = 0;
 
-  // {
-  //   labelKey: 'FinancialTransactions.TransactionType',
-  //   field: 'transactionTypeName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '140px',
-  // },
-  {
-    labelKey: 'FinancialTransactions.PaymentMethod',
-    field: 'paymentMethodFkName',
-    fieldFK:'paymentMethodFk',
-    required: true,
-    showInTable: false ,
-    dataType: 'string',
-    disabled: false,
-    isCombobox: true,
-    apiPath: '/lookupDetails/payment-type',
-    displayItemKey: 'lookupName',
-    primaryKey: 'lookupDetailPk',
-    dataFactory: () => new LookupDetail(),
-    width: '130px',
-  },
-  {
-    labelKey: 'FinancialTransactions.Status',
-    field: 'transactionStatusFkName',
-    fieldFK: 'transactionStatusFk',
-    required: true,
-    dataType: 'string',
-    disabled: false,
-    isCombobox: true,
-    apiPath: '/lookupDetails/payment-status',
-    displayItemKey: 'lookupName',
-    primaryKey: 'lookupDetailPk',
-    dataFactory: () => new LookupDetail(),
-    width: '120px',
-  },
-  // {
-  //   labelKey: 'FinancialTransactions.ReceiverName',
-  //   field: 'receiverName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '250px'
-  // },
 
-  {
-    labelKey: 'FinancialTransactions.AmountTotal',
-    field: 'amountTotal',
-    required: false,
-    dataType: 'number',
-    disabled: true,
-    width: '120px',
-  },
-  {
-    labelKey: 'FinancialTransactions.AmountPaid',
-    field: 'amountPaid',
-    required: false,
-    dataType: 'number',
-    disabled: true,
-    width: '170px'
-  },
-  {
-    labelKey: 'FinancialTransactions.AmountRemaining',
-    field: 'amountRemaining',
-    required: false,
-    dataType: 'number',
-    disabled: true,
-    width: '140px',
-  },
 
-   {
-    labelKey: 'Class.PaidToTeacher',
-    field: 'teacherReceivedMoneyFl',
-    required: true,
-    dataType: 'number',
-    disabled: false,
-    isFlag: true ,
-    width: '150px',
-  },
-  {
+  ngOnInit(): void {
+      this.setColumnsForTab(0); // Default to tab 0
+    // const org = SessionStorageUtil.getItem<any>(AppConstants.CURRENT_ORGNIZATION_KEY);
+
+    // if (org) {
+    //   this.orgnizationId = org.orgnizationPk;
+    //}
+    // this.changeDetectorRef.markForCheck();
+
+  }
+
+  buttonVisibility: ButtonVisibilityConfig = {
+    showDelete: false,
+    showInsert: false,
+    showSave: true,
+  };
+
+  baseColumns: TableColumn[] = [
+    {
+      labelKey: 'FinancialTransactions.TransactionPk',
+      field: 'transactionPk',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+      width: '140px',
+    },
+
+    {
+      labelKey: 'FinancialTransactions.PayerName',
+      field: 'payerFkName',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '200px',
+    },
+    {
+      labelKey: 'FinancialTransactions.PayeeName',
+      field: 'payeeFkName',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '200px',
+    },
+     {
+      labelKey: 'TeacherCourse.Name',
+      field: 'courseFkName',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '240px',
+    },
+     {
+      labelKey: 'Class.ClassPk',
+      field: 'relatedClassFk',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+      width: '200px'
+    },
+      {
+      labelKey: 'FinancialTransactions.ClassTitle',
+      field: 'classTitle',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '240px',
+      // showInTable: false,
+    },
+    {
+      labelKey: 'FinancialTransactions.PaymentDate',
+      field: 'paymentDate',
+      required: false,
+      dataType: 'date',
+      disabled: true,
+      width: '150px',
+    },
+
+    // {
+    //   labelKey: 'FinancialTransactions.TransactionType',
+    //   field: 'transactionTypeName',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: true,
+    //   width: '140px',
+    // },
+    {
+      labelKey: 'FinancialTransactions.PaymentMethod',
+      field: 'paymentMethodFkName',
+      fieldFK: 'paymentMethodFk',
+      required: true,
+      showInTable: false,
+      dataType: 'string',
+      disabled: false,
+      isCombobox: true,
+      apiPath: '/lookupDetails/payment-type',
+      displayItemKey: 'lookupName',
+      primaryKey: 'lookupDetailPk',
+      dataFactory: () => new LookupDetail(),
+      width: '130px',
+    },
+    {
+      labelKey: 'FinancialTransactions.Status',
+      field: 'transactionStatusFkName',
+      fieldFK: 'transactionStatusFk',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      // isCombobox: true,
+      // apiPath: '/lookupDetails/payment-status',
+      // displayItemKey: 'lookupName',
+      // primaryKey: 'lookupDetailPk',
+      dataFactory: () => new LookupDetail(),
+      width: '120px',
+    },
+    // {
+    //   labelKey: 'FinancialTransactions.ReceiverName',
+    //   field: 'receiverName',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: true,
+    //   width: '250px'
+    // },
+
+    {
+      labelKey: 'FinancialTransactions.AmountTotal',
+      field: 'amountTotal',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+      width: '120px',
+    },
+    {
+      labelKey: 'FinancialTransactions.AmountPaid',
+      field: 'amountPaid',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+      width: '170px'
+    },
+    {
+      labelKey: 'FinancialTransactions.AmountRemaining',
+      field: 'amountRemaining',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+      width: '140px',
+    },
+    // {
+    //   labelKey: 'FinancialTransactions.SubjectName',
+    //   field: 'subjectName',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: true,
+    //   width: '180px',
+    // },
+
+    // {
+    //   labelKey: 'FinancialTransactions.ReferenceNo',
+    //   field: 'referenceNo',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: true,
+    //   width: '160px',
+    // },
+    // {
+    //   labelKey: 'FinancialTransactions.Notes',
+    //   field: 'notes',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: false,
+    //   width: '280px',
+    // },
+  ];
+
+
+  centerPaidColumn: TableColumn = {
     labelKey: 'Class.PaidToCenter',
     field: 'centerReceivedMoneyFl',
-    required: true,
+    required: false,
     dataType: 'number',
-    disabled: false,
-    isFlag: true ,
+    disabled: true,
+    isFlag: true,
     width: '150px',
-  },
-  {
-    labelKey: 'TeacherCourse.Name',
-    field: 'courseFkName',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '240px',
-  },
-    {
-    labelKey: 'FinancialTransactions.ClassTitle',
-    field: 'classTitle',
-    required: false,
-    dataType: 'string',
-    disabled: true,
-    width: '240px',
-    showInTable : false ,
-  },
-  // {
-  //   labelKey: 'FinancialTransactions.SubjectName',
-  //   field: 'subjectName',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '180px',
-  // },
+  };
 
-  // {
-  //   labelKey: 'FinancialTransactions.ReferenceNo',
-  //   field: 'referenceNo',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: true,
-  //   width: '160px',
-  // },
-  // {
-  //   labelKey: 'FinancialTransactions.Notes',
-  //   field: 'notes',
-  //   required: false,
-  //   dataType: 'string',
-  //   disabled: false,
-  //   width: '280px',
-  // },
-];
+  teacherPaidColumn: TableColumn = {
+    labelKey: 'Class.PaidToTeacher',
+    field: 'teacherReceivedMoneyFl',
+    required: false,
+    dataType: 'number',
+    disabled: true,
+    isFlag: true,
+    width: '150px',
+  };
+   studentPaidColumn: TableColumn = {
+    labelKey: 'Class.Paid',
+    field: 'studentPaidFl',
+    required: false,
+    dataType: 'number',
+    disabled: true,
+    isFlag: true,
+    width: '150px',
+  };
 
+
+  
+  financialTransactionsColumns: TableColumn[] = [];
+
+  setColumnsForTab(tabIndex: number) {
+    if (tabIndex === 0) {
+      this.financialTransactionsColumns = [...this.baseColumns, this.centerPaidColumn];
+    } else if (tabIndex === 1) {
+      this.financialTransactionsColumns = [...this.baseColumns, this.teacherPaidColumn];
+    } else {
+      this.financialTransactionsColumns = [...this.baseColumns , this.studentPaidColumn];
+    }
+  this.changeDetectorRef.markForCheck();  }
+
+  onTabChange(event: any) {
+    console.log('Tab changed to index:', event.index);
+    this.activeTabIndex = event.index;
+    this.setColumnsForTab(event.index);
+  }
+
+
+  private get currentTable(): GenericTableComponent<FinancialTransaction> | null {
+    if (this.activeTabIndex === 0) return this.centerTable || null;
+    if (this.activeTabIndex === 1) return this.teacherTable || null;
+    return this.studentsTable || null;
+  }
 
   selectedFinancialTransactions: FinancialTransaction | null = null;
+
   onTransactionSelected(row: FinancialTransaction) {
     this.selectedFinancialTransactions = row;
   }
@@ -196,29 +276,87 @@ export class FinancialTransactionsPageComponent {
       ...this.selectedFinancialTransactions,
       [e.field]: e.value
     };
-
     const id = this.selectedFinancialTransactions.transactionPk;
-    this.table.patchRowById(id, { [e.field]: e.value } as Partial<FinancialTransaction>);
+    this.currentTable?.patchRowById(id, { [e.field]: e.value } as Partial<FinancialTransaction>);
   }
 
   onTransactionSaved(row: FinancialTransaction) {
-    this.table.patchRowById(row.transactionPk, row);
+    this.currentTable?.patchRowById(row.transactionPk, row);
   }
 
   onNewTransactionRow(row: FinancialTransaction) {
     this.selectedFinancialTransactions = row;
-    this.table.prependRow(row);
+    this.currentTable?.prependRow(row);
   }
 
   onTeacherCourseRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
     if (e.type === 'new') {
-      this.table.removeRow(e.row);
+      this.currentTable?.removeRow(e.row);
     } else {
-      this.table.removeRow(e.id);
+      this.currentTable?.removeRow(e.id);
     }
     this.selectedFinancialTransactions = null;
   }
 
 
+
+openPayAllPopup =()=> {
+  const dialogRef = this.dialog.open(PayAllPopupComponent, {
+    // width: '400px',
+    data: { selectedTabIndex: this.activeTabIndex } 
+  });
+
+   const requestBoy = {
+   }   
+
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+       let requestBody: any = {};
+
+      if (this.activeTabIndex === 0) {
+        requestBody = {
+          payerFk: result.teacher, 
+          payeeFk: this.orgnizationId, 
+          paymentMethodFk: result.paymentMethod  
+        };
+      } else if (this.activeTabIndex === 1) {
+        requestBody = {
+          payerFk: this.orgnizationId, 
+          payeeFk: result.teacher, 
+          paymentMethodFk: result.paymentMethod  
+        };
+      }else{
+
+        requestBody = {
+          payerFk: result.student, 
+          payeeFk: this.orgnizationId, 
+          paymentMethodFk: result.paymentMethod  
+        };
+      }
+
+    
+      console.log('Pay All action confirmed:', result);
+      if(this.activeTabIndex ===2){
+        this.transactionsService.payAllFinancialTransactionsforStudent(requestBody).subscribe({
+          next: (res) => {
+            this.currentTable?.loadData();
+          },
+          error: (err) => {
+            console.error('Error paying transactions:', err);
+          }
+        });
+        return;
+      }
+      this.transactionsService.payAllTransactions(requestBody).subscribe({
+        next: (res) => {
+          this.currentTable?.loadData();
+        },
+        error: (err) => {
+          console.error('Error paying transactions:', err);
+        }
+      });
+    }
+  });
+}
 
 }

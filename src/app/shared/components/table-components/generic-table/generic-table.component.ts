@@ -33,6 +33,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: keyof T;
   @Input() apiPath!: string;
+  @Input() customSearchPath?: string;
+  @Input() customUpatedPath?: string;
   @Input() selectedId: string | number | null | undefined= null; 
   @Input() searchParameterKey!: string;          
   @Output() rowSelected = new EventEmitter<any>();
@@ -109,7 +111,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   }
 ngOnInit(): void {
   this.checkPrivileges();
-  this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey);
+  this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey , this.customSearchPath , this.customUpatedPath);
   this.columns = this.columns.filter(c => (c.showInTable ?? true)) ;
   this.displayedColumns = this.columns.map(col => col.field);
 
