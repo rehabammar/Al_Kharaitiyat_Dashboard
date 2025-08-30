@@ -70,17 +70,18 @@ export class FinancialTransactionsPageComponent implements OnInit {
       disabled: true,
       width: '200px',
     },
+
     {
-      labelKey: 'FinancialTransactions.ReceiverName',
-      field: 'receiverFkName',
+      labelKey: 'FinancialTransactions.PayeeName',
+      field: 'payeeFkName',
       required: false,
       dataType: 'string',
       disabled: true,
       width: '200px',
     },
-    {
-      labelKey: 'FinancialTransactions.PayeeName',
-      field: 'payeeFkName',
+        {
+      labelKey: 'FinancialTransactions.ReceiverName',
+      field: 'receiverFkName',
       required: false,
       dataType: 'string',
       disabled: true,
@@ -93,6 +94,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       dataType: 'string',
       disabled: true,
       width: '240px',
+      showInTable: false,
     },
     {
       labelKey: 'Class.ClassPk',
