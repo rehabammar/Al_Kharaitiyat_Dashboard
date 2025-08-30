@@ -59,7 +59,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'number',
       disabled: true,
-      width: '140px',
+      width: '100px',
     },
 
     {
@@ -119,7 +119,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'date',
       disabled: true,
-      width: '150px',
+      width: '130px',
     },
 
     {
@@ -151,7 +151,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       fieldFK: 'transactionStatusFk',
       required: false,
       dataType: 'string',
-      disabled: true,
+      disabled: true,showInTable: false,
       // isCombobox: true,
       // apiPath: '/lookupDetails/payment-status',
       // displayItemKey: 'lookupName',
@@ -175,6 +175,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       dataType: 'currency',
       disabled: true,
       width: '120px',
+      showInTable: false,
     },
     {
       labelKey: 'FinancialTransactions.AmountPaid',
@@ -182,7 +183,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'currency',
       disabled: true,
-      width: '170px'
+      width: '120px'
     },
     {
       labelKey: 'FinancialTransactions.AmountRemaining',
@@ -190,7 +191,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'currency',
       disabled: true,
-      width: '140px',
+      width: '120px',
     },
     // {
     //   labelKey: 'FinancialTransactions.SubjectName',
@@ -227,7 +228,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
     dataType: 'number',
     disabled: true,
     isFlag: true,
-    width: '150px',
+    width: '100px',
   };
 
   teacherPaidColumn: TableColumn = {
@@ -237,7 +238,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
     dataType: 'number',
     disabled: true,
     isFlag: true,
-    width: '150px',
+    width: '100px',
   };
   studentPaidColumn: TableColumn = {
     labelKey: 'Class.Paid',
@@ -246,7 +247,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
     dataType: 'number',
     disabled: true,
     isFlag: true,
-    width: '150px',
+    width: '100px',
   };
 
 
