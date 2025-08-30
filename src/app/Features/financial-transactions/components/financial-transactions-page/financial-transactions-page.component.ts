@@ -23,18 +23,20 @@ export class FinancialTransactionsPageComponent implements OnInit {
   @ViewChild('studentsTable') studentsTable!: GenericTableComponent<FinancialTransaction>;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef ,
+    private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private transactionsService : FinancialTransactionsService) { }
+    private transactionsService: FinancialTransactionsService) { }
   financialTransactionDataFactory = () => new FinancialTransaction();
 
   orgnizationId: number = 1;
   activeTabIndex = 0;
 
+  updatePath = 'pay-single-transaction';
+
 
 
   ngOnInit(): void {
-      this.setColumnsForTab(0); // Default to tab 0
+    this.setColumnsForTab(0); // Default to tab 0
     // const org = SessionStorageUtil.getItem<any>(AppConstants.CURRENT_ORGNIZATION_KEY);
 
     // if (org) {
@@ -69,6 +71,14 @@ export class FinancialTransactionsPageComponent implements OnInit {
       width: '200px',
     },
     {
+      labelKey: 'FinancialTransactions.ReceiverName',
+      field: 'receiverFkName',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '200px',
+    },
+    {
       labelKey: 'FinancialTransactions.PayeeName',
       field: 'payeeFkName',
       required: false,
@@ -76,7 +86,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       disabled: true,
       width: '200px',
     },
-     {
+    {
       labelKey: 'TeacherCourse.Name',
       field: 'courseFkName',
       required: false,
@@ -84,7 +94,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       disabled: true,
       width: '240px',
     },
-     {
+    {
       labelKey: 'Class.ClassPk',
       field: 'relatedClassFk',
       required: false,
@@ -92,7 +102,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       disabled: true,
       width: '200px'
     },
-      {
+    {
       labelKey: 'FinancialTransactions.ClassTitle',
       field: 'classTitle',
       required: false,
@@ -110,14 +120,14 @@ export class FinancialTransactionsPageComponent implements OnInit {
       width: '150px',
     },
 
-    // {
-    //   labelKey: 'FinancialTransactions.TransactionType',
-    //   field: 'transactionTypeName',
-    //   required: false,
-    //   dataType: 'string',
-    //   disabled: true,
-    //   width: '140px',
-    // },
+    {
+      labelKey: 'FinancialTransactions.TransactionType',
+      field: 'transactionTypeFkName',
+      required: false,
+      dataType: 'string',
+      disabled: true,
+      width: '140px',
+    },
     {
       labelKey: 'FinancialTransactions.PaymentMethod',
       field: 'paymentMethodFkName',
@@ -160,7 +170,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       labelKey: 'FinancialTransactions.AmountTotal',
       field: 'amountTotal',
       required: false,
-      dataType: 'number',
+      dataType: 'currency',
       disabled: true,
       width: '120px',
     },
@@ -168,7 +178,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       labelKey: 'FinancialTransactions.AmountPaid',
       field: 'amountPaid',
       required: false,
-      dataType: 'number',
+      dataType: 'currency',
       disabled: true,
       width: '170px'
     },
@@ -176,7 +186,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       labelKey: 'FinancialTransactions.AmountRemaining',
       field: 'amountRemaining',
       required: false,
-      dataType: 'number',
+      dataType: 'currency',
       disabled: true,
       width: '140px',
     },
@@ -227,7 +237,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
     isFlag: true,
     width: '150px',
   };
-   studentPaidColumn: TableColumn = {
+  studentPaidColumn: TableColumn = {
     labelKey: 'Class.Paid',
     field: 'studentPaidFl',
     required: false,
@@ -238,7 +248,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
   };
 
 
-  
+
   financialTransactionsColumns: TableColumn[] = [];
 
   setColumnsForTab(tabIndex: number) {
@@ -247,14 +257,28 @@ export class FinancialTransactionsPageComponent implements OnInit {
     } else if (tabIndex === 1) {
       this.financialTransactionsColumns = [...this.baseColumns, this.teacherPaidColumn];
     } else {
-      this.financialTransactionsColumns = [...this.baseColumns , this.studentPaidColumn];
+      this.financialTransactionsColumns = [...this.baseColumns, this.studentPaidColumn];
     }
-  this.changeDetectorRef.markForCheck();  }
+    this.changeDetectorRef.markForCheck();
+  }
+  setUpdatePathForTab(tabIndex: number) {
+    if (tabIndex === 0) {
+      this.updatePath = 'pay-single-transaction';
+    } else if (tabIndex === 1) {
+      this.updatePath = 'pay-single-transaction-from-teacher';
+    } else {
+      this.updatePath = 'pay-single-transaction-from-student';
+    }
+  }
 
   onTabChange(event: any) {
     console.log('Tab changed to index:', event.index);
     this.activeTabIndex = event.index;
     this.setColumnsForTab(event.index);
+    this.setUpdatePathForTab(event.index)
+    console.log('Update path set to:', this.updatePath);
+    this.changeDetectorRef.markForCheck();
+
   }
 
 
@@ -268,7 +292,30 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
   onTransactionSelected(row: FinancialTransaction) {
     this.selectedFinancialTransactions = row;
+
+    const toBool = (v: any) => v === true || v === 1 || v === '1';
+    const defaultVisibility: ButtonVisibilityConfig = {
+      showDelete: false,
+      showInsert: false,
+      showSave: true,
+    };
+
+    let v = { ...defaultVisibility };
+
+    if (this.activeTabIndex === 0 && toBool(row.centerReceivedMoneyFl)) {
+      v = { ...defaultVisibility, showSave: false };
+    } else if (this.activeTabIndex === 1 && toBool(row.teacherReceivedMoneyFl)) {
+      v = { ...defaultVisibility, showSave: false };
+    } else if (this.activeTabIndex === 2 && toBool(row.studentPaidFl)) {
+      v = { ...defaultVisibility, showSave: false };
+    }
+
+    this.buttonVisibility = v;
+
+    this.changeDetectorRef.markForCheck();
   }
+
+
 
   onTransactionRowChanged(e: { field: string; value: any }) {
     if (!this.selectedFinancialTransactions) return;
@@ -289,7 +336,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
     this.currentTable?.prependRow(row);
   }
 
-  onTeacherCourseRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
+  onTransactioDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
     if (e.type === 'new') {
       this.currentTable?.removeRow(e.row);
     } else {
@@ -300,44 +347,65 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
 
 
-openPayAllPopup =()=> {
-  const dialogRef = this.dialog.open(PayAllPopupComponent, {
-    // width: '400px',
-    data: { selectedTabIndex: this.activeTabIndex } 
-  });
+  openPayAllPopup = () => {
+    const dialogRef = this.dialog.open(PayAllPopupComponent, {
+      // width: '400px',
+      data: { selectedTabIndex: this.activeTabIndex }
+    });
 
-   const requestBoy = {
-   }   
+    const requestBoy = {
+    }
 
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-       let requestBody: any = {};
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        let requestBody: any = {};
 
-      if (this.activeTabIndex === 0) {
-        requestBody = {
-          payerFk: result.teacher, 
-          payeeFk: this.orgnizationId, 
-          paymentMethodFk: result.paymentMethod  
-        };
-      } else if (this.activeTabIndex === 1) {
-        requestBody = {
-          payerFk: this.orgnizationId, 
-          payeeFk: result.teacher, 
-          paymentMethodFk: result.paymentMethod  
-        };
-      }else{
+        if (this.activeTabIndex === 0) {
+          requestBody = {
+            payerFk: result.teacher,
+            payeeFk: this.orgnizationId,
+            paymentMethodFk: result.paymentMethod
+          };
+        } else if (this.activeTabIndex === 1) {
+          requestBody = {
+            payerFk: this.orgnizationId,
+            payeeFk: result.teacher,
+            paymentMethodFk: result.paymentMethod
+          };
+        } else {
 
-        requestBody = {
-          payerFk: result.student, 
-          payeeFk: this.orgnizationId, 
-          paymentMethodFk: result.paymentMethod  
-        };
-      }
+          requestBody = {
+            payerFk: result.student,
+            payeeFk: this.orgnizationId,
+            paymentMethodFk: result.paymentMethod
+          };
+        }
 
-    
-      console.log('Pay All action confirmed:', result);
-      if(this.activeTabIndex ===2){
-        this.transactionsService.payAllFinancialTransactionsforStudent(requestBody).subscribe({
+
+        console.log('Pay All action confirmed:', result);
+        if (this.activeTabIndex === 2) {
+          this.transactionsService.payAllFinancialTransactionsforStudent(requestBody).subscribe({
+            next: (res) => {
+              this.currentTable?.loadData();
+            },
+            error: (err) => {
+              console.error('Error paying transactions:', err);
+            }
+          });
+          return;
+        } else if (this.activeTabIndex === 1) {
+          this.transactionsService.payAllFinancialTransactionsforTeacher(requestBody).subscribe({
+            next: (res) => {
+              this.currentTable?.loadData();
+            },
+            error: (err) => {
+              console.error('Error paying transactions:', err);
+            }
+          });
+          return;
+
+        }
+        this.transactionsService.payAllTransactions(requestBody).subscribe({
           next: (res) => {
             this.currentTable?.loadData();
           },
@@ -345,18 +413,8 @@ openPayAllPopup =()=> {
             console.error('Error paying transactions:', err);
           }
         });
-        return;
       }
-      this.transactionsService.payAllTransactions(requestBody).subscribe({
-        next: (res) => {
-          this.currentTable?.loadData();
-        },
-        error: (err) => {
-          console.error('Error paying transactions:', err);
-        }
-      });
-    }
-  });
-}
+    });
+  }
 
 }

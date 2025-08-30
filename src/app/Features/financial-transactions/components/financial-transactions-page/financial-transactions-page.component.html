@@ -44,7 +44,8 @@
                 [apiPath]="'financialTransactions'"
                 [searchParameterKey]="'payerFk'"
                 [selectedId]="orgnizationId"
-                (rowSelected)="onTransactionSelected($event)">
+                (rowSelected)="onTransactionSelected($event)"
+                >
               </app-generic-table>
             </ng-template>
           </mat-tab>
@@ -77,12 +78,14 @@
        [apiPath]="'financialTransactions'"
        [selectedRow]="selectedFinancialTransactions"
        [commitLabel]="'FinancialTransactions.PayTransaction'"
-       [customUpatedPath]="'pay-single-transaction'"
+       [customUpdatedPath]="updatePath"
        (rowChanged)="onTransactionRowChanged($event)"
-        [buttonVisibility]="buttonVisibility"
+       (rowSaved)="onTransactionSaved($event)"
+      [buttonVisibility]="buttonVisibility"
        >
       </app-generic-form>
     </app-custom-accordion>
 
   </div>
   </main>
+  

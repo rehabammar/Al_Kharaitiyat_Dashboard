@@ -71,7 +71,8 @@
 <!-- عرض فقط -->
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
-    <ng-container *ngIf="column.dataType === 'date'; else plain">
+    <!-- date -->
+    <ng-container *ngIf="column.dataType === 'date'; else notDate">
       <span class="custom-label" dir="ltr">
         <ng-container *ngIf="currentRow[column.field]; else dash">
           {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
@@ -79,10 +80,26 @@
         <ng-template #dash>—</ng-template>
       </span>
     </ng-container>
-    <ng-template #plain>
-      <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
-        {{ currentRow[column.field] || '—' }}
-      </span>
+
+    <!-- غير التاريخ -->
+    <ng-template #notDate>
+      <!-- currency -->
+      <ng-container *ngIf="column.dataType === 'currency'; else plain">
+        <span class="custom-label">
+          <ng-container *ngIf="currentRow[column.field] != null; else dash">
+            {{ currentRow[column.field] | number:'1.2-2' }}
+            {{ 'FinancialTransactions.Currency' | translate }}
+          </ng-container>
+          <ng-template #dash>—</ng-template>
+        </span>
+      </ng-container>
+
+      <!-- النصوص العادية -->
+      <ng-template #plain>
+        <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+          {{ currentRow[column.field] || '—' }}
+        </span>
+      </ng-template>
     </ng-template>
   </div>
 </ng-template>

@@ -115,7 +115,7 @@ export class GenericService<T extends Record<string, any>> {
       languagesFk: LanguageService.getLanguage()?.langCode
     };
 
-    console.log("SAVE PRIMARY KEY " + JSON.stringify(newItem));
+    // console.log("SAVE PRIMARY KEY " + JSON.stringify(newItem));
     if (item[this.primaryKey]) {
       return this.update(newItem);
     } else {

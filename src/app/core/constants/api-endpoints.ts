@@ -128,6 +128,7 @@ static buildCrudEndpoints = (basePath: string  , searchPath?: string , updatePat
 
   static payAllFinancialTransactions =()=>api('/financialTransactions/pay-all-from-payer-to-payee');
   static payAllFinancialTransactionsforStudent =()=>api('/financialTransactions/pay-all-from-payer-to-payee-from-student');
+  static payAllFinancialTransactionsforTeacher =()=>api('/financialTransactions/pay-all-from-payer-to-payee-from-teacher');
 
   
 

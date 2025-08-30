@@ -3,14 +3,16 @@
     [label]="'createInsert'"
     [imageSrc]="'/assets/img/icon/createInsert.png'"
     [onClick]="addNewRow"
-    [showButton]="buttonVisibility.showInsert!">
+    [showButton]="buttonVisibility.showInsert!"
+    [disabled]="!selectedRow">
   </app-button>
 
   <app-button
     [label]="commitLabel || 'commit'"
     [imageSrc]="'/assets/img/icon/save.svg'"
     [onClick]="save"
-    [showButton]="buttonVisibility.showSave!">
+    [showButton]="buttonVisibility.showSave!"
+    [disabled]="!selectedRow">
   </app-button>
 
   <app-button
@@ -18,7 +20,8 @@
     [imageSrc]="'/assets/img/icon/delete.svg'"
     [color]="'#dc3545'"
     [onClick]="openDeletePopup"
-    [showButton]="buttonVisibility.showDelete!">
+    [showButton]="buttonVisibility.showDelete!"
+    [disabled]="!selectedRow">
   </app-button>
 </div>
 
@@ -137,8 +140,10 @@
 
         <!-- READ ONLY -->
        
-    <ng-template #readOnly>
-    <ng-container *ngIf="column.dataType === 'date'; else plain">
+   <ng-template #readOnly>
+  <div class="input-icon-wrapper">
+    <!-- date -->
+    <ng-container *ngIf="column.dataType === 'date'; else notDate">
       <span class="custom-label">
         <ng-container *ngIf="row[column.field]; else dash">
           {{ row[column.field] | date:'yyyy-MM-dd hh:mm a' }}
@@ -146,15 +151,32 @@
         <ng-template #dash>—</ng-template>
       </span>
     </ng-container>
-    <ng-template #plain>
-      <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
-        {{row[column.field]}}
-      </span>
-    </ng-template>
 
+    <!-- غير التاريخ -->
+    <ng-template #notDate>
+      <!-- currency -->
+      <ng-container *ngIf="column.dataType === 'currency'; else plain">
+        <span class="custom-label">
+          <ng-container *ngIf="row[column.field] != null; else dash">
+            {{ row[column.field] | number:'1.2-2' }}
+            {{ 'FinancialTransactions.Currency' | translate }}
+          </ng-container>
+          <ng-template #dash>—</ng-template>
+        </span>
+      </ng-container>
 
-</ng-template>
+      <!-- النصوص العادية -->
+      <ng-template #plain>
+        <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+          {{ row[column.field] || '—' }}
+        </span>
       </ng-template>
+    </ng-template>
+  </div>
+</ng-template>
+
+
+  </ng-template>
     </div>
   </div>
 </div>

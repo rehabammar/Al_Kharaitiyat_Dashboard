@@ -1,5 +1,6 @@
 import {
-  Component, Input, EventEmitter, Output, OnInit, OnChanges, SimpleChanges
+  Component, Input, EventEmitter, Output, OnInit, OnChanges, SimpleChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 import { TableColumn } from '../../../core/models/table-column.interface';
 import { GenericServiceFactory } from '../../../core/factories/generic-service-factory';
@@ -28,8 +29,14 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: Extract<keyof T, string>;
   @Input() apiPath!: string;
-  @Input() customSearchPath?: string;
-  @Input() customUpatedPath?: string;
+  @Input() customSearchPath?: string; 
+  @Input() set customUpdatedPath(value: string | undefined) {
+    if (value && value !== this._customUpdatedPath) {
+      this._customUpdatedPath = value;
+      this.rebuildService();       
+      this.cdr.markForCheck();
+    }
+  }
   @Input() selectedId: string | number | null | undefined = null;
   @Input() searchParameterKey!: string;
 
@@ -44,12 +51,12 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Input() context?: string;
 
   @Input() buttonVisibility: ButtonVisibilityConfig = {
-      showDelete: true,
-      showInsert: true,
-      showSave: true,
-      showRollback: true,
-      showTranslation: true,
-    };
+    showDelete: true,
+    showInsert: true,
+    showSave: true,
+    showRollback: true,
+    showTranslation: true,
+  };
 
 
   isDirty = false;
@@ -61,21 +68,50 @@ export class GenericFormComponent<T extends Record<string, any>>
   private mobileColumn?: TableColumn;
 
 
-  constructor(private genericServiceFactory: GenericServiceFactory, private dialog: MatDialog) { }
+  get customUpdatedPath(): string | undefined {
+    return this._customUpdatedPath;
+  }
+  private _customUpdatedPath?: string;
+
+  constructor(
+    private genericServiceFactory: GenericServiceFactory, 
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
-    this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey , this.customSearchPath , this.customUpatedPath );
+    this.rebuildService();            // ← استخدم الدالة الموحّدة
     this.mobileColumn = this.findMobileColumn();
-    this.syncLocalFromRow();  
+    this.syncLocalFromRow();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    // لو الصف اتغير
     if (changes['selectedRow'] && !changes['selectedRow'].firstChange) {
       this.resetBaseline();
-      this.mobileColumn = this.findMobileColumn(); 
-      this.syncLocalFromRow();  
+      this.mobileColumn = this.findMobileColumn();
+      this.syncLocalFromRow();
     }
+
+    // لو المسارات أو الأساسيات اتغيرت (أعد تهيئة الخدمة)
+    if (
+      (changes['apiPath'] && !changes['apiPath'].firstChange) ||
+      (changes['customSearchPath'] && !changes['customSearchPath'].firstChange) ||
+      (changes['primaryKey'] && !changes['primaryKey'].firstChange)
+    ) {
+      this.rebuildService();
+      this.cdr.markForCheck();
+    }
+  }
+
+  /** أعِد إنشاء الخدمة أو حدّثها بالمسارات الحالية */
+  private rebuildService() {
+    this.service = this.genericServiceFactory.create<T>(
+      this.apiPath,
+      this.primaryKey,
+      this.customSearchPath,
+      this._customUpdatedPath
+    );
   }
 
   public resetBaseline() {
@@ -85,11 +121,9 @@ export class GenericFormComponent<T extends Record<string, any>>
   }
 
   private setField(key: string, value: any) {
-
     if (!this.selectedRow) return;
     (this.selectedRow as unknown as Record<string, any>)[key] = value;
   }
-
 
 
   // ========== check for required fields =========
@@ -114,15 +148,15 @@ export class GenericFormComponent<T extends Record<string, any>>
     return v === null || v === undefined || String(v).trim() === '';
   }
   isInvalid(column: TableColumn): boolean {
-      const val = (this.selectedRow?.[column.field] ?? '') as string;
+    const val = (this.selectedRow?.[column.field] ?? '') as string;
     if (column.dataType === 'mobile') {
-    // قطر: يبدأ بـ +974 ثم 8 أرقام (أول رقم 3 أو 5 أو 6 أو 7)
-    const ok = /^\+974[3567]\d{7}$/.test(val);
-    return this.showErrors && (column.required ? !ok : (val ? !ok : false));
+      // قطر: يبدأ بـ +974 ثم 8 أرقام (أول رقم 3 أو 5 أو 6 أو 7)
+      const ok = /^\+974[3567]\d{7}$/.test(val);
+      return this.showErrors && (column.required ? !ok : (val ? !ok : false));
     }
     return this.showErrors && this.isMissingRequired(column);
   }
-  
+
 
   // ========== Handlers ==========
 
@@ -260,7 +294,7 @@ export class GenericFormComponent<T extends Record<string, any>>
       this.showErrors = true;
       return;
     }
-  console.log('Saving row:', JSON.stringify(this.selectedRow));
+    // console.log('Saving row:', JSON.stringify(this.selectedRow));
     this.service.save(this.selectedRow).subscribe({
       next: (res) => {
         this.selectedRow = res;
@@ -343,50 +377,50 @@ export class GenericFormComponent<T extends Record<string, any>>
   // =========== mobile validtion ===============
 
   private findMobileColumn(): TableColumn | undefined {
-  return this.columns.find(c => c.dataType === 'mobile');
-}
-
-
-
-localMobile = '';  // 9 digits max
-
-private syncLocalFromRow(): void {
-  if (!this.selectedRow || !this.mobileColumn) {
-    this.localMobile = '';
-    return;
-  }
-  const full = (this.selectedRow as any)[this.mobileColumn.field] as string | null | undefined;
-
-  if (typeof full === 'string' && full.startsWith('+974') && full.length >= 5) {
-    this.localMobile = full.substring(4).slice(0, 8); 
-  } else {
-    this.localMobile = '';
-  }
-}
-
-onLocalChanged(value: string, column: TableColumn) {
-  // إزالة أي رموز غير أرقام + تحويل الأرقام العربية لو موجودة
-  const map: Record<string, string> = { 
-    '٠': '0','١':'1','٢':'2','٣':'3','٤':'4',
-    '٥':'5','٦':'6','٧':'7','٨':'8','٩':'9' 
-  };
-  value = (value || '').replace(/[٠-٩]/g, d => map[d]).replace(/\D/g, '');
-
-  // قص لأقصى 8 أرقام
-  value = value.slice(0, 8);
-
-  // لازم يبدأ بـ 3 أو 5 أو 6 أو 7
-  if (value && !/^[3567]/.test(value)) {
-    const m = value.match(/[3567]\d{0,7}/); // أول رقم صح + باقي الأرقام
-    value = m ? m[0] : '';
+    return this.columns.find(c => c.dataType === 'mobile');
   }
 
-  this.localMobile = value;
 
-  // القيمة الكاملة مع +974
-  const full = value ? `+974${value}` : null; // null لو فارغ
-  this.onFieldChanged(column, full);
-}
+
+  localMobile = '';  // 9 digits max
+
+  private syncLocalFromRow(): void {
+    if (!this.selectedRow || !this.mobileColumn) {
+      this.localMobile = '';
+      return;
+    }
+    const full = (this.selectedRow as any)[this.mobileColumn.field] as string | null | undefined;
+
+    if (typeof full === 'string' && full.startsWith('+974') && full.length >= 5) {
+      this.localMobile = full.substring(4).slice(0, 8);
+    } else {
+      this.localMobile = '';
+    }
+  }
+
+  onLocalChanged(value: string, column: TableColumn) {
+    // إزالة أي رموز غير أرقام + تحويل الأرقام العربية لو موجودة
+    const map: Record<string, string> = {
+      '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4',
+      '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+    };
+    value = (value || '').replace(/[٠-٩]/g, d => map[d]).replace(/\D/g, '');
+
+    // قص لأقصى 8 أرقام
+    value = value.slice(0, 8);
+
+    // لازم يبدأ بـ 3 أو 5 أو 6 أو 7
+    if (value && !/^[3567]/.test(value)) {
+      const m = value.match(/[3567]\d{0,7}/); // أول رقم صح + باقي الأرقام
+      value = m ? m[0] : '';
+    }
+
+    this.localMobile = value;
+
+    // القيمة الكاملة مع +974
+    const full = value ? `+974${value}` : null; // null لو فارغ
+    this.onFieldChanged(column, full);
+  }
 
 
 

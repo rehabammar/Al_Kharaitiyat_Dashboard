@@ -24,4 +24,11 @@ export class FinancialTransactionsService {
       catchError(() => of(false)) 
     );
   }
+
+    payAllFinancialTransactionsforTeacher(data: any): Observable<boolean> {
+    return this.apiService.post(ApiEndpoints.payAllFinancialTransactionsforTeacher(), data).pipe(
+      map(() => true), 
+      catchError(() => of(false)) 
+    );
+  }
 }

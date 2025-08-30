@@ -47,7 +47,10 @@
      <app-button
         [label]="'label.ok'"
         [onClick]="confirm"
-        [disabled]="!selectedTeacher || !selectedPaymentMethod">
+        [disabled]="
+        data.selectedTabIndex === 2
+        ? !selectedStudent || !selectedPaymentMethod
+        : !selectedTeacher || !selectedPaymentMethod">
     </app-button>
         <app-button
         [label]="'label.cancel'"
