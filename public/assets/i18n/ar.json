@@ -145,7 +145,7 @@
     "FinancialTransactions.Status": "الحالة",
     "FinancialTransactions.PayerName": " اسم الدافع",
     "FinancialTransactions.PayeeName": "اسم المستفيد",
-    "FinancialTransactions.ReceiverName": "اسم المُحصِّل",
+    "FinancialTransactions.ReceiverName": "الكاشير",
     "FinancialTransactions.AmountTotal": "المبلغ الكلي",
     "FinancialTransactions.AmountPaid": "المبلغ المدفوع",
     "FinancialTransactions.AmountRemaining": "المبلغ المتبقي",
