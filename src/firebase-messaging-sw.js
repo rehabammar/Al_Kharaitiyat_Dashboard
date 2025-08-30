@@ -46,6 +46,19 @@ messaging.onBackgroundMessage((payload) => {
   });
 });
 
+// لو عايز تشغّل صوت بمجرد الإشعار ييجي (مش كل المتصفحات تسمح):
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    (async () => {
+      const allClients = await clients.matchAll({ includeUncontrolled: true });
+      if (allClients.length > 0) {
+        allClients[0].postMessage({ type: 'PLAY_SOUND' });
+      }
+    })()
+  );
+});
+
 // عند الضغط على الإشعار
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
@@ -62,3 +75,9 @@ self.addEventListener('notificationclick', (event) => {
     }
   })());
 });
+
+
+
+
+
+

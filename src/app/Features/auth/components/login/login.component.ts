@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
     this.showError = false;
     this.errorMessage = '';
 
-    this.loginService.login(this.userName, this.password , this.firebaseToken);
+    this.loginService.login(this.userName, this.password, this.firebaseToken);
   }
 
   requestPermission() {
@@ -128,8 +128,20 @@ export class LoginComponent implements OnInit {
     // استقبال رسالة foreground
     onMessage(this.messaging, (payload) => {
       console.log("Message received in foreground: ", payload);
-      alert(payload.notification?.title + ": " + payload.notification?.body);
+      // alert(payload.notification?.title + ": " + payload.notification?.body);
+
+      const title = payload.notification?.title || 'New message';
+      const options = {
+        body: payload.notification?.body,
+        icon: "/assets/img/logo/logo.png",
+        data: { refresh: true } // علامة مفيدة
+      };
+      // self.registration.showNotification(title, options);
+      const audio = new Audio('assets/sounds/notification_sound.wav');
+      audio.play();
+      new Notification(title, options);
       this.bridge.emit({ type: 'REFRESH', payload, source: 'foreground' });
+
 
     });
   }
