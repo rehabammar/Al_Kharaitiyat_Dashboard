@@ -162,6 +162,7 @@
     "FinancialTransactions.Details": "تفاصيل المعاملة المالية",
     "FinancialTransactions.PayAll": "دفع الكل",
     "FinancialTransactions.Currency": "﷼",
+    "FinancialTransactions.TotalRequiredAmount": "إجمالي المبلغ المطلوب",
     "Reports.Title": "التقارير",
     "Reports.ReportType": "نوع التقرير",
     "Reports.StartDate": "تاريخ البداية",

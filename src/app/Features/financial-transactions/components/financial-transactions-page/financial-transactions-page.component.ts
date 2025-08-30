@@ -351,7 +351,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
   openPayAllPopup = () => {
     const dialogRef = this.dialog.open(PayAllPopupComponent, {
-      // width: '400px',
+      width: '400px',
       data: { selectedTabIndex: this.activeTabIndex }
     });
 

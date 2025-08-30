@@ -161,6 +161,7 @@
     "FinancialTransactions.Details": "Financial Transaction Details",
     "FinancialTransactions.PayAll": "Pay All",
     "FinancialTransactions.Currency": "QAR",
+    "FinancialTransactions.TotalRequiredAmount": "Total Required Amount",
     "Reports.Title": "Reports",
     "Reports.ReportType": "Report Type",
     "Reports.StartDate": "Start Date",

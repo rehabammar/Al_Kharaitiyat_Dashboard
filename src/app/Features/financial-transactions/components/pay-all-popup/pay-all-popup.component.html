@@ -1,59 +1,49 @@
 <h1 mat-dialog-title style="padding: 5px;">{{ 'FinancialTransactions.PayAll' | translate}}</h1>
 
 <mat-dialog-content class="dialog-content">
-<div *ngIf="data.selectedTabIndex !== 2">
-    <div class="header-label-line align-start">
-        <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
+    <div *ngIf="data.selectedTabIndex !== 2">
+        <div class="header-label-line align-start">
+            <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
+        </div>
+        <app-combobox-search [apiPath]="'/users/search-teachers'" [dataFactory]="teacherDataFactory"
+            [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onTeacherSelected($event)">
+        </app-combobox-search>
     </div>
-    <app-combobox-search
-     [apiPath]="'/users/search-teachers'" 
-     [dataFactory]="teacherDataFactory"
-     [primaryKey]="'userPk'" 
-     [displayItemKey]="'fullName'"
-    (itemSelected)="onTeacherSelected($event)">
-    </app-combobox-search>
-</div>
-<div *ngIf="data.selectedTabIndex === 2">
-    <div class="header-label-line align-start">
-        <label class="form-label">{{ 'Reports.Student' | translate }}</label>
+    <div *ngIf="data.selectedTabIndex === 2">
+        <div class="header-label-line align-start">
+            <label class="form-label">{{ 'Reports.Student' | translate }}</label>
+        </div>
+        <app-combobox-search [apiPath]="'/users/search-students'" [dataFactory]="teacherDataFactory"
+            [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onStudentSelected($event)">
+        </app-combobox-search>
     </div>
-    <app-combobox-search
-     [apiPath]="'/users/search-students'" 
-     [dataFactory]="teacherDataFactory"
-     [primaryKey]="'userPk'" 
-     [displayItemKey]="'fullName'"
-    (itemSelected)="onStudentSelected($event)">
-    </app-combobox-search>
-</div>
-<br>
+    <br>
 
-<div>
-    <div class="header-label-line align-start">
-        <label class="form-label">{{ 'FinancialTransactions.PaymentMethod' | translate }}</label>
+    <div>
+        <div class="header-label-line align-start">
+            <label class="form-label">{{ 'FinancialTransactions.PaymentMethod' | translate }}</label>
+        </div>
+        <app-combobox-search [apiPath]="'/lookupDetails/payment-type'" [dataFactory]="paymentMethodDataFactory"
+            [primaryKey]="'lookupDetailPk'" [displayItemKey]="'lookupName'"
+            (itemSelected)="onPaymentMethodSelected($event)">
+        </app-combobox-search>
     </div>
-    <app-combobox-search
-     [apiPath]="'/lookupDetails/payment-type'" 
-     [dataFactory]="paymentMethodDataFactory"
-     [primaryKey]="'lookupDetailPk'" 
-     [displayItemKey]="'lookupName'"
-    (itemSelected)="onPaymentMethodSelected($event)">
-    </app-combobox-search>
-</div>
+    <br>
+    <div *ngIf="selectedStudent || selectedTeacher">
+        <p>{{ 'FinancialTransactions.TotalRequiredAmount' | translate }} {{ outstandingAmount | number:'1.2-2'}} {{
+            'FinancialTransactions.Currency' | translate }}
+        </p>
+    </div>
 
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-     <app-button
-        [label]="'label.ok'"
-        [onClick]="confirm"
-        [disabled]="
+    <app-button [label]="'label.ok'" [onClick]="confirm" [disabled]="
         data.selectedTabIndex === 2
         ? !selectedStudent || !selectedPaymentMethod
         : !selectedTeacher || !selectedPaymentMethod">
     </app-button>
-        <app-button
-        [label]="'label.cancel'"
-        [onClick]="cancel">
+    <app-button [label]="'label.cancel'" [onClick]="cancel">
     </app-button>
 </mat-dialog-actions>

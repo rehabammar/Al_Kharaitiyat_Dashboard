@@ -31,4 +31,11 @@ export class FinancialTransactionsService {
       catchError(() => of(false)) 
     );
   }
+
+   totalOutstandingForUser(userId: number , apiPath :string): Observable<number> {
+    return this.apiService.post<number>(apiPath, {"userFk":userId}).pipe(
+      map((res) => res.data ?? 0), 
+      catchError(() => of(0.0)) 
+    );
+  }
 }
