@@ -381,22 +381,22 @@ export class CoursesPageComponent {
     //   disabled: false,
     //   width: '140px'
     // },
-    {
-      labelKey: 'Class.ActualAmountRequired',
-      field: 'actualAmountRequired',
-      required: false,
-      dataType: 'number',
-      disabled: false,
-      width: '170px'
-    },
-    {
-      labelKey: 'Class.ActualPayedAmount',
-      field: 'actualPayedAmount',
-      required: false,
-      dataType: 'number',
-      disabled: true,
-      width: '170px'
-    },
+    // {
+    //   labelKey: 'Class.ActualAmountRequired',
+    //   field: 'actualAmountRequired',
+    //   required: false,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '170px'
+    // },
+    // {
+    //   labelKey: 'Class.ActualPayedAmount',
+    //   field: 'actualPayedAmount',
+    //   required: false,
+    //   dataType: 'number',
+    //   disabled: true,
+    //   width: '170px'
+    // },
     // {
     //   labelKey: 'Class.CostForStudent',
     //   field: 'classCostForStudent',

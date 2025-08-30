@@ -35,6 +35,12 @@
                             <a [href]="'mailto:' + organization.email">
                               <i class="fa fa-envelope"></i>
                             </a>
+                            <a *ngIf="organization?.lat && organization?.long"
+                              [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.long"
+                              target="_blank" rel="noopener noreferrer" aria-label="Directions in Google Maps">
+                               <i class="fas fa-map-marker-alt"></i>
+                            </a>
+
                             </div>
                 </div>
               </div>
@@ -65,7 +71,7 @@
                 </li>
                 <li>
                   <i class="fa fa-map-marker-alt"></i>
-                  {{ 'Footer.Address' | translate }}: {{organization.address}}
+                  <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.long">{{ 'Footer.Address' | translate }}: {{organization.address}}</a>  
                 </li>
               </ul>
             </div>

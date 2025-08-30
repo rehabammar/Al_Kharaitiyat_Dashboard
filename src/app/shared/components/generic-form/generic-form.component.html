@@ -85,6 +85,7 @@
                    (input)="onDateInput(column, $any($event.target).value)"
                    (change)="onDateInput(column, $any($event.target).value)"
                    (blur)="markTouched()"
+                   [disabled]="column.disabled"
                    [class.input-error]="isInvalid(column)" />
             <!-- password INPUT -->
 
@@ -144,12 +145,12 @@
   <div class="input-icon-wrapper">
     <!-- date -->
     <ng-container *ngIf="column.dataType === 'date'; else notDate">
-      <span class="custom-label">
-        <ng-container *ngIf="row[column.field]; else dash">
-          {{ row[column.field] | date:'yyyy-MM-dd hh:mm a' }}
-        </ng-container>
-        <ng-template #dash>—</ng-template>
-      </span>
+      <input
+                   class="custom-input date-field"
+                   matInput
+                   type="datetime-local"
+                   [value]="toLocalInput(row[column.field])"
+                   [disabled]="true" />
     </ng-container>
 
     <!-- غير التاريخ -->
