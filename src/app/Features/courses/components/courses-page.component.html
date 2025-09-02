@@ -75,7 +75,7 @@
 
      
       <br>
-     <app-custom-accordion title="Class.ClassDetails">
+     <app-custom-accordion title="Class.ClassDetails" *ngIf="selectedClass">
       <mat-tab-group mat-stretch-tabs="false">
           <mat-tab label='{{"Class.ClassDetails" | translate}}' >
                  <app-generic-form

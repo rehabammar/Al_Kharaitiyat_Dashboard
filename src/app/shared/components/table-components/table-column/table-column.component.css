@@ -1,3 +1,37 @@
+:root {
+  --star-size: 10px;
+  --star-gap: 0.15ch;
+  --star-empty: #d9d9d9;
+  --star-fill: #f59e0b;
+  --star-text: #666;
+}
+
+.stars {
+  display: inline-flex;
+  align-items: center;      
+  justify-content: center;   
+  gap: 0.5ch;
+  line-height: 1;
+  width: 100%;              
+}
+
+
+.star {
+  font-size: 20px !important;
+  letter-spacing: var(--star-gap);
+  color:#d9d9d9 !important;
+  user-select: none;
+}
+
+.star.filled {
+  color: #f59e0b !important;
+}
+
+.stars__text {
+  font-size: 12px;
+  color: var(--star-text);
+}
+
 .status-active {
   color: green;
   font-size: 20px;

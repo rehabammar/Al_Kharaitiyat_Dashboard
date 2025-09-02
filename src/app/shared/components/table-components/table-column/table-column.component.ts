@@ -93,5 +93,15 @@ export class TableColumnComponent {
     }
   }
 
+  // 0..4 index array for the stars
+  five = Array.from({ length: 5 });
+
+  // Clamp to 0..5 and floor to int
+  safeIntRating(row: any, field: string): number {
+    const raw = Number(row?.[field]);
+    if (Number.isNaN(raw)) { return 0; }
+    return Math.max(0, Math.min(5, Math.floor(raw)));
+  }
+
 
 }

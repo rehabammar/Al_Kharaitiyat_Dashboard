@@ -22,7 +22,7 @@ export class HomeService {
   }
 
   getTeachersList(): Observable<{ items: User[]; total: number }> {
-    return this.apiService.post<ApiPage<User>>(ApiEndpoints.getTeachersList(), {})
+    return this.apiService.post<ApiPage<User>>(ApiEndpoints.getTeachersListForDashboard(), {})
       .pipe(map(res => ({
         items: res.data.content,
         total: res.data.totalElements

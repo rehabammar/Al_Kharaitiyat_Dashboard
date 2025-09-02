@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TeacherCourse } from '../models/teacher-course.model';
 import { TableColumn } from '../../../core/models/table-column.interface';
 import { Level } from '../models/level.model';
@@ -45,7 +45,7 @@ interface ServiceItem {
 })
 export class CoursesPageComponent {
 
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog , private changeDetectorRef : ChangeDetectorRef) { }
 
   @ViewChild('teacherCourseTable') table!: GenericTableComponent<TeacherCourse>;
   @ViewChild('classesTableRef') classesTable!: GenericTableComponent<Class>;
@@ -210,14 +210,15 @@ export class CoursesPageComponent {
       showInTable: false
 
     },
-    // {
-    //   labelKey: 'TeacherCourse.CenterPercentage',
-    //   field: 'centerPercentage',
-    //   required: true,
-    //   dataType: 'number',
-    //   disabled: false,
-    //   width: '130px'
-    // },
+    {
+      labelKey: 'TeacherCourse.CenterPercentage',
+      field: 'centerPercentage',
+      required: true,
+      dataType: 'number',
+      disabled: false,
+      showInTable: false ,
+      width: '130px'
+    },
     {
       labelKey: 'TeacherCourse.MaxStudents',
       field: 'maxStudents',
@@ -498,12 +499,21 @@ export class CoursesPageComponent {
 
   courseStudentColumns: TableColumn[] = [
     {
-      labelKey: 'CourseStudent.CourseStudentPk',
+      labelKey: 'StudentAttendance.StudentAttendanceClassPk',
       field: 'courseStudentPk',
       required: false,
       dataType: 'number',
       disabled: true,
     },
+
+     {
+      labelKey: 'CourseStudent.CourseStudentPk',
+      field: 'studentFk',
+      required: false,
+      dataType: 'number',
+      disabled: true,
+    },
+   
     {
       labelKey: 'CourseStudent.Student',
       field: 'studentFullName',
@@ -573,25 +583,25 @@ export class CoursesPageComponent {
       searchFieldplaceholder: 'CourseStudent.SelectStudent',
       onSearch: () => this.openStudentAttendencSearchDialog()  
     },
-    {
-      labelKey: 'StudentAttendance.PaymentStatusName',
-      field: 'paymentStatusName',
-      fieldFK:'paymentStatusFk',
-      required: false,
-      dataType: 'string',
-      disabled: false,
-      isCombobox: true,
-      apiPath: '/lookupDetails/payment-status',
-      displayItemKey: 'lookupName',
-      primaryKey: 'lookupDetailPk',
-      dataFactory: () => new LookupDetail(),
-      width: '180px'
-    },
+    // {
+    //   labelKey: 'StudentAttendance.PaymentStatusName',
+    //   field: 'paymentStatusName',
+    //   fieldFK:'paymentStatusFk',
+    //   required: false,
+    //   dataType: 'string',
+    //   disabled: true,
+    //   // isCombobox: true,
+    //   // apiPath: '/lookupDetails/payment-status',
+    //   // displayItemKey: 'lookupName',
+    //   // primaryKey: 'lookupDetailPk',
+    //   // dataFactory: () => new LookupDetail(),
+    //   width: '180px'
+    // },
     {
       labelKey: 'StudentAttendance.ClassEvalution',
       field: 'teacherReview',
       required: false,
-      dataType: 'number',
+      dataType: 'evaluation',
       disabled: true,
       width: '180px'
     },
@@ -647,7 +657,10 @@ export class CoursesPageComponent {
   // ======= Classes bussinces ========= 
   selectedClass: Class | null = null;
   onClassSelected(row: Class) {
+    if(!row) this.selectedClass = null;
+    else
     this.selectedClass = row;
+  this.changeDetectorRef.detectChanges();
   }
   onselectedClassRowChanged(e: { field: string; value: any }) {
     if (!this.selectedClass) return;

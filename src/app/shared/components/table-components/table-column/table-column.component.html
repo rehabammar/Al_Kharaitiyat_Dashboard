@@ -81,9 +81,20 @@
       </span>
     </ng-container>
 
-    <!-- غير التاريخ -->
-    <ng-template #notDate>
-      <!-- currency -->
+  <!-- غير التاريخ -->
+  <ng-template #notDate>
+
+    <!-- evaluation / rating (read-only) -->
+    <ng-container *ngIf="column.dataType === 'evaluation' || column.dataType === 'rating'; else maybeCurrency">
+      <div class="stars" [attr.aria-label]="safeIntRating(currentRow, column.field) + ' / 5'">
+        <ng-container *ngFor="let _ of five; let i = index">
+          <span class="star" [class.filled]="i < safeIntRating(currentRow, column.field)">★</span>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <!-- currency -->
+    <ng-template #maybeCurrency>
       <ng-container *ngIf="column.dataType === 'currency'; else plain">
         <span class="custom-label">
           <ng-container *ngIf="currentRow[column.field] != null; else dash">
@@ -101,5 +112,8 @@
         </span>
       </ng-template>
     </ng-template>
+
+  </ng-template>
+
   </div>
 </ng-template>
