@@ -173,3 +173,52 @@ th:hover .sort-icons,
     height: 10px;
     padding: 2px;
 }
+
+.table-custom-label {
+  height: 100%;
+  width: 100%;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 500; 
+  font-family: 'cairoFont';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.divider-row {
+  height: 1px;
+  background-color: transparent;
+}
+
+.divider {
+  height: 1px;
+  color: black;
+  background-color: black;
+  width: 100%;
+}
+
+.search-icon {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: hsl(var(--bg)) !important;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.input-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* ✅ يمنع خروج النص */
+
+}
+

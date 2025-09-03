@@ -29,11 +29,11 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: Extract<keyof T, string>;
   @Input() apiPath!: string;
-  @Input() customSearchPath?: string; 
+  @Input() customSearchPath?: string;
   @Input() set customUpdatedPath(value: string | undefined) {
     if (value && value !== this._customUpdatedPath) {
       this._customUpdatedPath = value;
-      this.rebuildService();       
+      this.rebuildService();
       this.cdr.markForCheck();
     }
   }
@@ -47,6 +47,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   @Output() newRowCreated = new EventEmitter<T>();
   @Output() rowDeleted = new EventEmitter<any>();
   @Output() rowSaved = new EventEmitter<T>();
+
 
   @Input() context?: string;
 
@@ -74,7 +75,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   private _customUpdatedPath?: string;
 
   constructor(
-    private genericServiceFactory: GenericServiceFactory, 
+    private genericServiceFactory: GenericServiceFactory,
     private dialog: MatDialog,
     private cdr: ChangeDetectorRef) { }
 
@@ -290,45 +291,55 @@ export class GenericFormComponent<T extends Record<string, any>>
     if (!this.selectedRow) return;
 
     const invalid = this.columns.filter(c => this.isMissingRequired(c));
-    if (invalid.length) {
-      this.showErrors = true;
-      return;
-    }
-    // console.log('Saving row:', JSON.stringify(this.selectedRow));
+    if (invalid.length) { this.showErrors = true; return; }
+
     this.service.save(this.selectedRow).subscribe({
-      next: (res) => {
-        this.selectedRow = res;
+      next: (res: T) => {
+        this.selectedRow = res;      // now has a real PK if it was create
         this.resetBaseline();
+
+        // single event is enough — parent will upsert into table
         this.rowSaved.emit(res);
+        // (you can remove newRowSaved if you no longer need it)
       }
     });
   };
 
 
 
-
+  private _cidSeq = 0;
+  private readonly CID = '__cid';
   public addNewRow = () => {
-    const row: Row = this.dataFactory ? this.dataFactory() : {};
+    const pk = this.primaryKey as string;
 
+    // start from factory; clone so we don't mutate a reused instance
+    const base = this.dataFactory ? this.dataFactory() : ({} as T);
+    const row: any = { ...(base as any) };
+
+    // ❌ ensure no PK on a brand-new row
+    if (row[pk] != null) delete row[pk];
+    row[this.CID] = `cid-${Date.now()}-${++this._cidSeq}`;
+
+    // defaults from columns
     for (const c of this.columns) {
-      if (!(c.field in row)) {
-        if (c.isFlag) row[c.field] = 0;
-        else if (c.dataType === 'number') row[c.field] = null;
-        else row[c.field] = null;
-      }
-      if (c.isCombobox && c.fieldFK && !(c.fieldFK in row)) {
-        row[c.fieldFK] = null;
-      }
+      if (!(c.field in row)) row[c.field] = c.isFlag ? 0 : (c.dataType === 'number' ? null : null);
+      if (c.isCombobox && c.fieldFK && !(c.fieldFK in row)) row[c.fieldFK] = null;
     }
 
-    if (this.selectedId && this.searchParameterKey) {
+    // bind parent FK (if you pass selectedId/searchParameterKey)
+    if (this.selectedId != null && this.searchParameterKey && row[this.searchParameterKey] == null) {
       row[this.searchParameterKey] = this.selectedId;
     }
 
-    this.selectedRow = row as T;
+    this.selectedRow = row as T;       // draft stays in the form
     this.resetBaseline();
+
+    // Optional: you may still emit the draft for the parent to open panels, etc.
+    // BUT don't insert it into a table yet.
     this.newRowCreated.emit(this.selectedRow);
   };
+
+
 
   /** مسح الصف الحالي (يخفي الفورم لو عندك *ngIf="selectedRow") */
   public clearRow = () => {

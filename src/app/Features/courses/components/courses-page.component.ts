@@ -45,10 +45,12 @@ interface ServiceItem {
 })
 export class CoursesPageComponent {
 
-  constructor(private dialog: MatDialog , private changeDetectorRef : ChangeDetectorRef) { }
+  constructor(private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef) { }
 
   @ViewChild('teacherCourseTable') table!: GenericTableComponent<TeacherCourse>;
   @ViewChild('classesTableRef') classesTable!: GenericTableComponent<Class>;
+
+  @ViewChild('classStudentAttendanceTable') classStudentAttendanceTable!: GenericTableComponent<StudentAttendance>;
 
 
 
@@ -216,7 +218,7 @@ export class CoursesPageComponent {
       required: true,
       dataType: 'number',
       disabled: false,
-      showInTable: false ,
+      showInTable: false,
       width: '130px'
     },
     {
@@ -226,7 +228,7 @@ export class CoursesPageComponent {
       dataType: 'number',
       disabled: false,
       width: '120px',
-      showInTable : false ,
+      showInTable: false,
     },
     {
       labelKey: 'TeacherCourse.ActualStudentsCount',
@@ -506,14 +508,14 @@ export class CoursesPageComponent {
       disabled: true,
     },
 
-     {
+    {
       labelKey: 'CourseStudent.CourseStudentPk',
       field: 'studentFk',
       required: false,
       dataType: 'number',
       disabled: true,
     },
-   
+
     {
       labelKey: 'CourseStudent.Student',
       field: 'studentFullName',
@@ -581,7 +583,7 @@ export class CoursesPageComponent {
       width: '220px',
       searchField: true,
       searchFieldplaceholder: 'CourseStudent.SelectStudent',
-      onSearch: () => this.openStudentAttendencSearchDialog()  
+      onSearch: () => this.openStudentAttendencSearchDialog()
     },
     // {
     //   labelKey: 'StudentAttendance.PaymentStatusName',
@@ -657,10 +659,9 @@ export class CoursesPageComponent {
   // ======= Classes bussinces ========= 
   selectedClass: Class | null = null;
   onClassSelected(row: Class) {
-    if(!row) this.selectedClass = null;
-    else
     this.selectedClass = row;
-  this.changeDetectorRef.detectChanges();
+    console.log("Current selected class: ", row.classPk);
+    // this.classStudentAttendanceTable.loadData()
   }
   onselectedClassRowChanged(e: { field: string; value: any }) {
     if (!this.selectedClass) return;
@@ -672,11 +673,26 @@ export class CoursesPageComponent {
     this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
   }
 
-  onClassSaved(row: Class) {
-    this.classesTable.patchRowById(row.classPk, row);
+  // onClassSaved(row: Class) {
+  //   this.classesTable.patchRowById(row.classPk, row);
+  // }
+
+  onClassSaved(row : Class) {
+ // replace the draft (by __cid) with the server row (has real PK)
+  if (this.currentDraftCid) {
+    this.classesTable.replaceRowByCid(this.currentDraftCid, row);
+    this.currentDraftCid = null;
+  } else {
+    // defensive fallback (e.g., user edited existing row, not a draft)
+    this.classesTable.upsertByPk('classPk', row);
+  }
+  this.classesTable.selectRowById(row.classPk);
+   
   }
 
-  onNewClassRow(row: Class) {
+ private currentDraftCid: string | null = null;
+  onNewClassRow(row: any) {
+    this.currentDraftCid = row.__cid;
     this.selectedClass = row;
     this.classesTable.prependRow(row);
   }
@@ -691,7 +707,7 @@ export class CoursesPageComponent {
 
   // ======== add new student to course ========= 
 
-  openUsersSearchDialog(): Observable<CourseStudent | null>  {
+  openUsersSearchDialog(): Observable<CourseStudent | null> {
 
     const dialogRef = this.dialog.open(SearchDialogComponent,
       {
@@ -718,31 +734,31 @@ export class CoursesPageComponent {
             },
           ],
           dataFactory: () => new User(),
-          parameter : {teacherCourseFk : this.selectedCourse?.teacherCoursePk},
+          parameter: { teacherCourseFk: this.selectedCourse?.teacherCoursePk },
           label: 'CourseStudent.Students'
         }
       }
 
     );
     return dialogRef.afterClosed().pipe(
-    take(1),
-    map((pickedUser: User | null) => {
-      if (!pickedUser) return null;
-      return new CourseStudent({
-        studentFk: pickedUser.userPk,
-        studentFullName: pickedUser.fullName,
-        joinStatusFk: 85 ,
-        teacherCourseFk: this.selectedCourse?.teacherCoursePk ?? null,
-        teacherCourseName: `${this.selectedCourse?.subjectName} - ${this.selectedCourse?.teacherCourseName}`
-      });
-    })
-  );
+      take(1),
+      map((pickedUser: User | null) => {
+        if (!pickedUser) return null;
+        return new CourseStudent({
+          studentFk: pickedUser.userPk,
+          studentFullName: pickedUser.fullName,
+          joinStatusFk: 85,
+          teacherCourseFk: this.selectedCourse?.teacherCoursePk ?? null,
+          teacherCourseName: `${this.selectedCourse?.subjectName} - ${this.selectedCourse?.teacherCourseName}`
+        });
+      })
+    );
   }
 
 
-    // ======== add student attendence to class ========= 
+  // ======== add student attendence to class ========= 
 
-  openStudentAttendencSearchDialog(): Observable<StudentAttendance | null>  {
+  openStudentAttendencSearchDialog(): Observable<StudentAttendance | null> {
 
     const dialogRef = this.dialog.open(SearchDialogComponent,
       {
@@ -769,9 +785,9 @@ export class CoursesPageComponent {
             },
           ],
           dataFactory: () => new User(),
-          parameter : {
-            teacherCourseFk : this.selectedCourse?.teacherCoursePk ,
-            classFk : this.selectedClass?.classPk
+          parameter: {
+            teacherCourseFk: this.selectedCourse?.teacherCoursePk,
+            classFk: this.selectedClass?.classPk
           },
           label: 'CourseStudent.Students'
         }
@@ -779,15 +795,15 @@ export class CoursesPageComponent {
 
     );
     return dialogRef.afterClosed().pipe(
-    take(1),
-    map((pickedUser: User | null) => {
-      if (!pickedUser) return null;
-      return new StudentAttendance({
-        studentFk: pickedUser.userPk,
-        studentName: pickedUser.fullName,
-      });
-    })
-  );
+      take(1),
+      map((pickedUser: User | null) => {
+        if (!pickedUser) return null;
+        return new StudentAttendance({
+          studentFk: pickedUser.userPk,
+          studentName: pickedUser.fullName,
+        });
+      })
+    );
   }
 
 

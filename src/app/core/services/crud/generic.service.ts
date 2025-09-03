@@ -7,15 +7,24 @@ import { ApiEndpoints } from '../../constants/api-endpoints';
 import { LanguageService } from '../shared/language.service';
 import { ApiPage } from '../../models/api.page.interface';
 import { ConfirmPopupComponent } from '../../../shared/components/confirm-popup/confirm-popup.component';
+import { Totals } from '../../models/totals.interface';
 
 
 
 export class GenericService<T extends Record<string, any>> {
   private dataSubject = new BehaviorSubject<T[]>([]);
   private totalElementsSubject = new BehaviorSubject<number>(0);
+  private totals = new BehaviorSubject<Totals>({
+    totalAmountPaid: 0,
+    totalTeacher: 0,
+    totalCenter: 0,
+    totalAmount: 0,
+    totalAmountRemaining: 0,
+  });
 
   data$ = this.dataSubject.asObservable();
   totalElements$ = this.totalElementsSubject.asObservable();
+  totals$ = this.totals.asObservable();
   private apiMap: CrudApiMap;
 
 
@@ -28,7 +37,7 @@ export class GenericService<T extends Record<string, any>> {
     private updatePath?: string,
 
   ) {
-    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath , this.searchPath , this.updatePath);
+    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath, this.searchPath, this.updatePath);
     console.table(
       Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
     );
@@ -56,7 +65,7 @@ export class GenericService<T extends Record<string, any>> {
     filters?: any,
     extraParams?: Record<string, any>
   ) {
-    const requestBody = { "page" : pageNumber, "size":pageSize, filters, ...(extraParams ?? {}) };
+    const requestBody = { "page": pageNumber, "size": pageSize, filters, ...(extraParams ?? {}) };
 
     return this.apiService.post<ApiPage<T>>(this.apiMap.GET(), requestBody).pipe(
       // handle content + totals here
@@ -64,6 +73,7 @@ export class GenericService<T extends Record<string, any>> {
         const page = res.data; // ApiPage<T>
         this.dataSubject.next(page.content);
         this.totalElementsSubject.next(page.totalElements);
+        this.totals.next(page.totals ?? {});
       }),
     );
   }
@@ -80,7 +90,7 @@ export class GenericService<T extends Record<string, any>> {
         this.totalElementsSubject.next(updated.length);
         this.showSuccessPopup()
       }),
-      map((res)=> res.data)
+      map((res) => res.data)
     );
   }
 
@@ -95,7 +105,7 @@ export class GenericService<T extends Record<string, any>> {
         this.dataSubject.next(updated);
         this.showSuccessPopup()
       }),
-      map((res)=> res.data)
+      map((res) => res.data)
     );
   }
 

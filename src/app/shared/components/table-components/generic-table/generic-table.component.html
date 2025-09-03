@@ -5,40 +5,25 @@
     <app-button [label]="''" [imageSrc]="'/assets/img/icon/filter.png'" [onClick]="tooggleShowFilter">
     </app-button>
 
-    <app-button 
-    [label]="'label.reset'" 
-    [imageSrc]="'/assets/img/icon/refresh.png'"
-    [onClick]="clearAllFilters"
-    [showButton]="buttonVisibility.showDelete!">
+    <app-button [label]="'label.reset'" [imageSrc]="'/assets/img/icon/refresh.png'" [onClick]="clearAllFilters"
+      [showButton]="buttonVisibility.showDelete!">
     </app-button>
 
     <ng-container *ngIf="isEditableTable">
-       
-        <app-button
-          [label]="'createInsert'" 
-          [imageSrc]="'/assets/img/icon/createInsert.png'"
-          [onClick]="addNewRow"
-          [showButton]="buttonVisibility.showInsert!" 
-          [disabled]="buttonDisabled['insert']">
-        </app-button>
 
-        <app-button 
-          [label]="'commit'"
-          [imageSrc]="'/assets/img/icon/save.svg'" 
-          [onClick]="save"
-          [showButton]="buttonVisibility.showSave!"
-          [disabled]="buttonDisabled['save'] || selectedRow==null">
-        </app-button> 
-         <app-button 
-          [label]="'delete'" 
-          [imageSrc]="'/assets/img/icon/delete.svg'"
-          [color]="'#dc3545'"
-          [onClick]="openDeletePopup"
-          [showButton]="buttonVisibility.showDelete!"
-          [disabled]="buttonDisabled['delete'] || selectedRow==null">
-        </app-button>
+      <app-button [label]="'createInsert'" [imageSrc]="'/assets/img/icon/createInsert.png'" [onClick]="addNewRow"
+        [showButton]="buttonVisibility.showInsert!" [disabled]="buttonDisabled['insert']">
+      </app-button>
 
-      </ng-container>
+      <app-button [label]="'commit'" [imageSrc]="'/assets/img/icon/save.svg'" [onClick]="save"
+        [showButton]="buttonVisibility.showSave!" [disabled]="buttonDisabled['save'] || selectedRow==null">
+      </app-button>
+      <app-button [label]="'delete'" [imageSrc]="'/assets/img/icon/delete.svg'" [color]="'#dc3545'"
+        [onClick]="openDeletePopup" [showButton]="buttonVisibility.showDelete!"
+        [disabled]="buttonDisabled['delete'] || selectedRow==null">
+      </app-button>
+
+    </ng-container>
 
     <!-- <app-button 
       [label]="'rollback'"
@@ -73,61 +58,77 @@
 
   </div>
 
-  
- <div class="table-scroll-wrapper">
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
+  <div class="table-scroll-wrapper">
 
-    <!-- <ng-container *ngFor="let column of columns" [matColumnDef]="column.field"> -->
-    <ng-container *ngFor="let column of columns; trackBy: trackByPrimaryKey " [matColumnDef]="column.field">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 full-width-table">
 
-      <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
-        <div class="header-container" [ngClass]="showFilter ? 'with-filter' : 'no-filter'">
-          <div class="filter-container" *ngIf="showFilter">
-            <input class="header-input" placeholder="{{ column.labelKey | translate }}"
-              (keyup.enter)="applyFilter(column.field, $event, 'asc', column.dataType, false)" />
-          </div>
+      <!-- <ng-container *ngFor="let column of columns" [matColumnDef]="column.field"> -->
+      <ng-container *ngFor="let column of columns; trackBy: trackByPrimaryKey " [matColumnDef]="column.field">
 
-          <div class="header-label-line">
-        
-            <span class="column-label">{{ column.labelKey | translate }}</span>
+        <th mat-header-cell *matHeaderCellDef [style.width]="column.width">
+          <div class="header-container" [ngClass]="showFilter ? 'with-filter' : 'no-filter'">
+            <div class="filter-container" *ngIf="showFilter">
+              <input class="header-input" placeholder="{{ column.labelKey | translate }}"
+                (keyup.enter)="applyFilter(column.field, $event, 'asc', column.dataType, false)" />
+            </div>
 
-            <span *ngIf="column.required && isEditableTable" class="required-indicator">*</span>
+            <div class="header-label-line">
 
-            <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
-              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'asc')"
-                (click)="applyFilter(column.field, null, 'asc', column.dataType, true)">▲</span>
-              <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'desc')"
-                (click)="applyFilter(column.field, null, 'desc', column.dataType, true)">▼</span>
+              <span class="column-label">{{ column.labelKey | translate }}</span>
+
+              <span *ngIf="column.required && isEditableTable" class="required-indicator">*</span>
+
+              <div class="sort-icons" [class.visible]="isSorted(column.field) || isHovered === column.field">
+                <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'asc')"
+                  (click)="applyFilter(column.field, null, 'asc', column.dataType, true)">▲</span>
+                <span class="sort-arrow" [ngClass]="getSortClass(column.field, 'desc')"
+                  (click)="applyFilter(column.field, null, 'desc', column.dataType, true)">▼</span>
+              </div>
             </div>
           </div>
-        </div>
 
 
-      </th>
+        </th>
 
-      <td mat-cell *matCellDef="let row" [style.width]="column.width" >
-        <app-table-column
-         [column]="column" 
-         [currentRow]="row" 
-         [selectedRow]="selectedRow"
-         [isSaveAttempted]="isSaveAttempted"
-         [isEditableTable]="isEditableTable"
-         [primaryKey]="primaryKey"
-         (fieldChanged)="onFieldChanged(row, $event)"
-        >
-        </app-table-column>
-      </td>
+        <td mat-cell *matCellDef="let row" [style.width]="column.width">
+          <app-table-column [column]="column" [currentRow]="row" [selectedRow]="selectedRow"
+            [isSaveAttempted]="isSaveAttempted" [isEditableTable]="isEditableTable" [primaryKey]="primaryKey"
+            (fieldChanged)="onFieldChanged(row, $event)">
+          </app-table-column>
+        </td>
+        <!-- Footer Cell -->
+        <td mat-footer-cell *matFooterCellDef [style.width]="column.width">
+        <ng-container *ngIf="showInTableFooter">
+          <span *ngIf="column.showTotalAmountPaid" class="table-custom-label">
+            {{ totals.totalAmountPaid | number:'1.2-2' }}
+            {{ 'FinancialTransactions.Currency' | translate }}
+          </span>
+           <span *ngIf="column.showTotalAmountRemaining" class="table-custom-label">
+            {{ totals.totalAmountRemaining | number:'1.2-2' }}
+            {{ 'FinancialTransactions.Currency' | translate }}
+          </span>
+        </ng-container>
+        </td>
+      </ng-container>
 
-    </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let system; columns: displayedColumns;" (click)="selectRow(system)"
+        [class.selected-row]="selectedRow === system">
+      </tr>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let system; columns: displayedColumns;" (click)="selectRow(system)"
-      [class.selected-row]="selectedRow === system">
-    </tr>
-  </table>
-    </div>
+      <tr class="divider-row" *ngIf="showInTableFooter">
+        <td [attr.colspan]="displayedColumns.length">
+          <div class="divider"></div>
+        </td>
+      </tr>
+      
+      <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"
+       [style.display]="showInTableFooter ? '' : 'none'">
+      </tr>
 
+    </table>
+  </div>
   <mat-paginator [length]="totalCount" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator>
 
 </div>

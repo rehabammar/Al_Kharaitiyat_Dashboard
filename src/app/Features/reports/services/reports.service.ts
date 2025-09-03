@@ -28,6 +28,7 @@ export class ReportsService {
     openAfterDownload?: boolean;
     teacherId? : number ;
     studentId? : number ;
+    userId? : number ;
     courseId? : number ;
   }): Promise<boolean> {
     const {
@@ -37,6 +38,7 @@ export class ReportsService {
       openAfterDownload = true,
       teacherId,
       studentId,
+      userId,
       courseId
     } = opts;
 
@@ -50,7 +52,7 @@ export class ReportsService {
       reportName: reportName,
       parameters: {
         P_lang: LanguageService.getLanguage()?.langCode,
-        P_user_id:    this.userService.getUser().userPk,
+        P_user_id:    userId,
         P_user_name:  this.userService.getUser().username,
         P_start_date: startDate ,
         P_end_date:   endDate ,

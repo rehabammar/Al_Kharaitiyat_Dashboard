@@ -19,6 +19,7 @@ import { GenericServiceFactory } from '../../../../core/factories/generic-servic
 import { ButtonVisibilityConfig } from '../../../../core/models/button-visibility-config.interface';
 import { TableColumn } from '../../../../core/models/table-column.interface';
 import { ConfirmPopupComponent } from '../../confirm-popup/confirm-popup.component';
+import { Totals } from '../../../../core/models/totals.interface';
 
 @Component({
   selector: 'app-generic-table',
@@ -35,8 +36,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   @Input() apiPath!: string;
   @Input() customSearchPath?: string;
   @Input() customUpatedPath?: string;
-  @Input() selectedId: string | number | null | undefined= null; 
-  @Input() searchParameterKey!: string;          
+  @Input() selectedId: string | number | null | undefined = null;
+  @Input() searchParameterKey!: string;
   @Output() rowSelected = new EventEmitter<any>();
 
   @Input() buttonVisibility: ButtonVisibilityConfig = {
@@ -48,12 +49,21 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   };
   @Input() screenId!: string;
   @Input() isEditableTable: boolean = false;
+  @Input() showInTableFooter: boolean = false;
+
 
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   dataSource = new MatTableDataSource<T>([]);
   displayedColumns: string[] = [];
   totalCount: number = 0;
+  totals: Totals = {
+    totalAmountPaid: 0,
+    totalTeacher: 0,
+    totalCenter: 0,
+    totalAmount: 0,
+    totalAmountRemaining: 0
+  };
   selectedRow: T | null = null;
   showFilter: boolean = false;
   isSaveAttempted: boolean = false;
@@ -109,29 +119,33 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
 
     }
   }
-ngOnInit(): void {
-  this.checkPrivileges();
-  this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey , this.customSearchPath , this.customUpatedPath);
-  this.columns = this.columns.filter(c => (c.showInTable ?? true)) ;
-  this.displayedColumns = this.columns.map(col => col.field);
+  ngOnInit(): void {
+    this.checkPrivileges();
+    this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey, this.customSearchPath, this.customUpatedPath);
+    this.columns = this.columns.filter(c => (c.showInTable ?? true));
+    this.displayedColumns = this.columns.map(col => col.field);
 
-  // subscribe ONCE (avoid re-subscribing inside loadData)
-  this.service.data$.subscribe((systems: T[]) => {
-    this.dataSource.data = systems;
-    if (!this.selectedRow && systems.length > 0) {
-      this.selectedRow = systems[0];
-    }else{
-      this.selectedRow = undefined as any;
-    }
-    this.rowSelected.emit(this.selectedRow);
-    this.changeDetectorRef.markForCheck();
-  });
+    // subscribe ONCE (avoid re-subscribing inside loadData)
+    this.service.data$.subscribe((systems: T[]) => {
+      this.dataSource.data = systems;
+      if (!this.selectedRow && systems.length > 0) {
+        this.selectedRow = systems[0];
+      } else {
+        this.selectedRow = undefined as any;
+      }
+      this.rowSelected.emit(this.selectedRow);
+      this.changeDetectorRef.markForCheck();
+    });
 
-  this.service.totalElements$.subscribe((count: number) => {
-    this.totalCount = count;
-    this.changeDetectorRef.markForCheck();
-  });
-}
+    this.service.totalElements$.subscribe((count: number) => {
+      this.totalCount = count;
+      this.changeDetectorRef.markForCheck();
+    });
+    this.service.totals$.subscribe((totals: Totals) => {
+      this.totals = totals;
+      this.changeDetectorRef.markForCheck();
+    });
+  }
 
 
   ngAfterViewInit(): void {
@@ -172,99 +186,99 @@ ngOnInit(): void {
   // }
 
   loadData(): void {
-  const pageIndex = this.paginator?.pageIndex ?? 0;
-  const pageSize = this.paginator?.pageSize ?? 10;
+    const pageIndex = this.paginator?.pageIndex ?? 0;
+    const pageSize = this.paginator?.pageSize ?? 10;
 
-  // build the new body shape
-  const body = this.buildRequest(pageIndex, pageSize);
+    // build the new body shape
+    const body = this.buildRequest(pageIndex, pageSize);
 
-  this.service.getAll(pageIndex, pageSize, undefined, body).subscribe();
-}
+    this.service.getAll(pageIndex, pageSize, undefined, body).subscribe();
+  }
 
-getSortClass(field: string, dir: 'asc' | 'desc'): string {
-  const s = this.sort[0];
-  return s && s.property === field && s.direction === dir
-    ? 'sort-arrow active'
-    : 'sort-arrow';
-}
+  getSortClass(field: string, dir: 'asc' | 'desc'): string {
+    const s = this.sort[0];
+    return s && s.property === field && s.direction === dir
+      ? 'sort-arrow active'
+      : 'sort-arrow';
+  }
 
-isSorted(field: string): boolean {
-  const s = this.sort[0];
-  return !!s && s.property === field;
-}
+  isSorted(field: string): boolean {
+    const s = this.sort[0];
+    return !!s && s.property === field;
+  }
 
-getSortDirection(field: string): 'asc' | 'desc' | null {
-  const s = this.sort[0];
-  return s && s.property === field ? s.direction : null;
-}
+  getSortDirection(field: string): 'asc' | 'desc' | null {
+    const s = this.sort[0];
+    return s && s.property === field ? s.direction : null;
+  }
 
 
   private coerceByType(value: any, dataType?: string) {
-  if (value == null || value === '') return '';
-  if (dataType === 'number') {
-    const n = Number(value);
-    return Number.isNaN(n) ? '' : n;
-  }
-  return String(value).trim();
-}
-
-private buildRequest(page: number, size: number) {
-  return {
-    page,
-    size,
-    ...this.parameter,           // your extra parameter(s): { [searchParameterKey]: selectedId }
-    ...this.filters,             // flat filters at top level
-    ...(this.sort.length ? { sort: this.sort } : {})
-  };
-}
-
-
- applyFilter(
-  field: string,
-  event: Event | null,
-  direction: 'asc' | 'desc' = 'asc',
-  dataType?: string,
-  isSorting: boolean = false
-): void {
-  if (isSorting) {
-    this.activeSort = { field, direction };
-    // single-sort; if you want multi-sort, push instead of replace
-    this.sort = [{ property: field, direction }];
-  } else {
-    let value: any = '';
-    if (event) {
-      const el = event.target as HTMLInputElement | null;
-      value = el?.value ?? '';
+    if (value == null || value === '') return '';
+    if (dataType === 'number') {
+      const n = Number(value);
+      return Number.isNaN(n) ? '' : n;
     }
-    const coerced = this.coerceByType(value, dataType);
+    return String(value).trim();
+  }
 
-    if (coerced === '' || coerced == null) {
-      delete this.filters[field];
+  private buildRequest(page: number, size: number) {
+    return {
+      page,
+      size,
+      ...this.parameter,           // your extra parameter(s): { [searchParameterKey]: selectedId }
+      ...this.filters,             // flat filters at top level
+      ...(this.sort.length ? { sort: this.sort } : {})
+    };
+  }
+
+
+  applyFilter(
+    field: string,
+    event: Event | null,
+    direction: 'asc' | 'desc' = 'asc',
+    dataType?: string,
+    isSorting: boolean = false
+  ): void {
+    if (isSorting) {
+      this.activeSort = { field, direction };
+      // single-sort; if you want multi-sort, push instead of replace
+      this.sort = [{ property: field, direction }];
     } else {
-      this.filters[field] = coerced;
+      let value: any = '';
+      if (event) {
+        const el = event.target as HTMLInputElement | null;
+        value = el?.value ?? '';
+      }
+      const coerced = this.coerceByType(value, dataType);
+
+      if (coerced === '' || coerced == null) {
+        delete this.filters[field];
+      } else {
+        this.filters[field] = coerced;
+      }
     }
+
+    this.loadData();
   }
 
-  this.loadData(); 
-}
+
+  clearAllFilters = () => {
+    this.filters = {};
+    this.sort = [];
+    this.activeSort = null;
+    this.paginator?.firstPage();
+    this.loadData();
+  }
 
 
-clearAllFilters = ()=> {
-  this.filters = {};
-  this.sort = [];
-  this.activeSort = null;
-  this.paginator?.firstPage();
-  this.loadData();
-}
 
-
-  
   selectRow(row: T): void {
     this.selectedRow = row;
     this.rowSelected.emit(row);
     if (this.selectedRow[this.primaryKey]) {
       this.checkPrivileges();
-    }else{
+    } else {
       this.updatePrivileges();
     }
   }
@@ -293,8 +307,8 @@ clearAllFilters = ()=> {
         console.warn("Validation Errors in Required Fields:", invalidFields);
       } else {
         this.isSaveAttempted = false;
-        if(this.searchParameterKey && this.selectedId){
-           (this.selectedRow as Record<string, any>)[this.searchParameterKey] = this.selectedId;
+        if (this.searchParameterKey && this.selectedId) {
+          (this.selectedRow as Record<string, any>)[this.searchParameterKey] = this.selectedId;
         }
         this.service.save(this.selectedRow).subscribe((updatedRow) => {
           this.selectRow(updatedRow);
@@ -439,7 +453,7 @@ clearAllFilters = ()=> {
         } else if (data.length > 0) {
           this.selectedRow = data[0];
         }
-      // this.rowSelected.emit(this.selectedRow);
+        // this.rowSelected.emit(this.selectedRow);
 
       }
       this.changeDetectorRef.markForCheck();
@@ -472,58 +486,111 @@ clearAllFilters = ()=> {
     // }
   }
 
-  updatePrivileges(){
+  updatePrivileges() {
     this.buttonDisabled['save'] = false;
     this.buttonDisabled['delete'] = false;
   }
 
   //==== update tabel data when master update ===
-public patchRowById(id: any, changes: Partial<T>) {
-  const pk = this.primaryKey as string;
-  const arr = this.dataSource.data;
-  const idx = arr.findIndex(r => r[pk] === id);
+  public patchRowById(id: any, changes: Partial<T>) {
+    const pk = this.primaryKey as string;
+    const arr = this.dataSource.data;
+    const idx = arr.findIndex(r => r[pk] === id);
 
-  if (idx !== -1) {
-    const updated = { ...arr[idx], ...changes } as T;
-    this.dataSource.data = [
-      ...arr.slice(0, idx),
-      updated,
-      ...arr.slice(idx + 1),
-    ];
+    if (idx !== -1) {
+      console.log('Patching row id:', id, 'with changes:', changes);
+      const updated = { ...arr[idx], ...changes } as T;
+      this.dataSource.data = [
+        ...arr.slice(0, idx),
+        updated,
+        ...arr.slice(idx + 1),
+      ];
 
-    if (this.selectedRow && this.selectedRow[pk] === id) {
-      this.selectedRow = updated;
-      this.rowSelected.emit(updated);
+      if (this.selectedRow && this.selectedRow[pk] === id) {
+        this.selectedRow = updated;
+        this.rowSelected.emit(updated);
+      }
+      this.changeDetectorRef.markForCheck();
     }
-    this.changeDetectorRef.markForCheck(); 
   }
-}
 
-public prependRow(row: T) {
-  this.dataSource.data = [row, ...this.dataSource.data];
-  this.selectedRow = row;
-  this.rowSelected.emit(row);
-  this.changeDetectorRef.markForCheck();
-}
 
-public removeRow(rowOrId: any) {
-  const pk = this.primaryKey as string;
-  const data = this.dataSource.data;
+  public prependRow(row: T) {
+    this.dataSource.data = [row, ...this.dataSource.data];
+    this.selectedRow = row;
+    this.rowSelected.emit(row);
+    this.changeDetectorRef.markForCheck();
+  }
 
-  const idx = typeof rowOrId === 'object'
-    ? data.indexOf(rowOrId)
-    : data.findIndex(r => r[pk] === rowOrId);
+  public removeRow(rowOrId: any) {
+    const pk = this.primaryKey as string;
+    const data = this.dataSource.data;
 
-  if (idx === -1) { this.loadDataWithRestore(); return; }
+    const idx = typeof rowOrId === 'object'
+      ? data.indexOf(rowOrId)
+      : data.findIndex(r => r[pk] === rowOrId);
 
-  const newData = [...data.slice(0, idx), ...data.slice(idx + 1)];
-  this.dataSource.data = newData;
+    if (idx === -1) { this.loadDataWithRestore(); return; }
 
-  const next = newData[idx] ?? newData[idx - 1] ?? null;
-  this.selectedRow = next as any;
-  this.rowSelected.emit(this.selectedRow);
-  this.changeDetectorRef.markForCheck();
-}
+    const newData = [...data.slice(0, idx), ...data.slice(idx + 1)];
+    this.dataSource.data = newData;
 
+    const next = newData[idx] ?? newData[idx - 1] ?? null;
+    this.selectedRow = next as any;
+    this.rowSelected.emit(this.selectedRow);
+    this.changeDetectorRef.markForCheck();
+  }
+
+
+  // upsertByPk(pkField: string, newRow: any) {
+  //   const arr = this.dataSource.data;
+  //   const idx = arr.findIndex(r => String(r[pkField]) === String(newRow[pkField]));
+
+  //   if (idx === -1) {
+  //     // create → insert
+  //     this.dataSource.data = [newRow, ...arr];       // or [...arr, newRow]
+  //   } else {
+  //     // update → replace immutably
+  //     const updated = { ...arr[idx], ...newRow, [pkField]: newRow[pkField] };
+  //     this.dataSource.data = [
+  //       ...arr.slice(0, idx),
+  //       updated,
+  //       ...arr.slice(idx + 1),
+  //     ];
+  //   }
+
+  //   this.changeDetectorRef.markForCheck?.();
+  // }
+
+  replaceRowByCid(cid: string, serverRow: any) {
+    // remove any row with that __cid
+    const withoutDraft = this.dataSource.data.filter(r => r['__cid'] !== cid);
+    // insert/replace by PK
+    const pkField = this.primaryKey as string;
+    const idx = withoutDraft.findIndex(r => String(r[pkField]) === String(serverRow[pkField]));
+    this.dataSource.data = idx === -1
+      ? [serverRow, ...withoutDraft]
+      : [...withoutDraft.slice(0, idx), serverRow, ...withoutDraft.slice(idx + 1)];
+    this.changeDetectorRef.markForCheck?.();
+  }
+
+  upsertByPk(pkField: string, newRow: any) {
+    const arr = this.dataSource.data
+      .filter(r => r[pkField] != null); // drop any stray draft rows with no PK
+    const idx = arr.findIndex(r => String(r[pkField]) === String(newRow[pkField]));
+    this.dataSource.data = idx === -1
+      ? [newRow, ...arr]
+      : [...arr.slice(0, idx), newRow, ...arr.slice(idx + 1)];
+    this.changeDetectorRef.markForCheck?.();
+  }
+  selectRowById(id: any) {
+    const pk = this.primaryKey as string;
+    const found = this.dataSource.data.find(r => String(r[pk]) === String(id));
+    if (found) {
+      this.selectedRow = found;
+      this.rowSelected.emit(found);
+      this.changeDetectorRef.markForCheck?.();
+    }
+  }
 
 }

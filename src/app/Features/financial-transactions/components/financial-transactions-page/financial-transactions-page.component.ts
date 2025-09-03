@@ -183,7 +183,8 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'currency',
       disabled: true,
-      width: '120px'
+      width: '120px',
+      showTotalAmountPaid: true,
     },
     {
       labelKey: 'FinancialTransactions.AmountRemaining',
@@ -192,6 +193,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       dataType: 'currency',
       disabled: true,
       width: '120px',
+      showTotalAmountRemaining: true,
     },
     // {
     //   labelKey: 'FinancialTransactions.SubjectName',

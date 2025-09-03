@@ -1,6 +1,6 @@
 // src/app/core/constants/api-endpoints.ts
 
-const baseUrl = 'http://157.180.65.178:8080/api/ecenter';
+const baseUrl = 'http://84.46.242.148:8080/api/ecenter';
 // const baseUrl = 'http://localhost:8080/api/ecenter';
 
 
@@ -115,6 +115,8 @@ static buildCrudEndpoints = (basePath: string  , searchPath?: string , updatePat
   static qualificationType = '/qualification-type';
   static findStudentsNotInCourse = '/users/findStudentsNotInCourse';
   static findStudentsNotInClass = '/users/findStudentsNotInClass';
+  static getAllUsers = '/users/search';
+
 
 
 //  static getStudentsList = '/users/search-students' ;

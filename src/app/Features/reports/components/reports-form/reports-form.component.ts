@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ReportsService } from '../../services/reports.service';
 import { ReportsType } from '../../services/reports-type';
 import { ApiEndpoints } from '../../../../core/constants/api-endpoints';
 import { UserService } from '../../../auth/services/user.service';
 import { User } from '../../../auth/models/user.model';
 import { TeacherCourse } from '../../../courses/models/teacher-course.model';
+import { Observable } from 'rxjs/internal/Observable';
+import { SearchDialogComponent } from '../../../../shared/components/search-dialog/search-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { map, take } from 'rxjs';
 
 @Component({
   selector: 'app-reports-form',
@@ -18,7 +22,9 @@ export class ReportsFormComponent {
   endDate: string ="";
 
   selectedTeacher : User | null = null ;
-  sselectedStudent : User | null = null ;
+  selectedStudent : User | null = null ;
+  selectedUser : User | null = null ;
+
 
   selectedCourse : TeacherCourse | null = null ;
 
@@ -27,7 +33,10 @@ export class ReportsFormComponent {
 
 
 
-  constructor(private reports: ReportsService , private userService : UserService) {}
+  constructor(
+    private reports: ReportsService ,
+    private dialog:MatDialog , 
+    private dir : ChangeDetectorRef) {}
 
   courseDataFactory = () => new TeacherCourse();
   userDataFactory = () => new User();
@@ -52,7 +61,8 @@ onDownloadReports = async () => {
       endDate:   end  ,
       openAfterDownload: true,
       teacherId: this.selectedTeacher?.userPk,
-      studentId: this.sselectedStudent?.userPk,
+      studentId: this.selectedStudent?.userPk,
+      userId: this.selectedUser?.userPk,
       courseId:  this.selectedCourse?.teacherCoursePk ,
     });
   } finally {
@@ -66,7 +76,7 @@ onDownloadReports = async () => {
   }
 
   onStudentSelected(item : User | null){
-    this.sselectedStudent = item ;
+    this.selectedStudent = item ;
   }
 
   onCourseSelected(item : TeacherCourse | null){
@@ -74,6 +84,43 @@ onDownloadReports = async () => {
   }
 
 
+ openUsersSearchDialog(): void {
+  const dialogRef = this.dialog.open(SearchDialogComponent, {
+    maxWidth: '80vw',
+    width: '50vw',
+    data: {
+      apiEndpoint: ApiEndpoints.getAllUsers,
+      columns: [
+        {
+          labelKey: 'User.UserPk',
+          field: 'userPk',
+          dataType: 'number',
+          disabled: true,
+          width: '300px'
+        },
+        {
+          labelKey: 'User.FullName',
+          field: 'fullName',
+          dataType: 'string',
+          disabled: true,
+          width: '220px'
+        }
+      ],
+      dataFactory: () => new User(),
+      label: 'User.Users'
+    }
+  });
+
+  dialogRef.afterClosed().pipe(take(1)).subscribe((pickedUser: User | null) => {
+    if (pickedUser) {
+      this.selectedUser = pickedUser;
+      console.log('Selected user:', this.selectedUser.fullName);
+      this.dir.markForCheck(); 
+    }
+  });
+}
+
+  
 }
 
 

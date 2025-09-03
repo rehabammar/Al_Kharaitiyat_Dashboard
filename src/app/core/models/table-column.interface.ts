@@ -16,7 +16,9 @@ export interface TableColumn {
   width?: string; 
   showWhen?: (row: any) => boolean;
   showInTable? : boolean  ;
-  onSearch?: () => any
+  onSearch?: () => any ; 
+  showTotalAmountPaid? : boolean ;
+  showTotalAmountRemaining? : boolean ;
 
 
 }

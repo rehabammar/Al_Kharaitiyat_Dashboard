@@ -69,17 +69,6 @@
   border: 1px solid red;
   background-color: white !important;
 }
-.input-icon-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  height: 40px;
-  width: 100%;
-  box-sizing: border-box;
-  overflow: hidden; /* ✅ يمنع خروج النص */
-
-}
-
 
 /* ✅ input يملى كل المساحة */
 .custom-input {
@@ -111,13 +100,5 @@
   text-overflow: ellipsis;
 }
 
-.search-icon {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  color: hsl(var(--bg)) !important;
-  font-size: 22px;
-  flex-shrink: 0;
-}
 
 

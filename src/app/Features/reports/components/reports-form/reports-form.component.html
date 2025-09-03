@@ -31,7 +31,7 @@
               <label class="form-label">{{ 'Reports.StartDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <input class="custom-input date-field" type="date" name="startDate" [(ngModel)]="startDate" required/>
+            <input class="custom-input date-field" type="date" name="startDate" [(ngModel)]="startDate" required />
           </div>
 
           <!-- End date (required, min=startDate) -->
@@ -57,7 +57,7 @@
             </app-combobox-search>
           </div>
 
-            <!-- Optional: Student -->
+          <!-- Optional: Student -->
           <div *ngIf="reportType === 'attendance'">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.Student' | translate }}</label>
@@ -65,6 +65,24 @@
             <app-combobox-search [apiPath]="'/users/search-students'" [dataFactory]="userDataFactory"
               [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onStudentSelected($event)">
             </app-combobox-search>
+          </div>
+
+          <!-- Optional: User -->
+          <div *ngIf="reportType === 'payments'" >
+            <div class="header-label-line align-start">
+              <label class="form-label">{{ 'Reports.User' | translate }}</label>
+            </div>
+            <div class="input-icon-wrapper">
+            <input
+                matInput
+                class="custom-input"
+                [value]="selectedUser?.fullName || ''"
+                [disabled]="true"> 
+            <button type="button" class="search-icon" (click)="openUsersSearchDialog()">
+              <mat-icon>search</mat-icon>
+            </button>
+            </div>
+         
           </div>
 
           <!-- Optional: Course -->

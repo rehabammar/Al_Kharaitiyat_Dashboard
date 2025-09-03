@@ -27,6 +27,7 @@
                 [apiPath]="'financialTransactions'"
                 [searchParameterKey]="'payeeFk'"
                 [selectedId]="orgnizationId"
+                [showInTableFooter]="true"
                 (rowSelected)="onTransactionSelected($event)">
               </app-generic-table>
             </ng-template>
@@ -44,6 +45,7 @@
                 [apiPath]="'financialTransactions'"
                 [searchParameterKey]="'payerFk'"
                 [selectedId]="orgnizationId"
+                [showInTableFooter]="true"
                 (rowSelected)="onTransactionSelected($event)"
                 >
               </app-generic-table>
@@ -61,6 +63,7 @@
                 [dataFactory]="financialTransactionDataFactory"
                 [apiPath]="'financialTransactions'"
                 [customSearchPath]="'search-students-payments'"
+                [showInTableFooter]="true"
                 (rowSelected)="onTransactionSelected($event)">
               </app-generic-table>
             </ng-template>
