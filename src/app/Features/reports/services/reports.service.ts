@@ -27,6 +27,7 @@ export class ReportsService {
     endDate?: string | null;
     openAfterDownload?: boolean;
     teacherId? : number ;
+    studentId? : number ;
     courseId? : number ;
   }): Promise<boolean> {
     const {
@@ -35,6 +36,7 @@ export class ReportsService {
       endDate,
       openAfterDownload = true,
       teacherId,
+      studentId,
       courseId
     } = opts;
 
@@ -47,16 +49,43 @@ export class ReportsService {
     const body = {
       reportName: reportName,
       parameters: {
-        lang: LanguageService.getLanguage()?.langCode,
-        startDate: startDate ,
-        endDate:   endDate ,
-        userId:    this.userService.getUser().userPk,
-        teacherId: teacherId,
-        // studentId: isStudent ? currentUser.userPk : null,
+        P_lang: LanguageService.getLanguage()?.langCode,
+        P_user_id:    this.userService.getUser().userPk,
+        P_user_name:  this.userService.getUser().username,
+        P_start_date: startDate ,
+        P_end_date:   endDate ,
+        P_teacher_fk: teacherId,
+        P_student_fk: studentId,
         filterType: 'teacher' ,
-        courseId: courseId,
+        P_teacher_course_fk: courseId,
+        P_courses_teacher_fk:teacherId
       },
     };
+
+  //   ----TeacherCoursesReport
+	// 		--P_user_name
+	// 		--P_lang
+			
+	// 		--P_teacher_fk
+
+	// ----Payments
+	// 		--P_lang
+	// 		--P_user_name
+			
+	// 		--P_user_id
+	// 		--P_start_date
+
+	// 		--P_end_date
+	// ----Attendance 
+	// 		--P_lang
+	// 		--P_user_name
+			
+	// 		--P_teacher_course_fk
+	// 		--P_student_fk
+	// 		--P_courses_teacher_fk
+	// 		--P_user_name
+	// 		--P_start_date
+	// 		--P_end_date
 
     console.log("REPORTS PARAMTER " + JSON.stringify(body));
 

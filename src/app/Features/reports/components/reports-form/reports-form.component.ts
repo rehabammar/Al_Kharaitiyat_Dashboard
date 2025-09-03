@@ -18,6 +18,8 @@ export class ReportsFormComponent {
   endDate: string ="";
 
   selectedTeacher : User | null = null ;
+  sselectedStudent : User | null = null ;
+
   selectedCourse : TeacherCourse | null = null ;
 
   reportType!: ReportsType ;
@@ -28,7 +30,7 @@ export class ReportsFormComponent {
   constructor(private reports: ReportsService , private userService : UserService) {}
 
   courseDataFactory = () => new TeacherCourse();
-  teacherDataFactory = () => new User();
+  userDataFactory = () => new User();
   
 
 dateOnly(s?: string | null): string {
@@ -50,14 +52,21 @@ onDownloadReports = async () => {
       endDate:   end  ,
       openAfterDownload: true,
       teacherId: this.selectedTeacher?.userPk,
+      studentId: this.sselectedStudent?.userPk,
       courseId:  this.selectedCourse?.teacherCoursePk ,
     });
   } finally {
     this.downloading = false;
   }
+
+  
 };
   onTeacherSelected(item : User | null){
     this.selectedTeacher = item ;
+  }
+
+  onStudentSelected(item : User | null){
+    this.sselectedStudent = item ;
   }
 
   onCourseSelected(item : TeacherCourse | null){

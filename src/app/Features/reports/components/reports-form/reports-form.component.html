@@ -48,17 +48,27 @@
           </div>
 
           <!-- Optional: Teacher -->
-          <div>
+          <div *ngIf="reportType === 'teacherCourses' || reportType === 'attendance'">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
             </div>
-            <app-combobox-search [apiPath]="'/users/search-teachers'" [dataFactory]="teacherDataFactory"
+            <app-combobox-search [apiPath]="'/users/search-teachers'" [dataFactory]="userDataFactory"
               [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onTeacherSelected($event)">
             </app-combobox-search>
           </div>
 
+            <!-- Optional: Student -->
+          <div *ngIf="reportType === 'attendance'">
+            <div class="header-label-line align-start">
+              <label class="form-label">{{ 'Reports.Student' | translate }}</label>
+            </div>
+            <app-combobox-search [apiPath]="'/users/search-students'" [dataFactory]="userDataFactory"
+              [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onStudentSelected($event)">
+            </app-combobox-search>
+          </div>
+
           <!-- Optional: Course -->
-          <div>
+          <div *ngIf="reportType === 'attendance'">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.Course' | translate }}</label>
             </div>
