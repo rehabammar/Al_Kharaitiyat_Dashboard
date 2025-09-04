@@ -41,6 +41,7 @@
         </app-generic-form>
       </app-custom-accordion>
 
+    <div *ngIf="selectedCourse?.teacherCoursePk">
      <!-- Course Classes / students -->
       <br>
       <app-custom-accordion title="TeacherCourse.classes-students">
@@ -71,9 +72,7 @@
               </app-generic-table>
           </mat-tab>
         </mat-tab-group>
-      </app-custom-accordion>
-
-     
+      </app-custom-accordion>     
       <br>
      <app-custom-accordion title="Class.ClassDetails">
       <mat-tab-group mat-stretch-tabs="false">
@@ -108,7 +107,8 @@
           </mat-tab>
         </mat-tab-group>
 
-      </app-custom-accordion>
+     </app-custom-accordion>
+    </div>
   </div>
 
 

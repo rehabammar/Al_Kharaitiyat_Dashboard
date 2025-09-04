@@ -111,7 +111,7 @@
     "User.Status": "نشط",
     "User.Organization": "الجهة",
     "User.Stage": "المرحلة",
-    "User.Level": "المستوى",
+    "User.Level": "الصف",
     "User.JobTitle": "المسمى الوظيفي",
     "User.Specialization": "التخصص",
     "User.ExperienceYears": "سنوات الخبرة",
@@ -120,6 +120,7 @@
     "User.GuardianPhone": "جوال ولي الأمر",
     "User.GuardianEmail": "بريد ولي الأمر",
     "User.Notes": "ملاحظات",
+    "User.TeacherScore": "تقييم المعلم",
     "Lookup.Lookups": "القوائم",
     "Lookup.LookupPk": "رقم القائمة",
     "Lookup.NameAr": "الاسم (عربي)",
@@ -135,6 +136,7 @@
     "StudentAttendance.Attendance": "الحضور للحصة",
     "StudentAttendance.StudentAttendanceClassPk": "رقم السجل",
     "StudentAttendance.StudentName": "اسم الطالب",
+    "StudentAttendance.AttendanceDate": "تاريخ الحضور",
     "StudentAttendance.PaymentStatusName": "حالة السداد",
     "StudentAttendance.ClassEvalution": "تقييم الحصة",
     "StudentAttendance.Comment": "تعليق",
@@ -164,6 +166,7 @@
     "FinancialTransactions.PayAll": "دفع الكل",
     "FinancialTransactions.Currency": "﷼",
     "FinancialTransactions.TotalRequiredAmount": "إجمالي المبلغ المطلوب",
+    "FinancialTransactions.Total":"الإجمالي",
     "Reports.Title": "التقارير",
     "Reports.ReportType": "نوع التقرير",
     "Reports.StartDate": "تاريخ البداية",
@@ -204,10 +207,18 @@
     "Validation": {
     "UsernameRequired": "ادخل اسم المستخدم",
     "PasswordRequired": "ادخل كلمة المرور"
-    }
-
-
-
-
-
+    },
+    "TeacherQualification.Section": "المؤهلات وشهادات الخبرة",
+    "TeacherQualification.Title": "اسم المؤهل",
+    "TeacherQualification.Type": "نوع المؤهل",
+    "TeacherQualification.Major": "التخصص",
+    "TeacherQualification.Institution": "المؤسسة",
+    "TeacherQualification.IssueDate": "تاريخ الإصدار",
+    "TeacherQualification.CertificateUrl": "رابط الشهادة",
+    "TeacherSubjects.Section": "المواد الدراسية",
+    "TeacherSubjects.teacher": "المعلم",
+    "TeacherSubjects.subject": "المادة",
+    "TeacherSubjects.stage": "المرحلة",
+    "TeacherSubjects.organization": "المركز",
+    "TeacherSubjects.experienceYears": "سنوات الخبرة"
 }

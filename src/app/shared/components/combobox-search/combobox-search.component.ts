@@ -1,8 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject, take, takeUntil } from 'rxjs';
+
 import { SearchServiceFactory } from '../../../core/factories/search-service-factory';
 import { SearchService } from '../../../core/services/shared/search.service';
-import { Subject, takeUntil, take } from 'rxjs';
 
 @Component({
   selector: 'app-combobox-search',
@@ -10,16 +13,21 @@ import { Subject, takeUntil, take } from 'rxjs';
   templateUrl: './combobox-search.component.html',
   styleUrl: './combobox-search.component.css',
 })
-export class ComboboxSearchComponent<T extends Record<string, any>> implements OnInit, OnChanges, OnDestroy {
+export class ComboboxSearchComponent<T extends Record<string, any>>
+  implements OnInit, OnChanges, OnDestroy {
 
   @Input() apiPath!: string;
   @Input() dataFactory!: () => T;
   @Input() primaryKey!: keyof T;
   @Input() displayItemKey!: keyof T;
 
+  /** Parent can pass any dependency filters here, e.g. { stageFk: 1 } */
+  @Input() params: Record<string, any> = {};
+
+  /** Two-way-ish: selected key (FK). */
   @Input() set selectedKey(val: any) {
     this._selectedKey = val;
-    this.tryApplySelection(); // بتشتغل تاني بعد وصول items في data$ كمان
+    this.tryApplySelection();
   }
   get selectedKey() { return this._selectedKey; }
 
@@ -29,20 +37,18 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
   @Output() selectedKeyChange = new EventEmitter<any>();
 
   currentPage = 0;
-  pageSize  = 10;
+  pageSize = 100;
 
   items: T[] = [];
   selected: T | null | typeof this.MORE_OPTION = null;
 
-  searchService!: SearchService<T>;
+  private searchService!: SearchService<T>;
   private _selectedKey: any = null;
+  private destroy$ = new Subject<void>();
   private isLoading = false;
 
-  private destroy$ = new Subject<void>();
-
-  // كاش مشترك لكل instances بنفس الـ apiPath
+  /** Cache & inflight keyed by apiPath+params */
   private static cache: Record<string, any[]> = {};
-  // منع طلبات متكررة متوازية لنفس apiPath
   private static inflight: Record<string, boolean> = {};
 
   readonly MORE_OPTION = '__MORE_OPTION__' as const;
@@ -53,39 +59,48 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
     private cdr: ChangeDetectorRef
   ) {}
 
-  // ---------- Lifecycle ----------
+  // ---------- lifecycle ----------
   ngOnInit(): void {
     this.searchService = this.searchFactory.create<T>(this.apiPath);
 
-    // اشتراك واحد فقط على data$
+    // single subscription to service stream
     this.searchService.data$
       .pipe(takeUntil(this.destroy$))
       .subscribe((list: T[]) => {
-        if (Array.isArray(list)) {
-          this.items = list;
+        if (!Array.isArray(list)) return;
+        this.items = list;
 
-          // اكتب في الكاش لأول مرة فقط
-          if (!ComboboxSearchComponent.cache[this.apiPath]?.length && this.items.length) {
-            ComboboxSearchComponent.cache[this.apiPath] = this.items;
-          }
-
-          this.tryApplySelection();
-          this.cdr.markForCheck();
+        // write to cache under current key
+        const key = this.cacheKey();
+        if (!ComboboxSearchComponent.cache[key]?.length && list.length) {
+          ComboboxSearchComponent.cache[key] = list;
         }
+
+        this.tryApplySelection();
+        this.cdr.markForCheck();
       });
 
     this.loadData();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['apiPath'] && !changes['apiPath'].firstChange) {
-      // لو المسار اتغير: امسح local state واشتغل من الكاش/السيرفس من جديد
+  ngOnChanges(ch: SimpleChanges): void {
+    // apiPath changed → rebuild service and reload
+    if (ch['apiPath'] && !ch['apiPath'].firstChange) {
       this.searchService = this.searchFactory.create<T>(this.apiPath);
       this.items = [];
       this.selected = null;
       this.loadData();
     }
-    if (changes['selectedKey'] && !changes['selectedKey'].firstChange) {
+
+    // params changed (e.g., parent FK) → clear list & reload with new filters
+    if (ch['params'] && !ch['params'].firstChange) {
+      this.items = [];
+      this.selected = null;
+      this.loadData();
+    }
+
+    // external selection changed → try to reflect it
+    if (ch['selectedKey'] && !ch['selectedKey'].firstChange) {
       this.tryApplySelection();
     }
   }
@@ -95,16 +110,14 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
     this.destroy$.complete();
   }
 
-  // ---------- UI handlers ----------
+  // ---------- UI ----------
   onSelect(value: T | null | typeof this.MORE_OPTION) {
     if (value === this.MORE_OPTION) {
       this.openSearchDialog();
       this.selected = null;
       return;
     }
-
     this.selected = (value as T) ?? null;
-
     this.itemSelected.emit(this.selected);
 
     const pk = this.primaryKey as string;
@@ -113,10 +126,12 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
     this.selectedKeyChange.emit(key);
   }
 
-  // ---------- Data loading with cache ----------
+  // ---------- data loading with per-params cache ----------
   private loadData(): void {
-    // 1) لو فيه كاش جاهز — استخدمه فورًا بدون call
-    const cached = ComboboxSearchComponent.cache[this.apiPath] as T[] | undefined;
+    const key = this.cacheKey();
+
+    // 1) serve cached
+    const cached = ComboboxSearchComponent.cache[key] as T[] | undefined;
     if (cached?.length) {
       this.items = cached;
       this.tryApplySelection();
@@ -124,25 +139,31 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
       return;
     }
 
-    // 2) لو فيه طلب جاري لنفس apiPath — ما تطلبش تاني
-    if (ComboboxSearchComponent.inflight[this.apiPath]) return;
+    // 2) avoid duplicate in-flight calls
+    if (ComboboxSearchComponent.inflight[key]) return;
 
-    // 3) اطلب مرة واحدة
-    ComboboxSearchComponent.inflight[this.apiPath] = true;
+    // 3) fetch once
+    ComboboxSearchComponent.inflight[key] = true;
     this.isLoading = true;
 
-    // مفيش nested subscribe هنا: getAll بتغذي data$ والاشتراك فوق بيحدّث items
-    this.searchService.getAll(this.currentPage, this.pageSize)
+    const body = {
+      page: this.currentPage,
+      size: this.pageSize,
+      ...(this.params || {}),
+    };
+
+    this.searchService
+      .getAll(this.currentPage, this.pageSize, undefined, body)
       .pipe(take(1))
       .subscribe({
         complete: () => {
           this.isLoading = false;
-          ComboboxSearchComponent.inflight[this.apiPath] = false;
+          ComboboxSearchComponent.inflight[key] = false;
         },
         error: () => {
           this.isLoading = false;
-          ComboboxSearchComponent.inflight[this.apiPath] = false;
-        }
+          ComboboxSearchComponent.inflight[key] = false;
+        },
       });
   }
 
@@ -160,20 +181,24 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
       return;
     }
 
-    // (اختياري) لو عندك getById في السيرفس، جيبه وحطه في items والكاش
+    // optional: fetch by id if service supports it
     const svc: any = this.searchService as any;
     if (typeof svc.getById === 'function') {
       svc.getById(this._selectedKey)
         .pipe(takeUntil(this.destroy$))
         .subscribe((item: T | null) => {
-          if (item) {
-            this.items = [item, ...this.items];
-            ComboboxSearchComponent.cache[this.apiPath] = this.items;
-            this.selected = item;
-            this.cdr.markForCheck();
-          }
+          if (!item) return;
+          this.items = [item, ...this.items];
+          ComboboxSearchComponent.cache[this.cacheKey()] = this.items;
+          this.selected = item;
+          this.cdr.markForCheck();
         });
     }
+  }
+
+  private cacheKey(): string {
+    // stable key: apiPath + normalized params
+    return `${this.apiPath}|${JSON.stringify(this.params ?? {})}`;
   }
 
   getDisplayText(item: T): string {
@@ -182,6 +207,6 @@ export class ComboboxSearchComponent<T extends Record<string, any>> implements O
   }
 
   openSearchDialog() {
-    // ...
+    // implement dialog if you need a “More…” popup
   }
 }

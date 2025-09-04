@@ -3,7 +3,8 @@
     [label]="'createInsert'"
     [imageSrc]="'/assets/img/icon/createInsert.png'"
     [onClick]="addNewRow"
-    [showButton]="buttonVisibility.showInsert!">
+    [showButton]="buttonVisibility.showInsert!"
+    [disabled]="isLoading">
   </app-button>
 
   <app-button
@@ -11,7 +12,7 @@
     [imageSrc]="'/assets/img/icon/save.svg'"
     [onClick]="save"
     [showButton]="buttonVisibility.showSave!"
-    [disabled]="!selectedRow">
+    [disabled]="!selectedRow || isLoading">
   </app-button>
 
   <app-button
@@ -20,7 +21,7 @@
     [color]="'#dc3545'"
     [onClick]="openDeletePopup"
     [showButton]="buttonVisibility.showDelete!"
-    [disabled]="!selectedRow">
+    [disabled]="!selectedRow || isLoading">
   </app-button>
 </div>
 
@@ -59,6 +60,7 @@
             [displayItemKey]="column.displayItemKey!"
             [selectedKey]="row[column.fieldFK!]"
             (itemSelected)="onComboSelected(column, $event)"
+            [params]="getComboParams(column)"      
             [hasError]="isInvalid(column)">
           </app-combobox-search>
 
@@ -96,19 +98,57 @@
                    (ngModelChange)="onFieldChanged(column, $event)"
                    [class.input-error]="isInvalid(column)" />
         
-          <div class="phone-field" *ngSwitchCase="'mobile'">
-          <span class="prefix">+974</span>
-          <input
-            type="tel"
-            class="custom-input ltr-input"
-            dir="ltr"
-            inputmode="numeric"
-            placeholder="XXXXXXXX"
-            [ngModel]="localMobile"
-            (ngModelChange)="onLocalChanged($event, column)"
-            maxlength="8"
-            [class.input-error]="isInvalid(column)" />
+            <div class="phone-field" *ngSwitchCase="'mobile'">
+            <span class="prefix">+974</span>
+            <input
+              type="tel"
+              class="custom-input ltr-input"
+              dir="ltr"
+              inputmode="numeric"
+              placeholder="XXXXXXXX"
+              [ngModel]="localMobile"
+              (ngModelChange)="onLocalChanged($event, column)"
+              maxlength="8"
+              [class.input-error]="isInvalid(column)" />
             </div>
+            <!-- PERCENT INPUT -->
+            <div class="percent-field" *ngSwitchCase="'percentage'">
+              <input
+                type="number"
+                class="custom-input"
+                [attr.name]="column.field"
+                [(ngModel)]="row[column.field]"
+                (ngModelChange)="onPercentChanged(column, $event)"
+                [class.input-error]="isInvalid(column)"
+                min="0"
+                max="100"
+              />
+              <span class="suffix">%</span>
+            </div>
+
+            <!-- EVALUATION (1..5 stars) -->
+            <div class="stars"
+                *ngSwitchCase="'evaluation'"
+                role="radiogroup"
+                [attr.aria-label]="'Rating ' + (safeIntRating(row[column.field]) || 0) + ' of 5'"
+                (keydown)="onRatingKeydown($event, column, row)">
+
+              <ng-container *ngFor="let _ of five; let i = index">
+                <button
+                  type="button"
+                  class="star"
+                  [class.filled]="i < safeIntRating(row[column.field])"
+                  [attr.aria-checked]="i + 1 === safeIntRating(row[column.field])"
+                  role="radio"
+                  (click)="setRating(column, row, i + 1)"
+                  [disabled]="column.disabled">
+                  ★
+                  <span class="sr-only">{{ i + 1 }}</span>
+                </button>
+              </ng-container>
+
+            </div>
+
     
             <!-- DEFAULT (STRING/NUMBER/ETC) -->
             <input *ngSwitchDefault
@@ -117,6 +157,7 @@
                    [(ngModel)]="row[column.field]"
                    (ngModelChange)="onFieldChanged(column, $event)"
                    [class.input-error]="isInvalid(column)" />
+       
           </ng-container>
 
 

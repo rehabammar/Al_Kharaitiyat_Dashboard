@@ -75,7 +75,6 @@
   
 }
 .phone-field {
-  
   display: flex;
   align-items: center;
   gap: 8px;
@@ -100,6 +99,16 @@
   flex: 1;
 }
 
+.percent-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.percent-field .suffix {
+  font-weight: bold;
+  font-size: 14px;
+  color: hsl(var(--fg)) !important;
+}
 
 
 /* حالة الخطأ: حدّ أحمر فقط بدون خلفية */

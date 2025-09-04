@@ -3,8 +3,6 @@ import { TableColumn } from '../../../../core/models/table-column.interface';
 import { FinancialTransaction } from '../../model/financial-transactions.model';
 import { GenericTableComponent } from '../../../../shared/components/table-components/generic-table/generic-table.component';
 import { LookupDetail } from '../../../../core/models/lookup-detail.model';
-import { SessionStorageUtil } from '../../../../core/util/session-storage';
-import { AppConstants } from '../../../../core/constants/app_constants';
 import { ButtonVisibilityConfig } from '../../../../core/models/button-visibility-config.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { PayAllPopupComponent } from '../pay-all-popup/pay-all-popup.component';
@@ -128,6 +126,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'string',
       disabled: true,
+      showTotalLabel : true ,
       width: '140px',
     },
     {
@@ -151,7 +150,8 @@ export class FinancialTransactionsPageComponent implements OnInit {
       fieldFK: 'transactionStatusFk',
       required: false,
       dataType: 'string',
-      disabled: true,showInTable: false,
+      disabled: true,
+      showInTable: false,
       // isCombobox: true,
       // apiPath: '/lookupDetails/payment-status',
       // displayItemKey: 'lookupName',

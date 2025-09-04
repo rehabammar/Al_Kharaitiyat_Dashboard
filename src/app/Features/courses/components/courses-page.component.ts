@@ -47,7 +47,7 @@ export class CoursesPageComponent {
 
   constructor(private dialog: MatDialog, private changeDetectorRef: ChangeDetectorRef) { }
 
-  @ViewChild('teacherCourseTable') table!: GenericTableComponent<TeacherCourse>;
+  @ViewChild('teacherCourseTable') coursesTable!: GenericTableComponent<TeacherCourse>;
   @ViewChild('classesTableRef') classesTable!: GenericTableComponent<Class>;
 
   @ViewChild('classStudentAttendanceTable') classStudentAttendanceTable!: GenericTableComponent<StudentAttendance>;
@@ -162,6 +162,8 @@ export class CoursesPageComponent {
       displayItemKey: "levelName",
       primaryKey: "levelPk",
       dataFactory: this.levelDataFactory,
+      paramsMap: { stageFk: 'stageFk' },
+      dependsOn: ['stageFk']  ,  
       width: '220px'
     },
 
@@ -216,7 +218,7 @@ export class CoursesPageComponent {
       labelKey: 'TeacherCourse.CenterPercentage',
       field: 'centerPercentage',
       required: true,
-      dataType: 'number',
+      dataType: 'percentage',
       disabled: false,
       showInTable: false,
       width: '130px'
@@ -585,6 +587,14 @@ export class CoursesPageComponent {
       searchFieldplaceholder: 'CourseStudent.SelectStudent',
       onSearch: () => this.openStudentAttendencSearchDialog()
     },
+    {
+      labelKey: 'StudentAttendance.AttendanceDate',
+      field: 'studentAttendanceDate',
+      required: false,
+      dataType: 'date',
+      disabled: true,
+      width: '220px',
+    },
     // {
     //   labelKey: 'StudentAttendance.PaymentStatusName',
     //   field: 'paymentStatusName',
@@ -636,23 +646,33 @@ export class CoursesPageComponent {
     };
 
     const id = this.selectedCourse.teacherCoursePk;
-    this.table.patchRowById(id, { [e.field]: e.value } as Partial<TeacherCourse>);
+    this.coursesTable.patchRowById(id, { [e.field]: e.value } as Partial<TeacherCourse>);
   }
 
-  onTeacherCourseSaved(row: TeacherCourse) {
-    this.table.patchRowById(row.teacherCoursePk, row);
-  }
-
-  onNewTeacherCourseRow(row: TeacherCourse) {
+   private currentCourseDraftCid: string | null = null;
+  onNewTeacherCourseRow(row: any) {
+    this.currentCourseDraftCid = row.__cid;
     this.selectedCourse = row;
-    this.table.prependRow(row);
+    this.coursesTable.prependRow(row);
   }
 
+  
+  onTeacherCourseSaved(row: TeacherCourse) {
+    if (this.currentCourseDraftCid) {
+      this.coursesTable.replaceRowByCid(this.currentCourseDraftCid, row);
+      this.currentCourseDraftCid = null;
+    } else {
+      this.coursesTable.upsertByPk('teacherCoursePk', row);
+    }
+    this.coursesTable.selectRowById(row.teacherCoursePk);
+  }
+
+ 
   onTeacherCourseRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
     if (e.type === 'new') {
-      this.table.removeRow(e.row);
+      this.coursesTable.removeRow(e.row);
     } else {
-      this.table.removeRow(e.id);
+      this.coursesTable.removeRow(e.id);
     }
   }
 
@@ -660,8 +680,6 @@ export class CoursesPageComponent {
   selectedClass: Class | null = null;
   onClassSelected(row: Class) {
     this.selectedClass = row;
-    console.log("Current selected class: ", row.classPk);
-    // this.classStudentAttendanceTable.loadData()
   }
   onselectedClassRowChanged(e: { field: string; value: any }) {
     if (!this.selectedClass) return;
@@ -673,24 +691,21 @@ export class CoursesPageComponent {
     this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
   }
 
-  // onClassSaved(row: Class) {
-  //   this.classesTable.patchRowById(row.classPk, row);
-  // }
 
-  onClassSaved(row : Class) {
- // replace the draft (by __cid) with the server row (has real PK)
-  if (this.currentDraftCid) {
-    this.classesTable.replaceRowByCid(this.currentDraftCid, row);
-    this.currentDraftCid = null;
-  } else {
-    // defensive fallback (e.g., user edited existing row, not a draft)
-    this.classesTable.upsertByPk('classPk', row);
-  }
-  this.classesTable.selectRowById(row.classPk);
-   
+  onClassSaved(row: Class) {
+    // replace the draft (by __cid) with the server row (has real PK)
+    if (this.currentDraftCid) {
+      this.classesTable.replaceRowByCid(this.currentDraftCid, row);
+      this.currentDraftCid = null;
+    } else {
+      // defensive fallback (e.g., user edited existing row, not a draft)
+      this.classesTable.upsertByPk('classPk', row);
+    }
+    this.classesTable.selectRowById(row.classPk);
+
   }
 
- private currentDraftCid: string | null = null;
+  private currentDraftCid: string | null = null;
   onNewClassRow(row: any) {
     this.currentDraftCid = row.__cid;
     this.selectedClass = row;

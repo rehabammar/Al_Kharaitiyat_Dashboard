@@ -100,6 +100,9 @@
         <!-- Footer Cell -->
         <td mat-footer-cell *matFooterCellDef [style.width]="column.width">
         <ng-container *ngIf="showInTableFooter">
+           <span *ngIf="column.showTotalLabel" class="table-custom-label header">
+            {{ 'FinancialTransactions.Total' | translate }}
+          </span>
           <span *ngIf="column.showTotalAmountPaid" class="table-custom-label">
             {{ totals.totalAmountPaid | number:'1.2-2' }}
             {{ 'FinancialTransactions.Currency' | translate }}

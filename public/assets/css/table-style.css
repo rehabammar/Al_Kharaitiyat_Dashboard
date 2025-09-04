@@ -188,6 +188,13 @@ th:hover .sort-icons,
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.header {
+  color: hsl(var(--bg));
+  font-weight: bold;
+  font-size: 14px;
+  font-family: 'cairoBoldFont';
+
+}
 
 
 .divider-row {

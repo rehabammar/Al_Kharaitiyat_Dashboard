@@ -9,6 +9,7 @@ import {
   OnInit,
   Optional,
   Output,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -119,9 +120,21 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
 
     }
   }
+
+  private inited = false;
+
+  private ensureService() {
+    if (!this.service) {
+      this.service = this.genericServiceFactory.create<T>(
+        this.apiPath, this.primaryKey, this.customSearchPath, this.customUpatedPath
+      );
+    }
+  }
+
+
   ngOnInit(): void {
     this.checkPrivileges();
-    this.service = this.genericServiceFactory.create<T>(this.apiPath, this.primaryKey, this.customSearchPath, this.customUpatedPath);
+    this.ensureService();
     this.columns = this.columns.filter(c => (c.showInTable ?? true));
     this.displayedColumns = this.columns.map(col => col.field);
 
@@ -145,6 +158,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
       this.totals = totals;
       this.changeDetectorRef.markForCheck();
     });
+    this.inited = true;
+
   }
 
 
@@ -153,13 +168,29 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
     this.loadData();
   }
 
-  ngOnChanges(): void {
-    if (this.selectedId) {
-      this.parameter = { [this.searchParameterKey!]: this.selectedId };
-      this.selectedRow = undefined as any;
-      this.loadData();
-    }
+  // ngOnChanges(): void {
+  //   if (this.selectedId) {
+  //     this.parameter = { [this.searchParameterKey!]: this.selectedId };
+  //     this.selectedRow = undefined as any;
+  //     this.loadData();
+  //   }
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+  if (changes['apiPath'] || changes['customSearchPath'] || changes['primaryKey']) {
+    this.ensureService();
   }
+
+  if (changes['selectedId']) {
+    this.parameter = this.selectedId != null && this.searchParameterKey
+      ? { [this.searchParameterKey]: this.selectedId }
+      : {};
+    this.selectedRow = undefined as any;
+
+    if (this.inited && this.service) this.loadData();
+  }
+}
+
 
   trackByPrimaryKey = (_: number, row: any) => row?.[this.primaryKey];
 

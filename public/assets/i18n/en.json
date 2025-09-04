@@ -120,6 +120,7 @@
     "User.GuardianPhone": "Guardian Phone",
     "User.GuardianEmail": "Guardian Email",
     "User.Notes": "Notes",
+    "User.TeacherScore": "Teacher Score",
     "Lookup.Lookups": "Lookups",
     "Lookup.LookupPk": "Lookup ID",
     "Lookup.NameAr": "Name (Arabic)",
@@ -135,6 +136,7 @@
     "StudentAttendance.Attendance": "Attendance",
     "StudentAttendance.StudentAttendanceClassPk": "Record ID",
     "StudentAttendance.StudentName": "Student Name",
+    "StudentAttendance.AttendanceDate": "Attendance Date",
     "StudentAttendance.PaymentStatusName": "Payment Status",
     "StudentAttendance.ClassEvalution": "Class Evaluation",
     "StudentAttendance.Comment": "comment",
@@ -164,6 +166,7 @@
     "FinancialTransactions.PayAll": "Pay All",
     "FinancialTransactions.Currency": "QAR",
     "FinancialTransactions.TotalRequiredAmount": "Total Required Amount",
+    "FinancialTransactions.Total":"Total",
     "Reports.Title": "Reports",
     "Reports.ReportType": "Report Type",
     "Reports.StartDate": "Start Date",
@@ -204,6 +207,19 @@
     "Validation": {
     "UsernameRequired": "Username is required",
     "PasswordRequired": "Password is required"
-    }
+    },
+    "TeacherQualification.Section": "Qualifications and Experience Certificates",
+    "TeacherQualification.Title": "Qualification Name",
+    "TeacherQualification.Type": "Qualification Type",
+    "TeacherQualification.Major": "Major",
+    "TeacherQualification.Institution": "Institution",
+    "TeacherQualification.IssueDate": "Issue Date",
+    "TeacherQualification.CertificateUrl": "Qualification Certificate URL",
+    "TeacherSubjects.Section": "Subjects",
+    "TeacherSubjects.teacher": "Teacher",
+    "TeacherSubjects.subject": "Subject",
+    "TeacherSubjects.stage": "Stage",
+    "TeacherSubjects.organization": "Organization",
+    "TeacherSubjects.experienceYears": "Experience Years"
 
 }

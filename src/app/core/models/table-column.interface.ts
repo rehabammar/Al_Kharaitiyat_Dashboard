@@ -19,6 +19,9 @@ export interface TableColumn {
   onSearch?: () => any ; 
   showTotalAmountPaid? : boolean ;
   showTotalAmountRemaining? : boolean ;
+  showTotalLabel?: boolean ;
+  paramsMap?: Record<string, string>; 
+  dependsOn?: string[];              
 
 
 }

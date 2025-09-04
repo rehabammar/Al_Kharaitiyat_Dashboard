@@ -23,7 +23,6 @@
 </app-custom-accordion>
 
 <br>
-
 <app-custom-accordion title="User.UserDetails">
   <app-generic-form
     [columns]="formCloumns"
@@ -38,5 +37,35 @@
     (rowSaved)="onUserSaved($event)">
   </app-generic-form>
 </app-custom-accordion>
+
+<br>
+<div *ngIf="selectedUser?.userTypeFk == 4">
+  <app-custom-accordion title="TeacherSubjects.Section">
+  <app-generic-table
+    [screenId]="'teacherSubjects'"
+    [primaryKey]="'teacherSubjectPk'"
+    [columns]="teacherSubjectColumns"
+    [dataFactory]="teacherSubjectDataFactory"
+    [apiPath]="'teacherSubjects'"
+    [selectedId]="selectedUser?.userPk"     
+    [searchParameterKey]="'teacherFk'"
+    [isEditableTable]="true">
+  </app-generic-table>
+</app-custom-accordion>
+<br>
+<app-custom-accordion title="TeacherQualification.Section">
+    <app-generic-table
+      [screenId]="'teacherQualifications'"
+      [primaryKey]="'qualificationPk'"
+      [columns]="teacherQualificationsColumns"
+      [dataFactory]="teacherQualificationDataFactory"
+      [apiPath]="'teacherQualifications'"
+      [selectedId]="selectedUser?.userPk"     
+      [searchParameterKey]="'teacherFk'">
+    </app-generic-table>
+</app-custom-accordion>
+</div>
+
+
 </div>
 </main>

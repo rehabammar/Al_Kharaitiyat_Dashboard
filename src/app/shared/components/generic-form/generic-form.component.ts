@@ -66,6 +66,8 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   service!: GenericService<T>;
 
+  isLoading = false;
+
   private mobileColumn?: TableColumn;
 
 
@@ -81,9 +83,11 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
-    this.rebuildService();            // ← استخدم الدالة الموحّدة
+    this.rebuildService();
     this.mobileColumn = this.findMobileColumn();
     this.syncLocalFromRow();
+    this.buildDependentsIndex();
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,11 +105,11 @@ export class GenericFormComponent<T extends Record<string, any>>
       (changes['primaryKey'] && !changes['primaryKey'].firstChange)
     ) {
       this.rebuildService();
+      this.buildDependentsIndex();
       this.cdr.markForCheck();
     }
   }
 
-  /** أعِد إنشاء الخدمة أو حدّثها بالمسارات الحالية */
   private rebuildService() {
     this.service = this.genericServiceFactory.create<T>(
       this.apiPath,
@@ -167,6 +171,14 @@ export class GenericFormComponent<T extends Record<string, any>>
     this.setField(column.field, coerced);
     this.markChanged(column.field);
     this.rowChanged.emit({ field: column.field, value: coerced });
+    const dependents = this.dependentsIndex[column.field] ?? [];
+    for (const child of dependents) {
+      if (child.fieldFK) this.setField(child.fieldFK, null);
+      this.setField(child.field, null);
+      if (child.fieldFK) this.markChanged(child.fieldFK);
+      this.markChanged(child.field);
+    }
+
     if (this.showErrors) this.showErrors = false;
   }
   toggleFlag(field: string) {
@@ -181,31 +193,88 @@ export class GenericFormComponent<T extends Record<string, any>>
     this.rowChanged.emit({ field, value: next });
   }
 
+  // onComboSelected(column: TableColumn, item: Record<string, any> | null) {
+  //   if (!this.selectedRow) return;
+
+  //   if (column.isCombobox && column.primaryKey) {
+  //     const fk = item ? item[column.primaryKey] : null;
+
+  //     if (column.fieldFK) {
+  //       this.setField(column.fieldFK, fk);
+  //       this.markChanged(column.fieldFK);
+  //       this.rowChanged.emit({ field: column.fieldFK, value: fk });
+  //     } else {
+  //       this.setField(column.field, fk);
+  //       this.markChanged(column.field);
+  //       this.rowChanged.emit({ field: column.field, value: fk });
+  //     }
+
+  //     if (column.displayItemKey) {
+  //       const displayVal = item ? item[column.displayItemKey] : null;
+  //       this.setField(column.field, displayVal);
+  //       this.markChanged(column.field);
+  //       this.rowChanged.emit({ field: column.field, value: displayVal });
+  //     }
+  //   }
+
+  //   if (this.showErrors) this.showErrors = false;
+  // }
+
   onComboSelected(column: TableColumn, item: Record<string, any> | null) {
     if (!this.selectedRow) return;
 
-    if (column.isCombobox && column.primaryKey) {
-      const fk = item ? item[column.primaryKey] : null;
+    // 1) the FK value (id) that should be stored
+    const fk = item && column.primaryKey ? (item as any)[column.primaryKey] : null;
 
-      if (column.fieldFK) {
-        this.setField(column.fieldFK, fk);
-        this.markChanged(column.fieldFK);
-        this.rowChanged.emit({ field: column.fieldFK, value: fk });
-      } else {
-        this.setField(column.field, fk);
-        this.markChanged(column.field);
-        this.rowChanged.emit({ field: column.field, value: fk });
-      }
+    // 2) write the FK to the FK field (or to the field itself if you don't use fieldFK)
+    if (column.fieldFK) {
+      // route via onFieldChanged so dependents get cleared
+      this.onFieldChanged({ ...column, field: column.fieldFK } as TableColumn, fk);
+    } else {
+      this.onFieldChanged(column, fk);
+    }
 
-      if (column.displayItemKey) {
-        const displayVal = item ? item[column.displayItemKey] : null;
-        this.setField(column.field, displayVal);
-        this.markChanged(column.field);
-        this.rowChanged.emit({ field: column.field, value: displayVal });
-      }
+    // 3) optionally write the display text to the display field
+    if (column.displayItemKey) {
+      const displayVal = item ? (item as any)[column.displayItemKey] : null;
+      // write to the visible/display field
+      this.onFieldChanged(column, displayVal);
     }
 
     if (this.showErrors) this.showErrors = false;
+  }
+
+  onPercentChanged(column: TableColumn, value: any) {
+    let n = Number(value);
+    if (isNaN(n)) n = 0;
+    if (n < 0) n = 0;
+    if (n > 100) n = 100;
+    if (this.selectedRow) {
+      (this.selectedRow as any)[column.field] = n;
+    }
+    this.onFieldChanged(column, n);
+  }
+
+
+  // ========= Compobox handling ==========
+  private dependentsIndex: Record<string, TableColumn[]> = {};
+
+  private buildDependentsIndex() {
+    this.dependentsIndex = {};
+    for (const col of this.columns) {
+      for (const parent of col.dependsOn ?? []) {
+        (this.dependentsIndex[parent] ??= []).push(col);
+      }
+    }
+  }
+
+  getComboParams(column: TableColumn): Record<string, any> {
+    const p: Record<string, any> = {};
+    if (!column.paramsMap || !this.selectedRow) return p;
+    for (const [apiParam, rowField] of Object.entries(column.paramsMap)) {
+      p[apiParam] = (this.selectedRow as any)[rowField] ?? null;
+    }
+    return p;
   }
 
   // ========== Utils ==========
@@ -281,6 +350,52 @@ export class GenericFormComponent<T extends Record<string, any>>
   touched = false;
   markTouched() { this.touched = true; }
 
+  // ========== Evaluation ==========
+
+  // 5 stars array for *ngFor
+  five = [0, 1, 2, 3, 4];
+
+  safeIntRating(v: any): number {
+    const n = Number(v);
+    if (!Number.isFinite(n)) return 0;
+    return Math.min(5, Math.max(0, Math.floor(n)));
+  }
+
+  setRating(column: TableColumn, row: any, value: number | null) {
+    // allow null (cleared) OR clamp 1..5
+    const val = value == null ? null : Math.min(5, Math.max(1, Math.floor(value)));
+    row[column.field] = val;
+    this.onFieldChanged(column, val);
+  }
+
+  // keyboard support: Left/Down -1, Right/Up +1, Home=1, End=5, Delete/Backspace=null
+  onRatingKeydown(evt: KeyboardEvent, column: TableColumn, row: any) {
+    const cur = row[column.field] == null ? 0 : this.safeIntRating(row[column.field]);
+    let next: number | null = cur || 0;
+
+    switch (evt.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        next = Math.max(1, (cur || 1) - 1);
+        evt.preventDefault();
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        next = Math.min(5, (cur || 0) + 1);
+        evt.preventDefault();
+        break;
+      case 'Home':
+        next = 1; evt.preventDefault(); break;
+      case 'End':
+        next = 5; evt.preventDefault(); break;
+      case 'Delete':
+      case 'Backspace':
+        next = null; evt.preventDefault(); break;
+      default:
+        return;
+    }
+    this.setRating(column, row, next);
+  }
 
 
 
@@ -292,15 +407,17 @@ export class GenericFormComponent<T extends Record<string, any>>
 
     const invalid = this.columns.filter(c => this.isMissingRequired(c));
     if (invalid.length) { this.showErrors = true; return; }
+    this.isLoading = true;
 
     this.service.save(this.selectedRow).subscribe({
       next: (res: T) => {
-        this.selectedRow = res;      // now has a real PK if it was create
+        this.selectedRow = res;
         this.resetBaseline();
-
-        // single event is enough — parent will upsert into table
         this.rowSaved.emit(res);
-        // (you can remove newRowSaved if you no longer need it)
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
       }
     });
   };
@@ -316,7 +433,6 @@ export class GenericFormComponent<T extends Record<string, any>>
     const base = this.dataFactory ? this.dataFactory() : ({} as T);
     const row: any = { ...(base as any) };
 
-    // ❌ ensure no PK on a brand-new row
     if (row[pk] != null) delete row[pk];
     row[this.CID] = `cid-${Date.now()}-${++this._cidSeq}`;
 
@@ -352,12 +468,17 @@ export class GenericFormComponent<T extends Record<string, any>>
     const pk = this.primaryKey;
     const id = this.selectedRow[pk];
     if (this.selectedRow && (this.selectedRow as any)[this.primaryKey] != null) {
+      this.isLoading = true;
       this.service.delete(this.selectedRow).subscribe({
         next: () => {
           this.rowDeleted.emit({ type: 'persisted', id });
           this.clearRow();
+          this.isLoading = false;
         },
-        error: (err) => console.error('Delete failed', err)
+        error: (err) => {
+          console.error('Delete failed', err);
+          this.isLoading = false;
+        }
       });
     } else {
 
