@@ -29,8 +29,8 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   private sub?: Subscription;
 
   // ---- grid config ----
-  START_HOUR = 10;       // 07:00
-  END_HOUR = 25;      // 10:00 PM
+  START_HOUR = 8;       // 08:00
+  END_HOUR = 24;      // 11:59 PM
   SLOT_MIN = 10;      // slot granularity (10-minute steps like your data)
 
   cols = 0;             // total grid columns

@@ -31,15 +31,22 @@
                             </a>
                             <a [href]="'tel:' + organization.phoneNumber">
                               <i class="fa fa-phone"></i>
-                            </a>
-                            <a [href]="'mailto:' + organization.email">
-                              <i class="fa fa-envelope"></i>
-                            </a>
+                            </a> 
                             <a *ngIf="organization?.lat && organization?.long"
                               [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.long"
                               target="_blank" rel="noopener noreferrer" aria-label="Directions in Google Maps">
                                <i class="fas fa-map-marker-alt"></i>
                             </a>
+
+                                <a href="https://play.google.com/store/apps/details?id=YOUR.ANDROID.PACKAGE"
+                                  target="_blank" rel="noopener noreferrer" aria-label="Android app on Google Play">
+                                  <i class="fab fa-android"></i>
+                                </a>
+
+                                <a href="https://apps.apple.com/app/idYOUR_IOS_APP_ID"
+                                  target="_blank" rel="noopener noreferrer" aria-label="iOS app on App Store">
+                                  <i class="fab fa-apple"></i>
+                                </a>
 
                             </div>
                 </div>
