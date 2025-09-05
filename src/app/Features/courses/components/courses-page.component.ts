@@ -356,7 +356,7 @@ export class CoursesPageComponent {
       labelKey: 'Class.ExpectedStartTime',
       field: 'expectedStartTime',
       required: true,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: false,
       width: '200px'
     },
@@ -364,7 +364,7 @@ export class CoursesPageComponent {
       labelKey: 'Class.ExpectedEndTime',
       field: 'expectedEndTime',
       required: true,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: false,
       width: '200px'
     },
@@ -442,7 +442,7 @@ export class CoursesPageComponent {
       labelKey: 'Class.ActualStartTime',
       field: 'actualStartDate',
       required: false,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: true,
       width: '200px'
     },
@@ -450,7 +450,7 @@ export class CoursesPageComponent {
       labelKey: 'Class.ActualEndTime',
       field: 'actualEndDate',
       required: false,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: true,
       width: '200px'
     },
@@ -542,7 +542,7 @@ export class CoursesPageComponent {
       labelKey: 'CourseStudent.RegistrationDate',
       field: 'courseStudentRegistrationDate',
       required: false,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: true,
     },
 
@@ -591,7 +591,7 @@ export class CoursesPageComponent {
       labelKey: 'StudentAttendance.AttendanceDate',
       field: 'studentAttendanceDate',
       required: false,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: true,
       width: '220px',
     },

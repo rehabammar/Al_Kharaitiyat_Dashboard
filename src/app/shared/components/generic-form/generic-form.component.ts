@@ -306,19 +306,25 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   /** --- DATE HELPERS --- */
 
-  // Build yyyy-MM-ddTHH:mm for <input type="datetime-local">
-  toLocalInput(value: any | null): string {
+  // Build yyyy-MM-dd أو yyyy-MM-ddTHH:mm حسب النوع
+  toLocalInput(value: any | null, type: 'date' | 'datetime' = 'datetime'): string {
     if (!value) return '';
-    const d = new Date(value);            // works with ISO like ...+03:00 or ...Z
+    const d = new Date(value);
     if (isNaN(d.getTime())) return '';
     const pad = (n: number) => String(n).padStart(2, '0');
     const y = d.getFullYear();
     const m = pad(d.getMonth() + 1);
     const dd = pad(d.getDate());
+
+    if (type === 'date') {
+      return `${y}-${m}-${dd}`;
+    }
+
     const hh = pad(d.getHours());
     const mm = pad(d.getMinutes());
     return `${y}-${m}-${dd}T${hh}:${mm}`;
   }
+
 
   // Convert datetime-local (local time) -> ISO with local offset (+HH:MM)
   private toIsoWithOffset(localStr: string): string | null {
@@ -341,10 +347,30 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   /** Called from (input)/(change) on the date control */
   onDateInput(column: TableColumn, localStr: string) {
-    // If you prefer UTC 'Z', use: const iso = localStr ? new Date(localStr).toISOString() : null;
-    const iso = this.toIsoWithOffset(localStr);
+    if (!localStr) {
+      this.onFieldChanged(column, null);
+      return;
+    }
+
+    let iso: string | null;
+
+    if (column.dataType === 'date') {
+      // نخزن التاريخ فقط بدون وقت
+      const d = new Date(localStr);
+      if (isNaN(d.getTime())) return;
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const y = d.getFullYear();
+      const m = pad(d.getMonth() + 1);
+      const dd = pad(d.getDate());
+      iso = `${y}-${m}-${dd}T00:00:00.000Z`;
+    } else {
+      // datetime
+      iso = this.toIsoWithOffset(localStr);
+    }
+
     this.onFieldChanged(column, iso);
   }
+
 
   /** Optional: used by (blur) if you kept it in the template */
   touched = false;

@@ -77,12 +77,23 @@
 
           <ng-container [ngSwitch]="column.dataType">
 
-            <!-- DATE INPUT -->
-            <input *ngSwitchCase="'date'"
+            <!-- DATE-TIME INPUT -->
+            <input *ngSwitchCase="'datetime'"
                    class="custom-input date-field"
                    matInput
                    type="datetime-local"
-                   [value]="toLocalInput(row[column.field])"
+                   [value]="toLocalInput(row[column.field],'datetime')"
+                   (input)="onDateInput(column, $any($event.target).value)"
+                   (change)="onDateInput(column, $any($event.target).value)"
+                   (blur)="markTouched()"
+                   [disabled]="column.disabled"
+                   [class.input-error]="isInvalid(column)" />
+            <!-- DATE INPUT -->
+              <input *ngSwitchCase="'date'"
+                   class="custom-input date-field"
+                   matInput
+                   type="date"
+                   [value]="toLocalInput(row[column.field] , 'date')"
                    (input)="onDateInput(column, $any($event.target).value)"
                    (change)="onDateInput(column, $any($event.target).value)"
                    (blur)="markTouched()"
@@ -146,6 +157,15 @@
                   <span class="sr-only">{{ i + 1 }}</span>
                 </button>
               </ng-container>
+
+              <button type="button"
+                class="clear-rating"
+                (click)="setRating(column, row, null)"
+                [disabled]="column.disabled"
+                aria-label="Clear rating">
+                ×
+              </button>
+
 
             </div>
 

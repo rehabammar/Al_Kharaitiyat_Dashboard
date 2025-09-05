@@ -137,6 +137,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
     this.ensureService();
     this.columns = this.columns.filter(c => (c.showInTable ?? true));
     this.displayedColumns = this.columns.map(col => col.field);
+    this.setDefaultSortDescByPk();
 
     // subscribe ONCE (avoid re-subscribing inside loadData)
     this.service.data$.subscribe((systems: T[]) => {
@@ -177,19 +178,19 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
-  if (changes['apiPath'] || changes['customSearchPath'] || changes['primaryKey']) {
-    this.ensureService();
-  }
+    if (changes['apiPath'] || changes['customSearchPath'] || changes['primaryKey']) {
+      this.ensureService();
+    }
 
-  if (changes['selectedId']) {
-    this.parameter = this.selectedId != null && this.searchParameterKey
-      ? { [this.searchParameterKey]: this.selectedId }
-      : {};
-    this.selectedRow = undefined as any;
+    if (changes['selectedId']) {
+      this.parameter = this.selectedId != null && this.searchParameterKey
+        ? { [this.searchParameterKey]: this.selectedId }
+        : {};
+      this.selectedRow = undefined as any;
 
-    if (this.inited && this.service) this.loadData();
+      if (this.inited && this.service) this.loadData();
+    }
   }
-}
 
 
   trackByPrimaryKey = (_: number, row: any) => row?.[this.primaryKey];
@@ -225,6 +226,16 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
 
     this.service.getAll(pageIndex, pageSize, undefined, body).subscribe();
   }
+
+
+  private setDefaultSortDescByPk() {
+    if (!this.sort.length && this.primaryKey) {
+      const pk = this.primaryKey as string;
+      this.sort = [{ property: pk, direction: 'desc' }];
+      this.activeSort = { field: pk, direction: 'desc' };
+    }
+  }
+
 
   getSortClass(field: string, dir: 'asc' | 'desc'): string {
     const s = this.sort[0];

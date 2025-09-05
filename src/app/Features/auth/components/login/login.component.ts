@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { Messaging } from '@angular/fire/messaging';
 import { getToken, onMessage } from 'firebase/messaging';
-import { MessagingBridgeService } from '../../../../core/services/shared/messaging-bridge.service';
 
 
 
@@ -37,7 +36,6 @@ export class LoginComponent implements OnInit {
     private translateService: TranslateService,
     private titleService: Title,
     private messaging: Messaging,
-    private bridge: MessagingBridgeService
 
   ) { }
   ngOnInit(): void {
@@ -112,11 +110,10 @@ export class LoginComponent implements OnInit {
 
   requestPermission() {
     getToken(this.messaging, {
-      vapidKey: "BBGADUbR7r84W8iKcirY5DgLDee33UQkila-2xZ_j--luznCg9ZflgatJBjH5hV3GKn7l-O5qDFgGum45f5F73Q" // من Firebase Console
+      vapidKey: "BBGADUbR7r84W8iKcirY5DgLDee33UQkila-2xZ_j--luznCg9ZflgatJBjH5hV3GKn7l-O5qDFgGum45f5F73Q" 
     }).then((currentToken) => {
       if (currentToken) {
         console.log("Got FCM token:", currentToken);
-        // ابعته للسيرفر بتاعك
         this.firebaseToken = currentToken;
       } else {
         console.log("No registration token available.");
@@ -125,24 +122,6 @@ export class LoginComponent implements OnInit {
       console.error("An error occurred while retrieving token. ", err);
     });
 
-    // استقبال رسالة foreground
-    onMessage(this.messaging, (payload) => {
-      console.log("Message received in foreground: ", payload);
-      // alert(payload.notification?.title + ": " + payload.notification?.body);
-
-      const title = payload.notification?.title || 'New message';
-      const options = {
-        body: payload.notification?.body,
-        icon: "/assets/img/logo/logo.png",
-        data: { refresh: true } // علامة مفيدة
-      };
-      // self.registration.showNotification(title, options);
-      const audio = new Audio('assets/sounds/notification_sound.wav');
-      audio.play();
-      new Notification(title, options);
-      this.bridge.emit({ type: 'REFRESH', payload, source: 'foreground' });
-
-
-    });
+  
   }
 }

@@ -105,6 +105,25 @@
 }
 
 
+.clear-rating {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.8;
+  color: hsl(var(--bg));
+
+  font-size: 1.4rem;     
+  padding: 0.5rem 0.8rem; 
+  line-height: 1.2;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.clear-rating:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
 
 .sr-only {
   position: absolute !important;

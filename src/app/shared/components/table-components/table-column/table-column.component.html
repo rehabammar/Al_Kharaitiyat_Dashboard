@@ -72,7 +72,7 @@
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
     <!-- date -->
-    <ng-container *ngIf="column.dataType === 'date'; else notDate">
+    <ng-container *ngIf="column.dataType === 'datetime'; else notDate">
       <span class="custom-label" dir="ltr">
         <ng-container *ngIf="currentRow[column.field]; else dash">
           {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
