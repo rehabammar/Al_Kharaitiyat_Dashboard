@@ -59,6 +59,9 @@ export class GenericFormComponent<T extends Record<string, any>>
     showTranslation: true,
   };
 
+  @Input() confirmBeforeSave = false;
+
+
 
   isDirty = false;
   changedFields = new Set<string>();
@@ -79,7 +82,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   constructor(
     private genericServiceFactory: GenericServiceFactory,
     private dialog: MatDialog,
-    private cdr: ChangeDetectorRef ) { }
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.initialRowJson = JSON.stringify(this.selectedRow ?? {});
@@ -278,7 +281,7 @@ export class GenericFormComponent<T extends Record<string, any>>
   // ========== Utils ==========
 
   get saveDisabled(): boolean {
-    console.log("saveDisabled" )
+    console.log("saveDisabled")
     return !this.selectedRow || this.isLoading || !this.isDirty;
   }
 
@@ -436,26 +439,42 @@ export class GenericFormComponent<T extends Record<string, any>>
   // ========== Actions ==========
 
 
-  save = () => {
+  private doSave() {
     if (!this.selectedRow) return;
-
     const invalid = this.columns.filter(c => this.isMissingRequired(c));
     if (invalid.length) { this.showErrors = true; return; }
-    this.isLoading = true;
 
+    this.isLoading = true;
     this.service.save(this.selectedRow).subscribe({
       next: (res: T) => {
         this.selectedRow = res;
         this.resetBaseline();
         this.rowSaved.emit(res);
         this.isLoading = false;
+        this.cdr.markForCheck();
       },
-      error: (err) => {
-        this.isLoading = false;
+      error: () => { this.isLoading = false; this.cdr.markForCheck(); }
+    });
+  }
+
+  save = () => {
+    if (!this.selectedRow) return;
+
+    if (!this.confirmBeforeSave) {
+      this.doSave();
+      return;
+    }
+
+    this.dialog.open(ConfirmPopupComponent, {
+      data: {
+        type: 'confirmation',
+        messageKey: 'message.confirmPayment',
+        showCancel: true
       }
+    }).afterClosed().subscribe(res => {
+      if (res?.result === 1) this.doSave();
     });
   };
-
 
 
   private _cidSeq = 0;
@@ -526,17 +545,21 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   openDeletePopup = () => {
 
+
     this.dialog.open(ConfirmPopupComponent, {
-      // width: '400px',
       data: {
-        message: 'message.areYouSure',
+        type: 'confirm',
+        messageKey: 'message.areYouSure',
         showCancel: true
-      }
-    }).afterClosed().subscribe(result => {
-      if (result?.result === 1) {
+      },
+      panelClass: 'dialog-warning',
+      disableClose: true
+    }).afterClosed().subscribe(res => {
+      if (res?.result === 1) {
         this.delete();
       }
     });
+
 
   }
 

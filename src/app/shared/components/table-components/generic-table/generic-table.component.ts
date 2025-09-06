@@ -74,7 +74,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
 
   isHovered: string | null = null;
 
-  filters: Record<string, any> = {};   // e.g. { teacherCourseName: 'شرح' }
+  filters: Record<string, any> = {};   
   sort: Array<{ property: string; direction: 'asc' | 'desc' }> = [];
   activeSort: { field: string; direction: 'asc' | 'desc' } | null = null;
 
@@ -82,6 +82,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   lastPageIndex: number = 0;
 
   privileges: any;
+
 
 
   buttonDisabled: { [key: string]: boolean } = {
@@ -330,6 +331,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
     row[change.field as keyof T] = change.value;
   }
 
+  //=============== add new row ========================
+
 
   addNewRow = () => {
     const newRow = this.dataFactory();
@@ -338,6 +341,8 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
     this.selectedRow = newRow;
     this.updatePrivileges();
   }
+
+  // =====================================================================
 
   save = () => {
     this.isSaveAttempted = true;
@@ -367,13 +372,15 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   openDeletePopup = () => {
 
     this.dialog.open(ConfirmPopupComponent, {
-      // width: '400px',
       data: {
-        message: 'message.areYouSure',
+        type: 'confirm',
+        messageKey: 'message.areYouSure',
         showCancel: true
-      }
-    }).afterClosed().subscribe(result => {
-      if (result?.result === 1) {
+      },
+      panelClass: 'dialog-warning',
+      disableClose: true
+    }).afterClosed().subscribe(res => {
+      if (res?.result === 1) {
         this.delete();
       }
     });

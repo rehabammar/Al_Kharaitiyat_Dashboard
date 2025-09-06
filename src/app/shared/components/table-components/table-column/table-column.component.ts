@@ -62,7 +62,9 @@ export class TableColumnComponent {
 
       if (column.displayItemKey) {
         const displayVal = item ? item[column.displayItemKey] : null;
+        const field = this.column.field;
         this.currentRow[column.field] = displayVal
+        this.fieldChanged.emit({ field, value: displayVal });
 
       }
     }

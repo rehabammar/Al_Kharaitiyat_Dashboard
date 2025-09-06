@@ -4,14 +4,67 @@
   min-height: 19px!important;
   border: var(--bg-color,#070638) !important;
   background-image: -webkit-linear-gradient(top, #CCE2F6 0%, #B1D2F2 100%) !important;
-  font-family: 'Bukra', sans-serif !important;
   display: inline-block !important;
   font-size: 10pt !important;
   text-align: center !important;
   vertical-align: middle!important;
-  background: var(--bg-color,#0c193d) !important;
+  background: var(--bg-color , hsl(var(--bg))) !important;
   font-weight: normal!important;
   border-radius: 20px!important;
   padding: 5px 20px!important;
   color: white !important;
+  font-family: 'cairoFont' !important;
+  margin: 2px;
+}
+
+
+.dialog-header {
+  display:flex; align-items:center; gap:.75rem; margin-bottom:.5rem;
+}
+.dialog-icon { font-size: 23px; }
+
+.dialog-header.error   .dialog-icon { color:#dc2626; }
+.dialog-header.success .dialog-icon { color:#16a34a; }
+.dialog-header.warning .dialog-icon { color:#d97706; }
+.dialog-header.info    .dialog-icon { color:#2563eb; }
+
+.dialog-body p { margin: .25rem 0 .5rem; }
+.dialog-details {
+  margin-top:.75rem; padding:.5rem .75rem; border-radius:6px;
+  background:#fafafa; color:#444; max-height:160px; overflow:auto;
+  font-size: 15px;
+}
+
+/* Optional: different panel classes when opening the dialog */
+.dialog-error .mat-mdc-dialog-surface { border-top:4px solid #dc2626; }
+.dialog-success .mat-mdc-dialog-surface { border-top:4px solid #16a34a; }
+.dialog-warning .mat-mdc-dialog-surface { border-top:4px solid #d97706; }
+.dialog-info .mat-mdc-dialog-surface { border-top:4px solid #2563eb; }
+
+.msg-label {
+  font-weight: bold;
+  font-size: 15px;
+  /* padding: 4px 8px; */
+  border-radius: 4px;
+  font-family: 'cairoBoldFont';
+}
+
+.msg-label.error {
+  color: #dc2626;        /* Red */
+}
+
+.msg-label.success {
+  color: #16a34a;        /* Green */
+}
+
+.msg-label.warning {
+  color: #d97706;        /* Orange */
+}
+
+.msg-label.info {
+  color: #2563eb;        /* Blue */
+}
+
+.msg-label.confirmation {
+  color: #374151;        /* Gray */
 }

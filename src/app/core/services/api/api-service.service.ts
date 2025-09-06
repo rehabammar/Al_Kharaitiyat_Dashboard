@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { ApiResponse } from '../../models/api-response.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmPopupComponent } from '../../../shared/components/confirm-popup/confirm-popup.component';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -24,7 +25,8 @@ export class ApiService {
     private http: HttpClient,
     private dialog: MatDialog,
     private loadingService: LoadingService,
-    private router: Router
+    private router: Router,
+    private translationService: TranslateService
 
   ) { }
 
@@ -37,8 +39,7 @@ export class ApiService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    console.log("handleError" + error.message);
-    let errorMsg = 'An unknown error occurred.';
+    let errorMsg = this.translationService.instant('error.unknown');
 
     if (error instanceof ApiException) {
       errorMsg = error.message;
@@ -48,12 +49,13 @@ export class ApiService {
 
 
       if (error.status === 401) {
-        //  errorMsg = this.translationService.instant('error.text');
-        errorMsg = "عفواً ... انتهت جلسة العمل أو ليس لك صلاحية الدخول لهذه الصفحة";
+        errorMsg = this.translationService.instant('error.unauthorized');
         this.router.navigate(['/login'], { replaceUrl: true });
-      } else {
-        errorMsg = `Server error (status ${error.status}): ${error.message}`;
       }
+      // else {
+
+      //   errorMsg = `Server error (status ${error.status}): ${error.message}`;
+      // }
     }
 
 
@@ -63,13 +65,18 @@ export class ApiService {
   }
 
   private showErrorDialog(message: string): void {
-
     this.dialog.open(ConfirmPopupComponent, {
-          data: {
-            message:message,
-            showCancel: false,
-          }
-        });
+      data: {
+        type: 'error',
+        messageKey: 'message.somethingWentWrong',
+        details: message,
+        autoCloseMs: 0 , 
+        showCancel: false
+      },
+      panelClass: 'dialog-error',     
+      disableClose: true              
+    });
+
   }
 
   get<T>(url: string, params?: any): Observable<ApiResponse<T>> {

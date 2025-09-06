@@ -160,10 +160,15 @@ export class GenericService<T extends Record<string, any>> {
   showSuccessPopup() {
     this.dialog.open(ConfirmPopupComponent, {
       data: {
-        message: 'message.success',
+        type: 'success',
+        messageKey: 'message.success',
+        autoCloseMs: 2000,
         showCancel: false,
-      }
+
+      },
+      panelClass: 'dialog-success'
     });
+
 
   }
 

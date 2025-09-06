@@ -1,4 +1,4 @@
-<mat-dialog-content class="dialog-content">
+<!-- <mat-dialog-content class="dialog-content">
   <div class="dialog-container">
     <label>{{ data.message | translate }}</label>
   </div>
@@ -8,11 +8,69 @@
   <button mat-button class="button_style" (click)="popupAction(1)">
     {{ data.okLabel || ('label.ok' | translate) }}
   </button>
+  <br>
   <button
     *ngIf="data.showCancel"
     mat-button
     class="button_style"
     (click)="popupAction(0)">
     {{ data.cancelLabel || ('label.cancel' | translate) }}
+  </button>
+</mat-dialog-actions> -->
+
+
+<mat-dialog-content
+  class="dialog-content"
+  [attr.role]="role"
+  [attr.aria-live]="ariaLive">
+
+        <div class="dialog-header" [ngClass]="data.type">
+          <mat-icon class="dialog-icon">{{ icon }}</mat-icon>
+          <div class="dialog-title">
+          <ng-container [ngSwitch]="data.type">
+        <span *ngSwitchCase="'error'" class="msg-label error">
+          {{ 'label.error' | translate }}
+        </span>
+        <span *ngSwitchCase="'success'" class="msg-label success">
+          {{ 'label.success' | translate }}
+        </span>
+        <span *ngSwitchCase="'warning'" class="msg-label warning">
+          {{ 'label.warning' | translate }}
+        </span>
+        <span *ngSwitchCase="'info'" class="msg-label info">
+          {{ 'label.info' | translate }}
+        </span>
+        <span *ngSwitchDefault class="msg-label confirmation">
+          {{ 'label.confirmation' | translate }}
+        </span>
+      </ng-container>
+
+    </div>
+  </div>
+
+  <div class="dialog-body">
+    <p *ngIf="data.messageKey; else plain" style="font-size: 12px;">{{ data.messageKey | translate }}</p>
+    <ng-template #plain><p>{{ data.message }}</p></ng-template>
+
+    <pre class="dialog-details" *ngIf="data.details">{{ data.details }}</pre>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button
+    mat-stroked-button
+    color="primary"
+    class="button_style"
+    (click)="popupAction(1)">
+    {{ getLabel(data.okLabel, 'label.ok') }}
+  </button>
+
+  <button
+    *ngIf="showCancel"
+    mat-button
+    class="button_style"
+    [style.--bg-color]="'#dc3545'"
+    (click)="popupAction(0)">
+    {{ getLabel(data.cancelLabel, 'label.cancel') }}
   </button>
 </mat-dialog-actions>

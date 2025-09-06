@@ -163,7 +163,7 @@ export class CoursesPageComponent {
       primaryKey: "levelPk",
       dataFactory: this.levelDataFactory,
       paramsMap: { stageFk: 'stageFk' },
-      dependsOn: ['stageFk']  ,  
+      dependsOn: ['stageFk'],
       width: '220px'
     },
 
@@ -241,6 +241,25 @@ export class CoursesPageComponent {
       width: '230px'
     },
     // {
+    //   labelKey: 'TeacherCourse.StartDate',
+    //   field: 'startDate',
+    //   required: false,
+    //   dataType: 'date',
+    //   disabled: false,
+    //   width: '150px',
+    //   showInTable : false 
+    // },
+    // {
+    //   labelKey: 'TeacherCourse.EndDate',
+    //   field: 'endDate',
+    //   required: false,
+    //   dataType: 'date',
+    //   disabled: false,
+    //   width: '150px',
+    //   showInTable : false 
+
+    // }
+    // {
     //   labelKey: 'TeacherCourse.DurationMinutes',
     //   field: 'durationMinutes',
     //   required: false,
@@ -315,19 +334,18 @@ export class CoursesPageComponent {
     //   width: '220px'
     // },
 
-    // المكان (Combobox من lookupDetails)
-    // {
-    //   labelKey: 'Class.Location',
-    //   field: 'locationName',
-    //   fieldFK: 'locationFk',
-    //   required: true,
-    //   isCombobox: true,
-    //   apiPath: '/lookupDetails/class-location',   // أو '/locations/searchAll'
-    //   displayItemKey: 'lookupName',               // لو lookupDetails
-    //   primaryKey: 'lookupDetailPk',
-    //   dataFactory: this.lookupDetailDataFactory,
-    //   width: '180px'
-    // },
+    {
+      labelKey: 'Class.Location',
+      field: 'locationName',
+      fieldFK: 'locationFk',
+      required: true,
+      isCombobox: true,
+      apiPath: '/lookupDetails/courseLocation',  
+      displayItemKey: 'lookupName',              
+      primaryKey: 'lookupDetailPk',
+      dataFactory: this.lookupDetailDataFactory,
+      width: '180px'
+    },
     {
       labelKey: 'Class.Status',
       field: 'statusName',
@@ -649,14 +667,14 @@ export class CoursesPageComponent {
     this.coursesTable.patchRowById(id, { [e.field]: e.value } as Partial<TeacherCourse>);
   }
 
-   private currentCourseDraftCid: string | null = null;
+  private currentCourseDraftCid: string | null = null;
   onNewTeacherCourseRow(row: any) {
     this.currentCourseDraftCid = row.__cid;
     this.selectedCourse = row;
     this.coursesTable.prependRow(row);
   }
 
-  
+
   onTeacherCourseSaved(row: TeacherCourse) {
     if (this.currentCourseDraftCid) {
       this.coursesTable.replaceRowByCid(this.currentCourseDraftCid, row);
@@ -667,7 +685,7 @@ export class CoursesPageComponent {
     this.coursesTable.selectRowById(row.teacherCoursePk);
   }
 
- 
+
   onTeacherCourseRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
     if (e.type === 'new') {
       this.coursesTable.removeRow(e.row);

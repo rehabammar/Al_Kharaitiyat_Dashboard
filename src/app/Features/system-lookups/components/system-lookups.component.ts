@@ -64,7 +64,21 @@ lookupDetailColumns: TableColumn[] = [
     dataType: 'string',
     required: true,
     width: '240px'
-  }
+  },
+   {
+    labelKey:'Lookup.Active',
+    field: 'activeFl',
+    dataType: 'number',
+    required: false,
+    isFlag : true ,
+    width: '240px'
+  },
+
+
+
+
+
+  
 
 ];
 

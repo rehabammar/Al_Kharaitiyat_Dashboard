@@ -84,6 +84,7 @@
        [customUpdatedPath]="updatePath"
        (rowChanged)="onTransactionRowChanged($event)"
        (rowSaved)="onTransactionSaved($event)"
+       [confirmBeforeSave]="true"
       [buttonVisibility]="buttonVisibility"
        >
       </app-generic-form>
