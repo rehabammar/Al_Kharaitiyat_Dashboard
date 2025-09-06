@@ -25,6 +25,7 @@
             <div class="class-block"
                  *ngFor="let b of r.blocks"
                  [style.gridColumn]="b.col">
+              <div class="id">{{ b.classPk }}</div>
               <div class="title">{{ b.title }}</div>
               <div class="time">{{ b.time }}</div>
               <span [class]="b.statusClass">{{ b.status }}</span>

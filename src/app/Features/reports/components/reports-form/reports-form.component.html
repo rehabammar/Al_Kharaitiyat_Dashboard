@@ -31,7 +31,17 @@
               <label class="form-label">{{ 'Reports.StartDate' | translate }}</label>
               <span class="required-indicator">*</span>
             </div>
-            <input class="custom-input date-field" type="date" name="startDate" [(ngModel)]="startDate" required />
+            <input class="custom-input date-field" 
+                    type="date" 
+                    name="startDate"
+                    [(ngModel)]="startDate" 
+                    required /> 
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="startDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>   -->
           </div>
 
           <!-- End date (required, min=startDate) -->

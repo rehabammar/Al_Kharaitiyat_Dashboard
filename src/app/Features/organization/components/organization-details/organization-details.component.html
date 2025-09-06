@@ -1,0 +1,24 @@
+<main>
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2"> 
+      </div>
+    </div>
+  </section>
+
+
+    <div class="accordion-container">
+        <app-custom-accordion title="app-name">
+           <app-generic-form
+                [columns]="organizationColumns"
+                [selectedRow]="organizations"
+                [dataFactory]="organizationDataFactory"
+                [primaryKey]="'organizationsPk'"
+                [apiPath]="'organizations'"
+                [alwaysEditable]="true"
+                [buttonVisibility]="ButtonVisibility"
+                (rowSaved)="onOrganizationSaved($event)">
+          </app-generic-form>
+        </app-custom-accordion> 
+     </div>
+</main>

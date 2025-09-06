@@ -220,5 +220,21 @@
     "TeacherSubjects.subject": "المادة",
     "TeacherSubjects.stage": "المرحلة",
     "TeacherSubjects.organization": "المركز",
-    "TeacherSubjects.experienceYears": "سنوات الخبرة"
+    "TeacherSubjects.experienceYears": "سنوات الخبرة",
+    "Organization.OrganizationsPk": "الرمز",
+    "Organization.OrganizationNameAr": "الاسم بالعربية",
+    "Organization.OrganizationNameEn": "الاسم بالإنجليزية",
+    "Organization.LicenseNumber": "الرقم التجاري",
+    "Organization.Country": "الدولة",
+    "Organization.City": "المدينة",
+    "Organization.Email": "البريد الإلكتروني",
+    "Organization.PhoneNumber": "رقم الهاتف",
+    "Organization.WhatsappNumber": "واتساب",
+    "Organization.LogoUrl": "شعار المركز",
+    "Organization.StatusFl": "الحالة",
+    "Organization.JoiningDate": "تاريخ الانضمام",
+    "Organization.ExpirationDate": "تاريخ الانتهاء",
+    "Organization.Address": "العنوان",
+    "Organization.Lat": "خط العرض",
+    "Organization.Long": "خط الطول"
 }

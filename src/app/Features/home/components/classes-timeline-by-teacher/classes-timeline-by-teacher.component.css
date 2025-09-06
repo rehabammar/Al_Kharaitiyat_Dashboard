@@ -46,6 +46,7 @@
 
     /* تأثيرات الهوفر */ 
 }
+.class-block .id { color: #082f6c; font-weight:bold; font-size: 12; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding: 1px 2px 1px 1px; text-align: end;  font-family: 'cairoBoldFont';}
 .class-block .title { color: #082f6c; font-weight:600; font-size: 11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; padding: 1px 2px 1px 1px; text-align: start; }
 .class-block .time  { font-size:10px; color:rgb(10, 40, 114); text-align: center; font-family: "cairoBoldFont"; }
 

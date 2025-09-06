@@ -5,11 +5,12 @@
 }
 
 .accordion-container {
+  height: 100%;
   padding: 16px;                     /* space inside */
   margin-bottom: 20px;               /* space between accordions */
   border-radius: 8px;                /* rounded corners */
-  background: #ffffff;               /* white background */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* subtle shadow */
+  background: transparent;
+  /* box-shadow: 0 4px 8px rgba(0,0,0,0.1);  */
 }
 
 .header-label-line {

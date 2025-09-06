@@ -43,7 +43,7 @@ import { DateTimePickerComponent } from './shared/components/date-time-picker/da
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { UsersComponent } from './Features/users/components/users.component';
 import { SystemLookupsComponent } from './Features/system-lookups/components/system-lookups.component';
 import { FinancialTransactionsPageComponent } from './Features/financial-transactions/components/financial-transactions-page/financial-transactions-page.component';
@@ -63,6 +63,8 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 import { PayAllPopupComponent } from './Features/financial-transactions/components/pay-all-popup/pay-all-popup.component';
+import { MY_DATE_FORMATS } from './core/util/matrial_date_formater';
+import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
 
 
 
@@ -106,7 +108,8 @@ import { PayAllPopupComponent } from './Features/financial-transactions/componen
     PreLoginPageComponent,
     PreLoginFooterComponent,
     PreLoginHeaderComponent,
-    PayAllPopupComponent
+    PayAllPopupComponent,
+    OrganizationDetailsComponent
     
   ],
   imports: [
@@ -146,6 +149,7 @@ import { PayAllPopupComponent } from './Features/financial-transactions/componen
       useClass: AuthInterceptor,
       multi: true
   },
+  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
   provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
   provideMessaging(() => getMessaging()),
   

@@ -11,6 +11,7 @@ type Block = {
   time: string;
   status: string;
   statusClass: string;
+  classPk : null;
 };
 type TeacherRow = {
   teacherId: number | null;
@@ -98,7 +99,8 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         title: c?.classTitle || c?.teacherCourseName || '—',
         time: this.formatTimeRange(start, end),
         status: c?.statusName || '—',
-        statusClass: this.statusClass(c?.statusName)
+        statusClass: this.statusClass(c?.statusName),
+        classPk : c?.classPk
       };
       map.get(id)!.blocks.push(block);
     }

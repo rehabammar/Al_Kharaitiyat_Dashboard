@@ -220,6 +220,21 @@
     "TeacherSubjects.subject": "Subject",
     "TeacherSubjects.stage": "Stage",
     "TeacherSubjects.organization": "Organization",
-    "TeacherSubjects.experienceYears": "Experience Years"
-
+    "TeacherSubjects.experienceYears": "Experience Years",
+    "Organization.OrganizationsPk": "ID",
+    "Organization.OrganizationNameAr": "Name (Arabic)",
+    "Organization.OrganizationNameEn": "Name (English)",
+    "Organization.LicenseNumber": "License Number",
+    "Organization.Country": "Country",
+    "Organization.City": "City",
+    "Organization.Email": "Email",
+    "Organization.PhoneNumber": "Phone Number",
+    "Organization.WhatsappNumber": "WhatsApp",
+    "Organization.LogoUrl": "Logo URL",
+    "Organization.StatusFl": "Status",
+    "Organization.JoiningDate": "Joining Date",
+    "Organization.ExpirationDate": "Expiration Date",
+    "Organization.Address": "Address",
+    "Organization.Lat": "Latitude",
+    "Organization.Long": "Longitude"
 }

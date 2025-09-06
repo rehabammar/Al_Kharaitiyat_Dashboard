@@ -10,6 +10,7 @@ import { FinancialTransactionsPageComponent } from './Features/financial-transac
 import { ReportsFormComponent } from './Features/reports/components/reports-form/reports-form.component';
 import { HomeComponent } from './Features/home/components/main-page/home.component';
 import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
+import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
 
 
 const routes: Routes = [
@@ -27,11 +28,7 @@ const routes: Routes = [
       { path: 'system-lookups', component: SystemLookupsComponent },
       { path: 'financial-transactions', component: FinancialTransactionsPageComponent },
       { path: 'reports', component: ReportsFormComponent },
-
-
-      
-
-      
+      { path: 'organization', component: OrganizationDetailsComponent },
       
     ]
     

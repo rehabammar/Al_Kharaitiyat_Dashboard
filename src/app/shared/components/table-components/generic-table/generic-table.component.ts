@@ -310,6 +310,7 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
     this.sort = [];
     this.activeSort = null;
     this.paginator?.firstPage();
+    this.setDefaultSortDescByPk();
     this.loadData();
   }
 
