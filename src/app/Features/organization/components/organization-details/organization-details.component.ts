@@ -31,7 +31,9 @@ export class OrganizationDetailsComponent implements OnInit {
 
   organizationDataFactory = () => new Organization();
 
-  onOrganizationSaved(row : Organization){}
+  onOrganizationSaved(row : Organization){
+    SessionStorageUtil.setItem(AppConstants.CURRENT_ORGNIZATION_KEY ,row)!;
+  }
 
 
 
