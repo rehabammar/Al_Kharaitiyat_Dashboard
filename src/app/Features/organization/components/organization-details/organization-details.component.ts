@@ -167,7 +167,7 @@ export class OrganizationDetailsComponent implements OnInit {
       width: "120px"
     },
     {
-      field: "long",
+      field: "lng",
       labelKey: "Organization.Long",
       dataType: "number",
       width: "120px"

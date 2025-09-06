@@ -32,8 +32,8 @@
                             <a [href]="'tel:' + organization.phoneNumber">
                               <i class="fa fa-phone"></i>
                             </a> 
-                            <a *ngIf="organization?.lat && organization?.long"
-                              [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.long"
+                            <a *ngIf="organization?.lat && organization?.lng"
+                              [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
                               target="_blank" rel="noopener noreferrer" aria-label="Directions in Google Maps">
                                <i class="fas fa-map-marker-alt"></i>
                             </a>
@@ -78,7 +78,7 @@
                 </li>
                 <li>
                   <i class="fa fa-map-marker-alt"></i>
-                  <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.long">{{ 'Footer.Address' | translate }}: {{organization.address}}</a>  
+                  <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng">{{ 'Footer.Address' | translate }}: {{organization.address}}</a>  
                 </li>
               </ul>
             </div>

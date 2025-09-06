@@ -28,7 +28,7 @@ export class Organization{
 
   address?: string;
 
-  long?: string;
+  lng?: string;
   lat?: string;
 
   organizationParentFk?: number;
