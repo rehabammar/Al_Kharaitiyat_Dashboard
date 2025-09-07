@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-  import { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserService } from '../../../Features/auth/services/user.service';
+import { getMessaging, deleteToken } from "firebase/messaging";
 
 @Component({
   selector: 'app-header',
@@ -11,21 +12,22 @@ import { UserService } from '../../../Features/auth/services/user.service';
 export class HeaderComponent {
 
 
-constructor(private router: Router , private userService : UserService ) {}
+  constructor(private router: Router, private userService: UserService) { }
 
-handleLogoutClick() {
+  async handleLogoutClick() {
     this.userService.clearUser();
-    // this.router.navigate(['/login']);
-    window.location.replace('/login'); 
-}
-mobileMenuOpen = false;
+    const messaging = getMessaging();
+    await deleteToken(messaging);
+    window.location.replace('/login');
+  }
+  mobileMenuOpen = false;
 
-toggleMobileMenu() {
-  this.mobileMenuOpen = !this.mobileMenuOpen;
-}
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
 
-closeMobileMenu() {
-  this.mobileMenuOpen = false;
-}
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
+  }
 
 }

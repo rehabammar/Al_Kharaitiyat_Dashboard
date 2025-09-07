@@ -112,6 +112,27 @@ export class OrganizationDetailsComponent implements OnInit {
       required: true,
       width: "150px"
     },
+     {
+      field: "phoneNumber_1",
+      labelKey: "Organization.PhoneNumber",
+      dataType: "mobile",
+      required: false,
+      width: "150px"
+    },
+    {
+      field: "phoneNumber_2",
+      labelKey: "Organization.PhoneNumber",
+      dataType: "mobile",
+      required: false,
+      width: "150px"
+    },
+     {
+      field: "phoneNumber_3",
+      labelKey: "Organization.PhoneNumber",
+      dataType: "mobile",
+      required: false,
+      width: "150px"
+    },
     {
       field: "whatsappNumber",
       labelKey: "Organization.WhatsappNumber",

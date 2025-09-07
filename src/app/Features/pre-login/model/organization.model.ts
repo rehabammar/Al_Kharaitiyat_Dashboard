@@ -11,6 +11,11 @@ export class Organization{
 
   email?: string;
   phoneNumber?: string;
+  phone_number_1?: string;
+  phone_number_2?: string;
+  phone_number_3?: string;
+
+  
   whatsappNumber?: string;
 
   logoUrl?: string;

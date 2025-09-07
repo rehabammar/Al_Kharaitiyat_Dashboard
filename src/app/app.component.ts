@@ -52,11 +52,11 @@ export class AppComponent implements OnInit {
       const options = {
         body: payload.notification?.body,
         icon: "/assets/img/logo/logo.png",
-        data: { refresh: true } // علامة مفيدة
+        data: { refresh: true } 
       };
       const audio = new Audio('assets/sounds/notification_sound.wav');
       audio.play();
-      alert(payload.notification?.title + ": " + payload.notification?.body);
+      // alert(payload.notification?.title + ": " + payload.notification?.body);
       // await reg.showNotification(title, options);
       new Notification(title, options);
       this.bridge.emit({ type: 'REFRESH', payload, source: 'foreground' });

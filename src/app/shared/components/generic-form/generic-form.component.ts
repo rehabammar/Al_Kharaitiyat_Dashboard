@@ -597,8 +597,8 @@ export class GenericFormComponent<T extends Record<string, any>>
     value = (value || '').replace(/[٠-٩]/g, d => map[d]).replace(/\D/g, '');
     // max 8 digits
     value = value.slice(0, 8);
-    // must start with 3/5/6/7
-    if (value && !/^[3567]/.test(value)) {
+    // must start with 3/5/6/7 or 4 
+    if (value && !/^[35674]/.test(value)) {
       const m = value.match(/[3567]\d{0,7}/);
       value = m ? m[0] : '';
     }
