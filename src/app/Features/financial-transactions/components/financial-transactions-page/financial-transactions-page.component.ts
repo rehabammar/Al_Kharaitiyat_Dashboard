@@ -334,6 +334,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
   onTransactionSaved(row: FinancialTransaction) {
     this.currentTable?.patchRowById(row.transactionPk, row);
+    this.centerTable?.loadData() ;
   }
 
   onNewTransactionRow(row: FinancialTransaction) {

@@ -151,12 +151,22 @@ export class UsersComponent {
       width: '160px'
     },
     {
-      labelKey: 'User.Status',
+      labelKey: 'User.Active',
       field: 'isActiveFl',
       required: false,
       isFlag: true,
-      width: '120px'
+      width: '100px'
     },
+      {
+      labelKey: 'User.Status',
+      field: 'statusFl',
+      required: false,
+      isFlag: true,
+      width: '100px'
+    },
+
+
+    
     // Guardian (اختياري)
     // {
     //   labelKey: 'User.GuardianName',
