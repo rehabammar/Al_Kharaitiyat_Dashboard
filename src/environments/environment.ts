@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  apiBase: 'https://api-alkharaitiyat.ooguy.com/api',
   firebaseConfig: {
   apiKey: "AIzaSyAoEMyhSD1-ArhJnX3Quu7SEicd4aApBLE",
   authDomain: "khyrtiat-education-center.firebaseapp.com",

@@ -168,11 +168,12 @@ th:hover .sort-icons,
   z-index: 1999 !important;
 }
 
-.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-footer-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
+.mat-mdc-table tbody, .mat-mdc-table tfoot, .mat-mdc-table thead, .mat-mdc-cell, .mat-mdc-header-row, .mat-mdc-row, .mat-mdc-footer-row, .mat-mdc-table .mat-mdc-header-cell {
     background: inherit;
     height: 10px;
     padding: 2px;
 }
+ 
 
 .table-custom-label {
   height: 100%;

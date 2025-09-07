@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  apiBase: '/api',
   firebaseConfig: {
   apiKey: "AIzaSyAoEMyhSD1-ArhJnX3Quu7SEicd4aApBLE",
   authDomain: "khyrtiat-education-center.firebaseapp.com",
@@ -10,3 +11,5 @@ export const environment = {
   measurementId: "G-YQDBDPVCYS"
   }
 };
+
+
