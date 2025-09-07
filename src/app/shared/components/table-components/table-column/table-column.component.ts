@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { TableColumn } from '../../../../core/models/table-column.interface';
@@ -20,6 +20,8 @@ export class TableColumnComponent {
   @Input() primaryKey!: any;
 
   @Output() fieldChanged = new EventEmitter<{ field: string, value: any }>();
+  
+  constructor(private cdr: ChangeDetectorRef) {}
 
   toggleStatus(): void {
     if (this.column && this.currentRow) {
@@ -74,21 +76,23 @@ export class TableColumnComponent {
   updateCurrentRowAfterSelection() {
     if (!this.column?.onSearch) return;
 
-    const result = this.column.onSearch(this.currentRow); // may be Observable/Promise/value
+    const result = this.column.onSearch(this.currentRow);
 
     const apply = (picked: any) => {
-      if (!picked) return;
-      this.currentRow = picked; // replace the entire row
+      if (!picked || !this.currentRow) return;
 
-      // Optionally notify parent about all fields
-      Object.keys(picked).forEach(field => {
-        this.fieldChanged.emit({ field, value: picked[field] });
+      // mutate IN PLACE to keep identity
+      Object.keys(picked).forEach(k => {
+        (this.currentRow as any)[k] = picked[k];
+        this.fieldChanged.emit({ field: k, value: picked[k] });
       });
+
+      this.cdr.markForCheck();
     };
 
-    if (result && typeof (result as any).subscribe === 'function') {
+    if ((result as any)?.subscribe) {
       (result as any).subscribe((row: any) => apply(row));
-    } else if (result && typeof (result as any).then === 'function') {
+    } else if ((result as any)?.then) {
       (result as Promise<any>).then(row => apply(row));
     } else {
       apply(result);

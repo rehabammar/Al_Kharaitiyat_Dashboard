@@ -15,21 +15,6 @@ firebase.initializeApp({
 // background handler
 const messaging = firebase.messaging();
 
-// messaging.onBackgroundMessage((payload) => {
-//   console.log('[firebase-messaging-sw.js] Received background message ', payload);
-
-//   const notificationTitle = payload.notification?.title || "New Message";
-//   const notificationOptions = {
-//     body: payload.notification?.body || "You have a new notification.",
-//     icon: "/assets/img/logo/logo.png"
-//   };
-
-//   // self.registration.showNotification(notificationTitle, notificationOptions);
-// });
-
-
-// ... تهيئة Firebase + messaging كما ضبطناها قبل كده
-
 // اختياري: لما توصّل رسالة في الخلفية، ابعتي postMessage للصفحات المفتوحة
 messaging.onBackgroundMessage((payload) => {
   const title = payload.notification?.title || 'New message';
@@ -40,9 +25,18 @@ messaging.onBackgroundMessage((payload) => {
   };
   // self.registration.showNotification(title, options);
 
+  self.registration.showNotification(title, options);
+  
   // ابعتي إشارة للـ clients (التابات المفتوحة)
   self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(cs => {
     cs.forEach(c => c.postMessage({ type: 'REFRESH', payload: payload.data || null }));
+  });
+
+  self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clients => {
+    clients.forEach(c => c.postMessage({
+      type: 'PLAY_SOUND',
+      payload
+    }));
   });
 });
 
