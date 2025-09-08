@@ -115,7 +115,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       labelKey: 'FinancialTransactions.PaymentDate',
       field: 'paymentDate',
       required: false,
-      dataType: 'date',
+      dataType: 'datetime',
       disabled: true,
       width: '130px',
     },
