@@ -77,7 +77,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       disabled: true,
       width: '200px',
     },
-        {
+    {
       labelKey: 'FinancialTransactions.ReceiverName',
       field: 'receiverFkName',
       required: false,
@@ -126,7 +126,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       required: false,
       dataType: 'string',
       disabled: true,
-      showTotalLabel : true ,
+      showTotalLabel: true,
       width: '140px',
     },
     {
@@ -277,11 +277,11 @@ export class FinancialTransactionsPageComponent implements OnInit {
   }
 
   onTabChange(event: any) {
-    console.log('Tab changed to index:', event.index);
     this.activeTabIndex = event.index;
     this.setColumnsForTab(event.index);
-    this.setUpdatePathForTab(event.index)
-    console.log('Update path set to:', this.updatePath);
+    this.setUpdatePathForTab(event.index);
+    // this.selectedFinancialTransactions = null;
+    // this.buttonVisibility = { showDelete: false, showInsert: false, showSave: true };
     this.changeDetectorRef.markForCheck();
 
   }
@@ -295,15 +295,23 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
   selectedFinancialTransactions: FinancialTransaction | null = null;
 
-  onTransactionSelected(row: FinancialTransaction) {
-    this.selectedFinancialTransactions = row;
-
-    const toBool = (v: any) => v === true || v === 1 || v === '1';
+  onTransactionSelected(row?: FinancialTransaction | null) {
     const defaultVisibility: ButtonVisibilityConfig = {
       showDelete: false,
       showInsert: false,
       showSave: true,
     };
+
+    if (!row) {
+      this.selectedFinancialTransactions = null;
+      this.buttonVisibility = defaultVisibility;
+      this.changeDetectorRef.markForCheck();
+      return;
+    }
+
+    this.selectedFinancialTransactions = row;
+
+    const toBool = (v: any) => v === true || v === 1 || v === '1';
 
     let v = { ...defaultVisibility };
 
@@ -316,9 +324,9 @@ export class FinancialTransactionsPageComponent implements OnInit {
     }
 
     this.buttonVisibility = v;
-
     this.changeDetectorRef.markForCheck();
   }
+
 
 
 
@@ -334,7 +342,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
   onTransactionSaved(row: FinancialTransaction) {
     this.currentTable?.patchRowById(row.transactionPk, row);
-    this.centerTable?.loadData() ;
+    this.centerTable?.loadData();
   }
 
   onNewTransactionRow(row: FinancialTransaction) {
@@ -354,6 +362,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
 
 
   openPayAllPopup = () => {
+
     const dialogRef = this.dialog.open(PayAllPopupComponent, {
       width: '400px',
       data: { selectedTabIndex: this.activeTabIndex }
@@ -387,15 +396,13 @@ export class FinancialTransactionsPageComponent implements OnInit {
           };
         }
 
-
-        console.log('Pay All action confirmed:', result);
         if (this.activeTabIndex === 2) {
           this.transactionsService.payAllFinancialTransactionsforStudent(requestBody).subscribe({
             next: (res) => {
               this.currentTable?.loadData();
             },
             error: (err) => {
-              console.error('Error paying transactions:', err);
+              // console.error('Error paying transactions:', err);
             }
           });
           return;

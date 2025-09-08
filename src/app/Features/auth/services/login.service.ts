@@ -30,11 +30,11 @@ export class LoginService  {
           const user: User = response.data; 
           this.userService.setUser(user);  
           this.router.navigate(['/homePage'],{ replaceUrl: true }); 
-          history.go(1); // يمنع الرجوع لورا
+          history.go(1); 
  
         },
         error: (error) => {
-         console.log("Login api error"+error);
+        //  console.log("Login api error"+error);
         }
       });
   }

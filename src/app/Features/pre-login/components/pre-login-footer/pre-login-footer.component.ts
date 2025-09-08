@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PreLoginService } from '../../services/pre-login.service';
 import { Organization } from '../../model/organization.model';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-pre-login-footer',
@@ -8,16 +9,13 @@ import { Organization } from '../../model/organization.model';
   templateUrl: './pre-login-footer.component.html',
   styleUrl: './pre-login-footer.component.css'
 })
-export class PreLoginFooterComponent implements OnInit {
+export class PreLoginFooterComponent {
 
-  constructor(private preLoginService: PreLoginService) { }
 
-  organization!: Organization;
+  organization$: Observable<Organization>;
 
-  ngOnInit(): void {
-    this.preLoginService.getOrganizations().subscribe({
-      next: (org) => this.organization = org,
-    });
+  constructor(private preLoginService: PreLoginService) {
+    this.organization$ = this.preLoginService.getOrganizations(); 
   }
 
 

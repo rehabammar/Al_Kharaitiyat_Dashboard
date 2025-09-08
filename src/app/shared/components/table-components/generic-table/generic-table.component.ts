@@ -935,15 +935,12 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   onFieldChanged(row: T, change: { field: string; value: any }): void {
     row[change.field as keyof T] = change.value;
     this.rowDirty = true;
-    console.log("rowDirty " + this.rowDirty)
   }
 
   // ==================== منطق التأكيد قبل إضافة صف جديد ====================
 
   /** هل يوجد صف جديد غير محفوظ أو تعديلات لم تُحفظ؟ */
   private hasUncommitted(): boolean {
-    console.log("rowDirty " + this.rowDirty)
-
     const row = this.selectedRow;
     if (!row) return false;
 

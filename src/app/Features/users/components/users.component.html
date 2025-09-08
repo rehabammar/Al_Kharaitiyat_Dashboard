@@ -39,7 +39,7 @@
 </app-custom-accordion>
 
 <br>
-<div *ngIf="selectedUser?.userTypeFk == 4">
+<div *ngIf="selectedUser?.userTypeFk == 4 && selectedUser?.userPk">
   <app-custom-accordion title="TeacherSubjects.Section">
   <app-generic-table
     [screenId]="'teacherSubjects'"

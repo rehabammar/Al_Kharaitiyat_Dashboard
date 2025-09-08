@@ -1,3 +1,4 @@
+<ng-container *ngIf="organization$ | async as organization">
 <footer>
   <div class="footer-wrappper footer-bg">
     <!-- Footer Start-->
@@ -12,7 +13,7 @@
                 <!-- logo -->
                 <div class="footer-logo mb-25 org-info">
                   <a href="/">
-                    <img src="assets/img/logo/logo.png" alt="{{organization.organizationNameEn}}" style="max-height:60px;" />
+                    <img src="assets/img/logo/logo.png"  style="max-height:60px;" />
                   </a>
                 </div>
                       <div class="footer-tittle">
@@ -141,3 +142,4 @@
     <!-- Footer End-->
   </div>
 </footer>
+</ng-container>

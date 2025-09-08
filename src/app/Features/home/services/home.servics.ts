@@ -40,7 +40,7 @@ export class HomeService {
   getDailyClassSummary(): Observable<DailyClassSummary> {
     return this.apiService.post<DailyClassSummary>(ApiEndpoints.getDailyClassSummary(), {})
       .pipe(
-        tap(res => console.log('Daily summary RAW response:', res.data)),   // logs the whole API response
+        // tap(res => console.log('Daily summary RAW response:', res.data)),   // logs the whole API response
         map(res => res.data));
   }
 

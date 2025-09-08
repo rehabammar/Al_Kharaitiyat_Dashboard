@@ -59,7 +59,7 @@ export class ApiService {
     }
 
 
-    console.error('HTTP error:', error);
+    // console.error('HTTP error:', error);
     this.showErrorDialog(errorMsg);
     return throwError(() => new Error(errorMsg));
   }
@@ -80,7 +80,7 @@ export class ApiService {
   }
 
   get<T>(url: string, params?: any): Observable<ApiResponse<T>> {
-    console.log(`[DEBUG] GET Request - URL: ${url}`);
+    // console.log(`[DEBUG] GET Request - URL: ${url}`);
 
     return this.http.get<ApiResponse<T>>(url, { params }).pipe(
       map(response => this.handleResponse(response)),
@@ -89,7 +89,7 @@ export class ApiService {
   }
 
   getImage(url: string, params?: any): Observable<any> {
-    console.log(`[DEBUG] GET Image Request - URL: ${url}`);
+    // console.log(`[DEBUG] GET Image Request - URL: ${url}`);
 
     return this.http.get(url, {
       responseType: 'blob'
@@ -102,7 +102,7 @@ export class ApiService {
 
   post<T>(url: string, body: any): Observable<ApiResponse<T>> {
     const startTime = Date.now();
-    console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
+    // console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
 
     this.loadingService.show();
 
@@ -136,18 +136,18 @@ export class ApiService {
 
   delete<T>(url: string): Observable<ApiResponse<T>> {
 
-    console.log(`[DEBUG] DELETE Request - URL: ${url}`);
+    // console.log(`[DEBUG] DELETE Request - URL: ${url}`);
 
     const startTime = Date.now();
     this.loadingService.show();
 
     return this.http.delete<ApiResponse<T>>(url).pipe(
-      tap(() => console.log(`[DEBUG] DELETE Request - Request Time: ${Date.now() - startTime} ms`)),
+      // tap(() => console.log(`[DEBUG] DELETE Request - Request Time: ${Date.now() - startTime} ms`)),
       map(response => this.handleResponse(response)),
       catchError(error => this.handleError(error)),
       finalize(() => {
         this.loadingService.hide();
-        console.log(`[DEBUG] DELETET Request Completed in ${Date.now() - startTime} ms`);
+        // console.log(`[DEBUG] DELETET Request Completed in ${Date.now() - startTime} ms`);
       })
     );
   }
@@ -156,7 +156,7 @@ export class ApiService {
 
   downloadFile(url: string, body: any): Observable<Blob> {
     const startTime = Date.now();
-    console.log(`[DEBUG] Download File - URL: ${url}, Body: ${JSON.stringify(body)}`);
+    // console.log(`[DEBUG] Download File - URL: ${url}, Body: ${JSON.stringify(body)}`);
 
     this.loadingService.show();
 
@@ -164,14 +164,14 @@ export class ApiService {
       responseType: 'blob',
       observe: 'response'
     }).pipe(
-      tap(() => console.log(`[DEBUG] Download File - Time: ${Date.now() - startTime} ms`)),
+      // tap(() => console.log(`[DEBUG] Download File - Time: ${Date.now() - startTime} ms`)),
       map(response => {
         return response.body as Blob;
       }),
       catchError(error => this.handleError(error)),
       finalize(() => {
         this.loadingService.hide();
-        console.log(`[DEBUG] Download File Completed in ${Date.now() - startTime} ms`);
+        // console.log(`[DEBUG] Download File Completed in ${Date.now() - startTime} ms`);
       })
     );
   }

@@ -114,7 +114,6 @@ onDownloadReports = async () => {
   dialogRef.afterClosed().pipe(take(1)).subscribe((pickedUser: User | null) => {
     if (pickedUser) {
       this.selectedUser = pickedUser;
-      console.log('Selected user:', this.selectedUser.fullName);
       this.dir.markForCheck(); 
     }
   });

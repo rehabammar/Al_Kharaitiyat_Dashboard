@@ -98,8 +98,8 @@ export class SearchDialogComponent<T extends Record<string, any>> {
     const threshold = 150;
     const position = this.container.nativeElement.scrollTop + this.container.nativeElement.offsetHeight;
     const height = this.container.nativeElement.scrollHeight;
-    console.log("TOTAL COUNT " + this.totalCount);
-    console.log("TOTAL data Source  " + this.dataSource.data.length);
+    // console.log("TOTAL COUNT " + this.totalCount);
+    // console.log("TOTAL data Source  " + this.dataSource.data.length);
 
 
 

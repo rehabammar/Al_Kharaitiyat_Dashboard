@@ -281,14 +281,12 @@ export class GenericFormComponent<T extends Record<string, any>>
   // ========== Utils ==========
 
   get saveDisabled(): boolean {
-    console.log("saveDisabled")
     return !this.selectedRow || this.isLoading || !this.isDirty;
   }
 
 
   private markChanged(field: string) {
     this.isDirty = true;
-    console.log("upade isDirty " + this.isDirty);
     this.changedFields.add(field);
     this.cdr.markForCheck();
     this.cdr.detectChanges(); // forces immediate update

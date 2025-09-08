@@ -29,11 +29,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
       // console.log('[DEBUG] Request - URL:', request.url);
       // console.log('[DEBUG] Request - Body:', request.body);
-      console.log('[DEBUG] Request - Headers:', {
-        // Authorization: request.headers.get('Authorization'),
-        userId: request.headers.get('userId'),
-        lang:  request.headers.get('lang'),        
-      });
+      // console.log('[DEBUG] Request - Headers:', {
+      //   // Authorization: request.headers.get('Authorization'),
+      //   userId: request.headers.get('userId'),
+      //   lang:  request.headers.get('lang'),        
+      // });
     }
 
     return next.handle(request);

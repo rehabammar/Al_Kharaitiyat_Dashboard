@@ -38,9 +38,9 @@ export class GenericService<T extends Record<string, any>> {
 
   ) {
     this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath, this.searchPath, this.updatePath);
-    console.table(
-      Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
-    );
+    // console.table(
+    //   Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
+    // );
   }
 
   // getAll(pageNumber: number, pageSize: number, filters?: any, extraParams?: Record<string, any>): Observable<ApiResponse<T[]>> {
@@ -84,7 +84,6 @@ export class GenericService<T extends Record<string, any>> {
   add(item: T): Observable<T> {
     return this.apiService.post<T>(this.apiMap.ADD!(), item).pipe(
       tap(response => {
-        console.log("INSERT ITEMS" + JSON.stringify(response.data));
         const updated = [response.data, ...this.dataSubject.getValue()];
         this.dataSubject.next(updated);
         this.totalElementsSubject.next(updated.length);

@@ -1,4 +1,4 @@
-<section class="team-area section-padding40 fix" *ngIf="teachersList.length;">
+<section class="team-area section-padding40 fix" *ngIf="teachersList.length; else noTeachers">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-xl-7 col-lg-8">
@@ -30,3 +30,9 @@
     </div>
   </div>
 </section>
+
+<ng-template #noTeachers>
+  <div style="height: 200px;">
+    <!-- <p>{{ 'Users.NoTeachersFound' | translate : {} : 'No experts available yet' }}</p> -->
+  </div>
+</ng-template>

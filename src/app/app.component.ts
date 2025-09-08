@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
     await navigator.serviceWorker.ready;
 
     onMessage(this.messaging,async (payload)  =>   {
-      console.log("Message received in foreground: ", payload);
+      // console.log("Message received in foreground: ", payload);
 
       const title = payload.notification?.title || 'New message';
       const options = {

@@ -46,7 +46,7 @@ export class ReportsService {
 
     // const isTeacher = currentUser.role === 'teacher';
     // const isStudent = currentUser.role === 'student';
-    console.log("REPORTS Name " + reportName);
+    // console.log("REPORTS Name " + reportName);
 
     const body = {
       reportName: reportName,
@@ -89,7 +89,7 @@ export class ReportsService {
 	// 		--P_start_date
 	// 		--P_end_date
 
-    console.log("REPORTS PARAMTER " + JSON.stringify(body));
+    // console.log("REPORTS PARAMTER " + JSON.stringify(body));
 
     try {
       const resp = await firstValueFrom(this.http.post(ApiEndpoints.generateAppReports(), body, {

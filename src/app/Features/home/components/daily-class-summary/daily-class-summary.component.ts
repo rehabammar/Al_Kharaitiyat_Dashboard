@@ -95,7 +95,6 @@ export class DailyClassSummaryComponent implements OnInit, OnDestroy {
     this.sub = this.homeService.getDailyClassSummary()
       .pipe(
         catchError(err => {
-          console.error('getDailyClassSummary error:', err);
           return of({ finishedToday: 0, remainingToday: 0, totalToday: 0 } as DailyClassSummary);
         })
       )

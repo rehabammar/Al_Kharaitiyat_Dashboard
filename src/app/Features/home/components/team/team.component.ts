@@ -58,7 +58,7 @@ fallbackImg(evt: Event) {
 five = Array.from({ length: 5 }); // [ , , , , ]
 
 safeIntRating(u: User): number {
-  const v = Number(u?.experienceYears ?? 0);
+  const v = Number(u?.teacherScore ?? 0);
   if (Number.isNaN(v)) return 0;
   return Math.max(0, Math.min(5, Math.round(v))); // integer 0..5
 }

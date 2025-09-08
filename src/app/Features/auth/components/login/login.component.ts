@@ -43,12 +43,6 @@ export class LoginComponent implements OnInit {
     this.LoadLanguage();
   }
 
-  // (optional) keep your console debug
-  onSubmit() {
-    // not used anymore; form uses (ngSubmit)="useLogin()"
-    console.log('Email:', this.userName);
-    console.log('Password:', this.password);
-  }
 
 
 
@@ -113,10 +107,10 @@ export class LoginComponent implements OnInit {
       vapidKey: "BBGADUbR7r84W8iKcirY5DgLDee33UQkila-2xZ_j--luznCg9ZflgatJBjH5hV3GKn7l-O5qDFgGum45f5F73Q" 
     }).then((currentToken) => {
       if (currentToken) {
-        console.log("Got FCM token:", currentToken);
+        // console.log("Got FCM token:", currentToken);
         this.firebaseToken = currentToken;
       } else {
-        console.log("No registration token available.");
+        // console.log("No registration token available.");
       }
     }).catch((err) => {
       console.error("An error occurred while retrieving token. ", err);
