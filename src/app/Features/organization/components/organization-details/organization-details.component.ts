@@ -16,9 +16,9 @@ export class OrganizationDetailsComponent implements OnInit {
 
   organizations!: Organization;
 
-  ButtonVisibility :ButtonVisibilityConfig = {
-    showDelete : false ,
-    showInsert: false ,
+  ButtonVisibility: ButtonVisibilityConfig = {
+    showDelete: false,
+    showInsert: false,
     showSave: true
   }
 
@@ -31,8 +31,8 @@ export class OrganizationDetailsComponent implements OnInit {
 
   organizationDataFactory = () => new Organization();
 
-  onOrganizationSaved(row : Organization){
-    SessionStorageUtil.setItem(AppConstants.CURRENT_ORGNIZATION_KEY ,row)!;
+  onOrganizationSaved(row: Organization) {
+    SessionStorageUtil.setItem(AppConstants.CURRENT_ORGNIZATION_KEY, row)!;
   }
 
 
@@ -99,20 +99,13 @@ export class OrganizationDetailsComponent implements OnInit {
 
     // Contact info
     {
-      field: "email",
-      labelKey: "Organization.Email",
-      dataType: "string",
-      required: true,
-      width: "200px"
-    },
-    {
       field: "phoneNumber",
       labelKey: "Organization.PhoneNumber",
       dataType: "mobile",
       required: true,
       width: "150px"
     },
-     {
+    {
       field: "phoneNumber1",
       labelKey: "Organization.PhoneNumber1",
       dataType: "mobile",
@@ -126,7 +119,7 @@ export class OrganizationDetailsComponent implements OnInit {
       required: false,
       width: "150px"
     },
-     {
+    {
       field: "phoneNumber3",
       labelKey: "Organization.PhoneNumber3",
       dataType: "mobile",
@@ -140,7 +133,13 @@ export class OrganizationDetailsComponent implements OnInit {
       required: true,
       width: "150px"
     },
-
+    {
+      field: "email",
+      labelKey: "Organization.Email",
+      dataType: "string",
+      required: true,
+      width: "200px"
+    },
     // Logo
     // {
     //   field: "logoUrl",
@@ -148,16 +147,6 @@ export class OrganizationDetailsComponent implements OnInit {
     //   dataType: "string",
     //   width: "200px"
     // },
-
-    // Status
-    {
-      field: "statusFl",
-      labelKey: "Organization.StatusFl",
-      dataType: "flag",
-      isFlag: true,
-      width: "100px"
-    },
-
     // Dates
     {
       field: "joiningDate",
@@ -192,6 +181,14 @@ export class OrganizationDetailsComponent implements OnInit {
       labelKey: "Organization.Long",
       dataType: "number",
       width: "120px"
+    },
+       // Status
+    {
+      field: "statusFl",
+      labelKey: "Organization.StatusFl",
+      dataType: "flag",
+      isFlag: true,
+      width: "100px"
     },
 
     // // Parent Organization

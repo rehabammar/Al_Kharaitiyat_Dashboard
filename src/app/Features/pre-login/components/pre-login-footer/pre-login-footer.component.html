@@ -79,13 +79,13 @@
                 <li class="phones">
                   <i class="fa fa-phone" aria-hidden="true"></i>
                   <div class="phones-inline">
-                    <a *ngIf="organization?.phoneNumber" class="phone" [href]="'tel:' + organization.phoneNumber">
+                    <a *ngIf="organization?.phoneNumber" class="phone" [href]="'tel:' + organization.phoneNumber"  [dir]="'ltr'">
                       <bdi>{{ organization.phoneNumber }}</bdi>
                     </a>
-                    <a *ngIf="organization?.phoneNumber1" class="phone" [href]="'tel:' + organization.phoneNumber1">
+                    <a *ngIf="organization?.phoneNumber1" class="phone" [href]="'tel:' + organization.phoneNumber1"  [dir]="'ltr'">
                       <bdi>{{ organization.phoneNumber1 }}</bdi>
                     </a>
-                    <a *ngIf="organization?.phoneNumber2" class="phone" [href]="'tel:' + organization.phoneNumber2">
+                    <a *ngIf="organization?.phoneNumber2" class="phone" [href]="'tel:' + organization.phoneNumber2"  [dir]="'ltr'">
                       <bdi>{{ organization.phoneNumber2 }}</bdi>
                     </a>
                   </div>
