@@ -42,6 +42,7 @@ export class User {
   levelFkDesc?: string;
   profileUrl?: string ;
   teacherScore?: number ;
+  averageStars?: number ;
 
   constructor(init?: Partial<User>) {
     Object.assign(this, init);
