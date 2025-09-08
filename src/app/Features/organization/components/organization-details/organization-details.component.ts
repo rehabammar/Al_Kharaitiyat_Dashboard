@@ -113,22 +113,22 @@ export class OrganizationDetailsComponent implements OnInit {
       width: "150px"
     },
      {
-      field: "phoneNumber_1",
-      labelKey: "Organization.PhoneNumber",
+      field: "phoneNumber1",
+      labelKey: "Organization.PhoneNumber1",
       dataType: "mobile",
       required: false,
       width: "150px"
     },
     {
-      field: "phoneNumber_2",
-      labelKey: "Organization.PhoneNumber",
+      field: "phoneNumber2",
+      labelKey: "Organization.PhoneNumber2",
       dataType: "mobile",
       required: false,
       width: "150px"
     },
      {
-      field: "phoneNumber_3",
-      labelKey: "Organization.PhoneNumber",
+      field: "phoneNumber3",
+      labelKey: "Organization.PhoneNumber3",
       dataType: "mobile",
       required: false,
       width: "150px"

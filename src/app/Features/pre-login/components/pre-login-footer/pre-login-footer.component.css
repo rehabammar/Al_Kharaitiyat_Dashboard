@@ -79,3 +79,49 @@
   color: #ffd369;            /* لون مميز عند الهوفر */
 }
 
+
+
+ 
+
+
+/* مجموعة التليفونات */
+.phones {
+  display: flex;
+  align-items: center;   /* أيقونة السماعة بمحاذاة النص */
+  gap: 10px;
+}
+
+/* الأرقام جنب بعض وتلف على الشاشات الصغيرة */
+.phones-inline {
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+/* حوّل الأرقام لبادجات أنيقة */
+.phone {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.06);
+  color: #eef;
+  transition: .2s ease;
+}
+.phone:hover {
+  border-color: #ffd369;
+  color: #ffd369;
+}
+
+/* ألغِ الفاصل النقطي لأننا استخدمنا شكل البادجات */
+.phones-inline .phone:not(:last-child)::after { content: ""; }
+
+/* تحسينات بسيطة للموبايل */
+@media (max-width: 576px) {
+  .phone { font-size: 0.85rem; padding: 3px 10px; }
+}
+
+

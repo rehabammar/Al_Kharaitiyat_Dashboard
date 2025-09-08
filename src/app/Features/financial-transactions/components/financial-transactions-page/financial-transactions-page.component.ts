@@ -109,7 +109,7 @@ export class FinancialTransactionsPageComponent implements OnInit {
       dataType: 'string',
       disabled: true,
       width: '240px',
-      // showInTable: false,
+      showInTable: false,
     },
     {
       labelKey: 'FinancialTransactions.PaymentDate',

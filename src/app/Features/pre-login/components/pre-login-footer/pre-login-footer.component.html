@@ -64,10 +64,34 @@
                   <i class="fa fa-envelope"></i>
                   <a [href]="'mailto:' + organization.email">{{organization.email}}</a>
                 </li>
+                <!-- <li>
+                  <i class="fa fa-phone"></i>
+                  <a [href]="'tel:' + organization.phoneNumber" [dir]="'ltr'">{{organization.phoneNumber}} </a>
+                </li>
                 <li>
                   <i class="fa fa-phone"></i>
-                  <a [href]="'tel:' + organization.phoneNumber" [dir]="'ltr'">{{organization.phoneNumber}}</a>
+                  <a [href]="'tel:' + organization.phoneNumber1" [dir]="'ltr'">{{organization.phoneNumber1}}</a>
                 </li>
+                <li>
+                  <i class="fa fa-phone"></i>
+                  <a [href]="'tel:' + organization.phoneNumber2" [dir]="'ltr'">{{organization.phoneNumber2}}</a>
+                </li> -->
+                <li class="phones">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <div class="phones-inline">
+                    <a *ngIf="organization?.phoneNumber" class="phone" [href]="'tel:' + organization.phoneNumber">
+                      <bdi>{{ organization.phoneNumber }}</bdi>
+                    </a>
+                    <a *ngIf="organization?.phoneNumber1" class="phone" [href]="'tel:' + organization.phoneNumber1">
+                      <bdi>{{ organization.phoneNumber1 }}</bdi>
+                    </a>
+                    <a *ngIf="organization?.phoneNumber2" class="phone" [href]="'tel:' + organization.phoneNumber2">
+                      <bdi>{{ organization.phoneNumber2 }}</bdi>
+                    </a>
+                  </div>
+                </li>
+
+
                 <li>
                   <i class="fab fa-whatsapp"></i>
                   <a [href]="'https://wa.me/' + organization.whatsappNumber" [dir]="'ltr'">{{organization.whatsappNumber}}</a>
@@ -76,10 +100,16 @@
                   <i class="fa fa-id-card"></i>
                   {{ 'Footer.License' | translate }}: {{organization.licenseNumber}}
                 </li>
-                <li>
-                  <i class="fa fa-map-marker-alt"></i>
-                  <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng">{{ 'Footer.Address' | translate }}: {{organization.address}}</a>  
-                </li>
+                  <li>
+                    <i class="fa fa-map-marker-alt"></i>
+                    <a
+                      [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {{ 'Footer.Address' | translate }}: {{ organization.address }}
+                    </a>
+                  </li>
               </ul>
             </div>
           </div>
