@@ -6,12 +6,14 @@
     </div>
   </section>
 
+  <ng-container *ngIf="organization$ | async as organization">
+
 
     <div class="accordion-container">
         <app-custom-accordion title="app-name">
            <app-generic-form
                 [columns]="organizationColumns"
-                [selectedRow]="organizations"
+                [selectedRow]="organization"
                 [dataFactory]="organizationDataFactory"
                 [primaryKey]="'organizationsPk'"
                 [apiPath]="'organizations'"
@@ -21,4 +23,5 @@
           </app-generic-form>
         </app-custom-accordion> 
      </div>
+  </ng-container>
 </main>

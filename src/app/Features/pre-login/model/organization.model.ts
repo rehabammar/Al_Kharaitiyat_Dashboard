@@ -37,6 +37,10 @@ export class Organization{
   lat?: string;
 
   organizationParentFk?: number;
+  aboutUs?: string ;
+  ourTarget?: string ;
+  androidAppLink?: string ;
+  appleAppLink?: string ;
 
   constructor(data: Partial<Organization> = {}) {
     Object.assign(this, data);

@@ -1,69 +1,71 @@
 <ng-container *ngIf="organization$ | async as organization">
-<footer>
-  <div class="footer-wrappper footer-bg">
-    <!-- Footer Start-->
-    <div class="footer-area footer-padding">
-      <div class="container">
-        <div class="row justify-content-between">
-          
-          <!-- Logo + Info -->
-          <div class="col-xl-4 col-lg-5 col-md-4 col-sm-6">
-            <div class="single-footer-caption mb-50">
-              <div class="single-footer-caption mb-30">
-                <!-- logo -->
-                <div class="footer-logo mb-25 org-info">
-                  <a href="/">
-                    <img src="assets/img/logo/logo.png"  style="max-height:60px;" />
-                  </a>
-                </div>
-                      <div class="footer-tittle">
-                        <div class="org-info">
-                          <p>
-                            {{organization.organizationNameEn}} <br />
-                            {{organization.organizationNameAr}}
-                          </p>
-                        </div>
-                      </div>
-                <!-- social -->
-                <div class="footer-social">
-                          <div class="contact-icons">
-                            <a [href]="'https://wa.me/' + organization.whatsappNumber" target="_blank">
-                              <i class="fab fa-whatsapp"></i>
-                            </a>
-                            <a [href]="'tel:' + organization.phoneNumber">
-                              <i class="fa fa-phone"></i>
-                            </a> 
-                            <a *ngIf="organization?.lat && organization?.lng"
-                              [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
-                              target="_blank" rel="noopener noreferrer" aria-label="Directions in Google Maps">
-                               <i class="fas fa-map-marker-alt"></i>
-                            </a>
+<!-- <ng-container *ngIf="organization"> -->
 
-                                <a href="https://apps.apple.com/app/idYOUR_IOS_APP_ID"
-                                  target="_blank" rel="noopener noreferrer" aria-label="iOS app on App Store">
-                                  <i class="fab fa-apple"></i>
-                                </a>
-                                
-                                <a href="https://drive.google.com/uc?export=download&id=1OOKqnuyuwLTxJVLJin-7NNyd5BsywEEj"
-                                  target="_blank" rel="noopener noreferrer" aria-label="Android app on Google Play">
-                                  <i class="fab fa-android"></i>
-                                </a>
-                            </div>
+  <footer>
+    <div class="footer-wrappper footer-bg">
+      <!-- Footer Start-->
+      <div class="footer-area footer-padding">
+        <div class="container">
+          <div class="row justify-content-between">
+
+            <!-- Logo + Info -->
+            <div class="col-xl-4 col-lg-5 col-md-4 col-sm-6">
+              <div class="single-footer-caption mb-50">
+                <div class="single-footer-caption mb-30">
+                  <!-- logo -->
+                  <div class="footer-logo mb-25 org-info">
+                    <a href="/">
+                      <img src="assets/img/logo/logo.png" style="max-height:60px;" />
+                    </a>
+                  </div>
+                  <div class="footer-tittle">
+                    <div class="org-info">
+                      <p>
+                        {{organization.organizationNameEn}} <br />
+                        {{organization.organizationNameAr}}
+                      </p>
+                    </div>
+                  </div>
+                  <!-- social -->
+                  <div class="footer-social">
+                    <div class="contact-icons">
+                      <a [href]="'https://wa.me/' + organization.whatsappNumber" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                      </a>
+                      <a [href]="'tel:' + organization.phoneNumber">
+                        <i class="fa fa-phone"></i>
+                      </a>
+                      <a *ngIf="organization?.lat && organization?.lng"
+                        [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
+                        target="_blank" rel="noopener noreferrer" aria-label="Directions in Google Maps">
+                        <i class="fas fa-map-marker-alt"></i>
+                      </a>
+
+                      <a href={{organization.appleAppLink}} target="_blank" rel="noopener noreferrer"
+                        aria-label="iOS app on App Store">
+                        <i class="fab fa-apple"></i>
+                      </a>
+
+                      <a href={{organization.androidAppLink}} target="_blank" rel="noopener noreferrer"
+                        aria-label="Android app on Google Play">
+                        <i class="fab fa-android"></i>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <!-- Contact Info -->
-         <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
-          <div class="single-footer-caption mb-50">
-            <div class="footer-tittle">
-              <h4>{{ 'Footer.Contact' | translate }}</h4>
-              <ul class="contact-list">
-                <li>
-                  <i class="fa fa-envelope"></i>
-                  <a [href]="'mailto:' + organization.email">{{organization.email}}</a>
-                </li>
-                <!-- <li>
+            <!-- Contact Info -->
+            <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
+              <div class="single-footer-caption mb-50">
+                <div class="footer-tittle">
+                  <h4>{{ 'Footer.Contact' | translate }}</h4>
+                  <ul class="contact-list">
+                    <li>
+                      <i class="fa fa-envelope"></i>
+                      <a [href]="'mailto:' + organization.email">{{organization.email}}</a>
+                    </li>
+                    <!-- <li>
                   <i class="fa fa-phone"></i>
                   <a [href]="'tel:' + organization.phoneNumber" [dir]="'ltr'">{{organization.phoneNumber}} </a>
                 </li>
@@ -75,69 +77,71 @@
                   <i class="fa fa-phone"></i>
                   <a [href]="'tel:' + organization.phoneNumber2" [dir]="'ltr'">{{organization.phoneNumber2}}</a>
                 </li> -->
-                <li class="phones">
-                  <i class="fa fa-phone" aria-hidden="true"></i>
-                  <div class="phones-inline">
-                    <a *ngIf="organization?.phoneNumber" class="phone" [href]="'tel:' + organization.phoneNumber"  [dir]="'ltr'">
-                      <bdi>{{ organization.phoneNumber }}</bdi>
-                    </a>
-                    <a *ngIf="organization?.phoneNumber1" class="phone" [href]="'tel:' + organization.phoneNumber1"  [dir]="'ltr'">
-                      <bdi>{{ organization.phoneNumber1 }}</bdi>
-                    </a>
-                    <a *ngIf="organization?.phoneNumber2" class="phone" [href]="'tel:' + organization.phoneNumber2"  [dir]="'ltr'">
-                      <bdi>{{ organization.phoneNumber2 }}</bdi>
-                    </a>
-                  </div>
-                </li>
+                    <li class="phones">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                      <div class="phones-inline">
+                        <a *ngIf="organization?.phoneNumber" class="phone" [href]="'tel:' + organization.phoneNumber"
+                          [dir]="'ltr'">
+                          <bdi>{{ organization.phoneNumber }}</bdi>
+                        </a>
+                        <a *ngIf="organization?.phoneNumber1" class="phone" [href]="'tel:' + organization.phoneNumber1"
+                          [dir]="'ltr'">
+                          <bdi>{{ organization.phoneNumber1 }}</bdi>
+                        </a>
+                        <a *ngIf="organization?.phoneNumber2" class="phone" [href]="'tel:' + organization.phoneNumber2"
+                          [dir]="'ltr'">
+                          <bdi>{{ organization.phoneNumber2 }}</bdi>
+                        </a>
+                      </div>
+                    </li>
 
 
-                <li>
-                  <i class="fab fa-whatsapp"></i>
-                  <a [href]="'https://wa.me/' + organization.whatsappNumber" [dir]="'ltr'">{{organization.whatsappNumber}}</a>
-                </li>
-                <li>
-                  <i class="fa fa-id-card"></i>
-                  {{ 'Footer.License' | translate }}: {{organization.licenseNumber}}
-                </li>
-                  <li>
-                    <i class="fa fa-map-marker-alt"></i>
-                    <a
-                      [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                     {{ organization.address }}
-                    </a>
-                  </li>
-              </ul>
+                    <li>
+                      <i class="fab fa-whatsapp"></i>
+                      <a [href]="'https://wa.me/' + organization.whatsappNumber"
+                        [dir]="'ltr'">{{organization.whatsappNumber}}</a>
+                    </li>
+                    <li>
+                      <i class="fa fa-id-card"></i>
+                      {{ 'Footer.License' | translate }}: {{organization.licenseNumber}}
+                    </li>
+                    <li>
+                      <i class="fa fa-map-marker-alt"></i>
+                      <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + organization.lat + ',' + organization.lng"
+                        target="_blank" rel="noopener noreferrer">
+                        {{ organization.address }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
+
+
           </div>
         </div>
-
-
-        </div>
       </div>
-    </div>
 
-    <!-- footer-bottom area -->
-    <div class="footer-bottom-area">
-      <div class="container">
-        <div class="footer-border">
-          <div class="row d-flex align-items-center">
-            <div class="col-xl-12">
-              <div class="footer-copy-right text-center">
-                <p>
-                  &copy; <script>document.write(new Date().getFullYear());</script> 
-                  {{organization.organizationNameEn}} — {{organization.organizationNameAr}}
-                  | {{ 'Footer.AllRights' | translate }}
-                </p>
+      <!-- footer-bottom area -->
+      <div class="footer-bottom-area">
+        <div class="container">
+          <div class="footer-border">
+            <div class="row d-flex align-items-center">
+              <div class="col-xl-12">
+                <div class="footer-copy-right text-center">
+                  <p>
+                    &copy;
+                    <script>document.write(new Date().getFullYear());</script>
+                    {{organization.organizationNameEn}} — {{organization.organizationNameAr}}
+                    | {{ 'Footer.AllRights' | translate }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <!-- Footer End-->
     </div>
-    <!-- Footer End-->
-  </div>
-</footer>
+  </footer>
 </ng-container>

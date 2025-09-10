@@ -136,3 +136,31 @@
   padding: 0;
   margin: -1px;
 }
+.full-row {
+  grid-column: 1 / -1; /* span both columns */
+}
+
+.custom-textarea {
+  width: 100%;
+  min-height: 120px;           /* works with rows; adjust as you like */
+  resize: vertical;            /* allow user to resize if desired */
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font: inherit;
+  font-family: 'cairoFont';
+  font-size: 14px;
+}
+
+.longtext-readonly {
+  white-space: pre-wrap;       /* keep paragraphs/line breaks */
+  line-height: 1.5;
+  padding: 8px 0;
+}
+
+/* Optional: single-column on small screens */
+@media (max-width: 720px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

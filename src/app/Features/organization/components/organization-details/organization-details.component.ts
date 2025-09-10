@@ -4,6 +4,8 @@ import { Organization } from '../../../pre-login/model/organization.model';
 import { SessionStorageUtil } from '../../../../core/util/session-storage';
 import { AppConstants } from '../../../../core/constants/app_constants';
 import { ButtonVisibilityConfig } from '../../../../core/models/button-visibility-config.interface';
+import { Observable } from 'rxjs/internal/Observable';
+import { PreLoginService } from '../../../pre-login/services/pre-login.service';
 
 
 @Component({
@@ -12,9 +14,15 @@ import { ButtonVisibilityConfig } from '../../../../core/models/button-visibilit
   templateUrl: './organization-details.component.html',
   styleUrl: './organization-details.component.css'
 })
-export class OrganizationDetailsComponent implements OnInit {
+export class OrganizationDetailsComponent {
 
-  organizations!: Organization;
+
+  organization$: Observable<Organization>;
+
+  constructor(private preLoginService: PreLoginService) {
+    this.organization$ = this.preLoginService.getOrganizations();
+  }
+
 
   ButtonVisibility: ButtonVisibilityConfig = {
     showDelete: false,
@@ -23,10 +31,6 @@ export class OrganizationDetailsComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    this.organizations = SessionStorageUtil.getItem(AppConstants.CURRENT_ORGNIZATION_KEY)!;
-
-  }
 
 
   organizationDataFactory = () => new Organization();
@@ -182,7 +186,7 @@ export class OrganizationDetailsComponent implements OnInit {
       dataType: "number",
       width: "120px"
     },
-       // Status
+    // Status
     {
       field: "statusFl",
       labelKey: "Organization.StatusFl",
@@ -190,6 +194,39 @@ export class OrganizationDetailsComponent implements OnInit {
       isFlag: true,
       width: "100px"
     },
+
+    {
+      field: "androidAppLink",
+      labelKey: "Organization.downloadAndroid",
+      dataType: "string",
+      fullRow: true ,
+      rows: 1 ,
+      width: "100px"
+    },
+
+    {
+      field: "appleAppLink",
+      labelKey: "Organization.downloadIos",
+      dataType: "string",
+      fullRow: true ,
+      rows: 1 ,
+      width: "100px",
+    },
+     {
+      field: "aboutUs",
+      labelKey: "Organization.aboutCenter",
+      dataType: "longtext",
+      required : true ,
+      fullRow: true ,
+      width: "100px"
+    },
+
+
+
+
+
+  // aboutUs?: string ;
+  // ourTarget?: string ;
 
     // // Parent Organization
     // {

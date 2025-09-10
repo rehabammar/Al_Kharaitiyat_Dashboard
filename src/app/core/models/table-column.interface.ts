@@ -21,7 +21,11 @@ export interface TableColumn {
   showTotalAmountRemaining? : boolean ;
   showTotalLabel?: boolean ;
   paramsMap?: Record<string, string>; 
-  dependsOn?: string[];              
+  dependsOn?: string[];      
+  
+  rows?: number;        
+  maxLength?: number;   
+  fullRow?: boolean;    
 
 
 }

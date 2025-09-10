@@ -6,10 +6,13 @@
                 <div class="row align-items-center g-3 hero-row">
                     <div class="col-12 col-lg hero-text-30">
                         <div class="hero__caption">
-                            <h1 data-animation="fadeInLeft" data-delay="0.2s">{{ 'app-name' | translate }}</h1>
-                            <p data-animation="fadeInLeft" data-delay="0.4s" class="text-center">
-                                {{ 'taglineOne' | translate }}
-                            </p>
+                            <ng-container *ngIf="organization$ | async as organization">
+                                
+                                <h1 data-animation="fadeInLeft" data-delay="0.2s">{{ 'app-name' | translate }}</h1>
+                                <p data-animation="fadeInLeft" data-delay="0.4s" class="text-center">
+                                    {{organization.aboutUs}}
+                                </p>
+                            </ng-container>
                         </div>
                     </div>
                     <div class="col-12 col-lg hero-media-70">

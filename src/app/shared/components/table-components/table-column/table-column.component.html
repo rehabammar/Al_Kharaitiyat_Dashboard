@@ -72,14 +72,25 @@
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
     <!-- date -->
-    <ng-container *ngIf="column.dataType === 'datetime' || column.dataType === 'date'; else notDate">
-      <span class="custom-label" dir="ltr">
-        <ng-container *ngIf="currentRow[column.field]; else dash">
-          {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
+  <ng-container *ngIf="column.dataType === 'datetime' || column.dataType === 'date'; else notDate">
+    <span class="custom-label" dir="ltr">
+      <ng-container *ngIf="currentRow[column.field]; else dash">
+        <ng-container [ngSwitch]="column.dataType">
+          <!-- datetime -->
+          <span *ngSwitchCase="'datetime'">
+            {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
+          </span>
+
+          <!-- date only -->
+          <span *ngSwitchCase="'date'">
+            {{ currentRow[column.field] | date:'yyyy-MM-dd' }}
+          </span>
         </ng-container>
-        <ng-template #dash>—</ng-template>
-      </span>
-    </ng-container>
+      </ng-container>
+      <ng-template #dash>—</ng-template>
+    </span>
+  </ng-container>
+
 
   <!-- غير التاريخ -->
   <ng-template #notDate>

@@ -256,6 +256,9 @@
     "Organization.Address": "العنوان",
     "Organization.Lat": "خط العرض",
     "Organization.Long": "خط الطول",
+    "Organization.downloadAndroid": " رابط تحميل التطبيق للأندرويد",
+    "Organization.downloadIos": "رابط تحميل التطبيق للآيفون",
+    "Organization.aboutCenter": "عن المركز",
     "error.unknown": "خطأ غير معروف",
     "error.unauthorized": "عفواً ... انتهت جلسة العمل أو ليس لك صلاحية الدخول لهذه الصفحة"
 }

@@ -256,6 +256,9 @@
     "Organization.Address": "Address",
     "Organization.Lat": "Latitude",
     "Organization.Long": "Longitude",
+    "Organization.downloadAndroid": "Download Link for Android",
+    "Organization.downloadIos": "Download Link for iOS",
+    "Organization.aboutCenter": "About the Center",
     "error.unknown": "Unknown error",
     "error.unauthorized": "Sorry... Your session has expired or you do not have permission to access this page"
 }
