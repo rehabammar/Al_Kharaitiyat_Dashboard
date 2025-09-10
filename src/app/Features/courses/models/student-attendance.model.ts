@@ -8,7 +8,7 @@ export class StudentAttendance {
   organizationName?: string;
   organizationFk?: number | null;
 
-  attendanceStatusFl?: number | null;
+  attendanceStatusFl: number = 1;
   attendanceStatusName?: string | null;
 
   studentFk?: number | null;
