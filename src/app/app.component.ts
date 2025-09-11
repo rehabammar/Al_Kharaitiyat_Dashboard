@@ -4,6 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { onMessage } from 'firebase/messaging';
 import { MessagingBridgeService } from './core/services/shared/messaging-bridge.service';
 import { Messaging } from '@angular/fire/messaging';
+import { LanguageService } from './core/services/shared/language.service';
+import { Language } from './Features/auth/models/language.interface';
 
 
 
@@ -20,6 +22,7 @@ export class AppComponent implements OnInit {
     private messaging: Messaging,
     private bridge: MessagingBridgeService) { }
   ngOnInit(): void {
+    this.LoadLanguage();
     this.translateService.get('app-name').subscribe((translatedTitle: string) => {
       this.titleService.setTitle(translatedTitle);
     });
@@ -45,14 +48,14 @@ export class AppComponent implements OnInit {
     const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' });
     await navigator.serviceWorker.ready;
 
-    onMessage(this.messaging,async (payload)  =>   {
+    onMessage(this.messaging, async (payload) => {
       // console.log("Message received in foreground: ", payload);
 
       const title = payload.notification?.title || 'New message';
       const options = {
         body: payload.notification?.body,
         icon: "/assets/img/logo/logo.png",
-        data: { refresh: true } 
+        data: { refresh: true }
       };
       const audio = new Audio('assets/sounds/notification_sound.wav');
       audio.play();
@@ -63,5 +66,24 @@ export class AppComponent implements OnInit {
 
 
     });
+  }
+
+
+  LoadLanguage() {
+    const selectedLanguage: Language | null = LanguageService.getLanguage();
+    const langCode = selectedLanguage?.langCode ?? 'ar';
+    const direction = (selectedLanguage?.rtlFl ?? 1) === 1 ? 'rtl' : 'ltr';
+    this.translateService.setDefaultLang(langCode);
+    this.translateService.use(langCode);
+    this.setDirection(langCode , direction);
+    this.translateService.get('app-name').subscribe((translatedTitle: string) => {
+      this.titleService.setTitle(translatedTitle);
+    });
+
+  }
+
+  setDirection(lang: string, direction: 'rtl' | 'ltr') {
+    document.documentElement.dir = direction;
+    document.documentElement.lang = lang;
   }
 }

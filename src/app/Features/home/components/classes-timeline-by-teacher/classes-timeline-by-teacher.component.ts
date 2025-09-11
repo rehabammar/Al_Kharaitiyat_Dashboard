@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HomeService } from '../../services/home.servics';
+import { LanguageService } from '../../../../core/services/shared/language.service';
 
 type ApiClass = any; // use your real type if you have it
 type Block = {
@@ -11,7 +12,7 @@ type Block = {
   time: string;
   status: string;
   statusClass: string;
-  classPk : null;
+  classPk: null;
 };
 type TeacherRow = {
   teacherId: number | null;
@@ -28,6 +29,8 @@ type HourLabel = { col: string; label: string };
 })
 export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   private sub?: Subscription;
+  private currentLocale = 'en-US';
+  private langCode = 'en'; // keep the app language code
 
   // ---- grid config ----
   START_HOUR = 8;       // 08:00
@@ -42,9 +45,41 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
+    const langCode = LanguageService.getLanguage()?.langCode || 'en';
+    this.currentLocale = this.resolveLocale(langCode);
     this.buildHeader();
     this.loadData();
   }
+
+  // 1) Helpers at the top (inside the component file):
+
+  /** Map 'ar'|'en' to stable BCP-47 tags */
+  resolveLocale(lang: string | undefined): string {
+    const l = (lang || '').toLowerCase();
+    // prefer a concrete Arabic locale to avoid ar-SA defaults
+    return l.startsWith('ar') ? 'ar-EG' : 'en-US';
+  }
+
+  /** Whether the language is Arabic */
+  isArabic(lang: string | undefined): boolean {
+    return (lang || '').toLowerCase().startsWith('ar');
+  }
+
+  /** Force Latin digits if needed (some engines ignore nu=latn) */
+  toLatinDigits(s: string): string {
+    const map: Record<string, string> = {
+      '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+    };
+    return s.replace(/[٠-٩]/g, d => map[d]);
+  }
+
+  /** Manual 24h formatter (fallback when Intl options are ignored) */
+  manualHHmm(d: Date): string {
+    const h = d.getHours().toString().padStart(2, '0');
+    const m = d.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
+  }
+
 
   loadData() {
 
@@ -62,9 +97,24 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void { this.sub?.unsubscribe(); }
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+
+  }
 
   // ---------- helpers ----------
+  // private buildHeader(): void {
+  //   this.cols = ((this.END_HOUR - this.START_HOUR) * 60) / this.SLOT_MIN;
+  //   this.hourLabels = [];
+  //   for (let h = this.START_HOUR; h < this.END_HOUR; h++) {
+  //     const startSlot = ((h - this.START_HOUR) * 60) / this.SLOT_MIN;
+  //     const endSlot = ((h + 1 - this.START_HOUR) * 60) / this.SLOT_MIN;
+  //     const label = this.formatHour(h);
+  //     this.hourLabels.push({ col: `${startSlot + 1} / ${endSlot + 1}`, label });
+  //   }
+  // }
+
+
   private buildHeader(): void {
     this.cols = ((this.END_HOUR - this.START_HOUR) * 60) / this.SLOT_MIN;
     this.hourLabels = [];
@@ -75,7 +125,6 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
       this.hourLabels.push({ col: `${startSlot + 1} / ${endSlot + 1}`, label });
     }
   }
-
   private buildRows(list: ApiClass[]): TeacherRow[] {
     const map = new Map<number | null, TeacherRow>();
 
@@ -100,7 +149,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         time: this.formatTimeRange(start, end),
         status: c?.statusName || '—',
         statusClass: this.statusClass(c?.statusName),
-        classPk : c?.classPk
+        classPk: c?.classPk
       };
       map.get(id)!.blocks.push(block);
     }
@@ -147,14 +196,60 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
     return { colStart, colEnd };
   }
 
+  // private formatHour(h: number): string {
+  //   const d = new Date(); d.setHours(h, 0, 0, 0);
+  //   return new Intl.DateTimeFormat('ar-EG', { hour: '2-digit' }).format(d);
+  // }
+
+  // private formatTimeRange(s: Date, e: Date): string {
+  //   const f = (d: Date) => new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(d);
+  //   return `${f(s)} – ${f(e)}`;
+  // }
+
+  /** Robust hour label — prefers Intl, falls back to manual 24h for Arabic */
   private formatHour(h: number): string {
     const d = new Date(); d.setHours(h, 0, 0, 0);
-    return new Intl.DateTimeFormat('ar-EG', { hour: '2-digit' }).format(d);
+
+    try {
+      const useArabic = this.isArabic(this.langCode);
+      const fmt = new Intl.DateTimeFormat(this.currentLocale, {
+        hour: '2-digit',
+        // hourCycle improves reliability vs hour12
+        hourCycle: useArabic ? 'h23' : 'h12'
+      });
+      let out = fmt.format(d);
+      // enforce latin digits in Arabic if engine ignored nu=latn
+      if (useArabic) out = this.toLatinDigits(out);
+      return out;
+    } catch {
+      // Safe fallback (especially for older WebViews)
+      return this.manualHHmm(d);
+    }
   }
 
+  /** Robust time range */
   private formatTimeRange(s: Date, e: Date): string {
-    const f = (d: Date) => new Intl.DateTimeFormat('ar-EG', { hour: '2-digit', minute: '2-digit' }).format(d);
-    return `${f(s)} – ${f(e)}`;
+    try {
+      const useArabic = this.isArabic(this.langCode);
+      const fmt = new Intl.DateTimeFormat(this.currentLocale, {
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: useArabic ? 'h23' : 'h12'
+      });
+      let a = fmt.format(s);
+      let b = fmt.format(e);
+      if (useArabic) { a = this.toLatinDigits(a); b = this.toLatinDigits(b); }
+
+      // keep the dash visually correct in RTL
+      const LRM = '\u200E';
+      return `${a} ${LRM}–${LRM} ${b}`;
+    } catch {
+      // Fallback 24h
+      const a = this.manualHHmm(s);
+      const b = this.manualHHmm(e);
+      const LRM = '\u200E';
+      return `${a} ${LRM}–${LRM} ${b}`;
+    }
   }
 
   private statusClass(s?: string | null): string {
