@@ -85,5 +85,6 @@ export class AppComponent implements OnInit {
   setDirection(lang: string, direction: 'rtl' | 'ltr') {
     document.documentElement.dir = direction;
     document.documentElement.lang = lang;
+    
   }
 }

@@ -1,54 +1,58 @@
+/* الشعار */
 .app-logo {
-    height: 60px;
-    padding: 5px;
+  height: 60px;
+  max-width: 100%;
+  padding: 5px;
+  object-fit: contain;
 }
 
+/* بلوك اللوجو + العنوان */
 .app-header {
-    padding: 2px;
-    width: 200px;
-     display: flex;
-    flex-direction: column;   /* ✅ يخلي العناصر تحت بعض */
-    align-items: center;
-    /* يوسّطهم عموديًا */
-    gap: 5px;
-    /* مسافة بسيطة بينهم */
+  padding: 2px;
+  width: clamp(140px, 22vw, 220px);
+  display: flex;
+  flex-direction: column; /* العناصر تحت بعض */
+  align-items: center;
+  gap: 5px;
 }
 
+/* عنوان التطبيق */
 .app-title {
-  color: white;
-  padding-bottom: 10px;
-  font-size: 12px;          /* الحجم المناسب */
-  white-space: nowrap;      /* يمنع الكسر لسطور متعددة */
-  overflow: hidden;         /* يخفي أي زيادة */
-  text-overflow: ellipsis;  /* يحط ... لو النص طويل */
+  color: #fff;
+  padding-block-end: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
 }
 
-/* لازم يكون العنصر الأب position: relative */
+/* صف الهيدر */
 .header-bottom,
 .header-row {
-  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative; /* لو محتاج لعناصر تانية */
 }
 
-/* تثبيت زر الدخول في أقصى الشمال ووسط رأسيًا */
+/* زر الدخول دايمًا في آخر السطر */
 .login-container {
-  position: absolute;
-  left: 12px;          /* المسافة من الشمال */
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 9;
+  margin-inline-start: auto; /* يدفعه للنهاية سواء RTL أو LTR */
   display: flex;
   align-items: center;
 }
 
-/* لو فيه أي ستايل من الـ ul/li كان بيزقّه، نحيّده */
+/* إزالة أي هوامش للأزرار */
 .login-container button,
 .login-container .btn {
   margin: 0;
 }
 
-/* تقدر تزود مسافة من الهيدر عشان الزر ما يغطي اللوجو في الشاشات الصغيرة */
+/* تحسين للموبايل */
 @media (max-width: 768px) {
-  .header-bottom { padding-left: 10px; }  /* زوّد حسب الحاجة */
+  .header-bottom {
+    padding-inline: 10px; /* بدل padding-left عشان يشتغل مع الاتجاهين */
+  }
 }
-
-
