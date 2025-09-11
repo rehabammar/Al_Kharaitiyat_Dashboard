@@ -148,7 +148,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         title: c?.classTitle || c?.teacherCourseName || '—',
         time: this.formatTimeRange(start, end),
         status: c?.statusName || '—',
-        statusClass: this.statusClass(c?.statusName),
+        statusClass: this.statusClass(c?.classStatusFk),
         classPk: c?.classPk
       };
       map.get(id)!.blocks.push(block);
@@ -251,14 +251,19 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
       return `${a} ${LRM}–${LRM} ${b}`;
     }
   }
-
-  private statusClass(s?: string | null): string {
-    switch ((s || '').trim()) {
-      case 'مجدولة': return 'badge scheduled';
-      case 'بدأت': return 'badge running';
-      case 'انتهت': return 'badge done';
-      case 'الغيت': return 'badge canceled';
-      default: return 'badge';
+  private statusClass(s?: number | null): string {
+    switch (s) {
+      case 64:
+        return 'badge scheduled';
+      case 65:
+        return 'badge running';
+      case 66:
+        return 'badge done';
+      case 67:
+        return 'badge canceled';
+      default:
+        return 'badge';
     }
   }
+
 }
