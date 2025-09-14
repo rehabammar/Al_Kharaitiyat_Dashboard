@@ -93,7 +93,7 @@
 
 /* الأرقام جنب بعض وتلف على الشاشات الصغيرة */
 .phones-inline {
-  display: flex;
+  display: inline-grid;
   flex-wrap: wrap; 
 }
 
