@@ -1,26 +1,36 @@
 <section class="slider-area">
     <div >
+    <ng-container *ngIf="organization$ | async as organization">
+
         <!-- Single Slider -->
         <div class="single-slider slider-height d-flex align-items-center">
             <div class="container2">
                 <div class="row align-items-center g-3 hero-row">
                     <div class="col-12 col-lg hero-text-30">
                         <div class="hero__caption">
-                            <ng-container *ngIf="organization$ | async as organization">
                                 
                                 <h1 data-animation="fadeInLeft" data-delay="0.2s">{{ 'app-name' | translate }}</h1>
                                 <p data-animation="fadeInLeft" data-delay="0.4s" class="text-center">
-                                    {{organization.aboutUs}}
+                                     {{ currentLang == 'ar' ? organization.aboutUsAr : organization.aboutUsEn }} 
                                 </p>
-                            </ng-container>
                         </div>
                     </div>
                     <div class="col-12 col-lg hero-media-70">
-                        <app-image-rotator></app-image-rotator>
+                       <!-- parent.component.html -->
+                    <app-image-rotator
+                    [organization]="organization"          
+                    [autoplay]="true"
+                    [intervalMs]="5000"
+                    [showArrows]="true"
+                    [showDots]="true">
+                    </app-image-rotator>
+
                     </div>
                 </div>
 
             </div>
         </div>
+     </ng-container>
+
     </div>
 </section>

@@ -65,6 +65,7 @@ import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 import { PayAllPopupComponent } from './Features/financial-transactions/components/pay-all-popup/pay-all-popup.component';
 import { MY_DATE_FORMATS } from './core/util/matrial_date_formater';
 import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
+import { ImageManagerComponent } from './shared/image-manager/image-manager.component';
 
 
 
@@ -109,7 +110,8 @@ import { OrganizationDetailsComponent } from './Features/organization/components
     PreLoginFooterComponent,
     PreLoginHeaderComponent,
     PayAllPopupComponent,
-    OrganizationDetailsComponent
+    OrganizationDetailsComponent,
+    ImageManagerComponent
     
   ],
   imports: [

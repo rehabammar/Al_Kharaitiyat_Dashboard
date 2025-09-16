@@ -147,4 +147,8 @@ export class ApiEndpoints {
 
   static totalOutstandingForUser = () => api('financialTransactions/total-outstanding-for-user');
   static totalOutstandingOnUser  = () => api('financialTransactions/total-outstanding-on-user');
+
+  static updateImageOrganization  = () => api('organizations/update-with-images');
+
+
 }

@@ -258,7 +258,32 @@
     "Organization.Long": "خط الطول",
     "Organization.downloadAndroid": " رابط تحميل التطبيق للأندرويد",
     "Organization.downloadIos": "رابط تحميل التطبيق للآيفون",
-    "Organization.aboutCenter": "عن المركز",
+    "Organization.aboutUsAr": "عن المركز (عربي)",
+    "Organization.aboutUsEn": "عن المركز (انجليزي)",
     "error.unknown": "خطأ غير معروف",
-    "error.unauthorized": "عفواً ... انتهت جلسة العمل أو ليس لك صلاحية الدخول لهذه الصفحة"
+    "error.unauthorized": "عفواً ... انتهت جلسة العمل أو ليس لك صلاحية الدخول لهذه الصفحة",
+    "imageUploader": {
+        "mediaManagerTitle": "صور المؤسسة",
+        "sizeHint": "الحد الأقصى {{size}} ميجابايت لكل صورة",
+        "logo": "الشعار",
+        "chooseLogo": "اختر الشعار",
+        "chooseImage": "اختر صورة",
+        "deleteOnSave": "حذف عند الحفظ",
+        "removeLocal": "حذف المعاينة",
+        "willDeleteOnSave": "سيتم الحذف عند الحفظ",
+        "current": "الحالي",
+        "new": "الجديد",
+        "noCurrent": "لا توجد صورة حالية",
+        "noNew": "لا توجد صورة جديدة",
+        "logoPreviewAlt": "معاينة الشعار",
+        "sliderPreviewAlt": "معاينة السلايدر",
+        "sliderImagesTitle": "صور السلايدر (حتى {{count}})",
+        "slotNumber": "الخانة #{{index}}",
+        "upload": "رفع",
+        "uploading": "جارٍ الرفع…"
+    }
+
+
+
+
 }

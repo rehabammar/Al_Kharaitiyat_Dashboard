@@ -184,6 +184,7 @@ export class OrganizationDetailsComponent {
       field: "lng",
       labelKey: "Organization.Long",
       dataType: "number",
+      required: true,
       width: "120px"
     },
     // Status
@@ -199,8 +200,8 @@ export class OrganizationDetailsComponent {
       field: "androidAppLink",
       labelKey: "Organization.downloadAndroid",
       dataType: "string",
-      fullRow: true ,
-      rows: 1 ,
+      fullRow: true,
+      rows: 1,
       width: "100px"
     },
 
@@ -208,16 +209,24 @@ export class OrganizationDetailsComponent {
       field: "appleAppLink",
       labelKey: "Organization.downloadIos",
       dataType: "string",
-      fullRow: true ,
-      rows: 1 ,
+      fullRow: true,
+      rows: 1,
       width: "100px",
     },
-     {
-      field: "aboutUs",
-      labelKey: "Organization.aboutCenter",
+    {
+      field: "aboutUsAr",
+      labelKey: "Organization.aboutUsAr",
       dataType: "longtext",
-      required : true ,
-      fullRow: true ,
+      required: true,
+      fullRow: true,
+      width: "100px"
+    },
+    {
+      field: "aboutUsEn",
+      labelKey: "Organization.aboutUsEn",
+      dataType: "longtext",
+      required: true,
+      fullRow: true,
       width: "100px"
     },
 
@@ -225,8 +234,9 @@ export class OrganizationDetailsComponent {
 
 
 
-  // aboutUs?: string ;
-  // ourTarget?: string ;
+
+    // aboutUs?: string ;
+    // ourTarget?: string ;
 
     // // Parent Organization
     // {

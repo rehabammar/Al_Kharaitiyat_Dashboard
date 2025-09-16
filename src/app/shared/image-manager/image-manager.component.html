@@ -1,0 +1,226 @@
+
+<div class="uploader clean">
+
+  <!-- Header -->
+  <header class="page-head">
+    <h3 class="page-title">{{ 'imageUploader.mediaManagerTitle' | translate }}</h3>
+    <span class="hint">{{ 'imageUploader.sizeHint' | translate:{ size: maxSizeMB } }}</span>
+  </header>
+
+  <!-- Logo block -->
+  <section class="block">
+    <div class="block-head">
+      <h4 class="block-title">{{ 'imageUploader.logo' | translate }}</h4>
+      <span class="pill warn" *ngIf="clearLogoOnSave && !logoPreview">
+        {{ 'imageUploader.willDeleteOnSave' | translate }}
+      </span>
+    </div>
+
+    <div class="cols-2">
+      <!-- Current -->
+      <div class="panel">
+        <div class="panel-label">{{ 'imageUploader.current' | translate }}</div>
+        <div class="imgbox" *ngIf="currentLogoUrl; else noCurrentLogo">
+          <img [src]="currentLogoUrl" [alt]="'imageUploader.logoPreviewAlt' | translate">
+        </div>
+        <ng-template #noCurrentLogo>
+          <div class="placeholder">{{ 'imageUploader.noCurrent' | translate }}</div>
+        </ng-template>
+      </div>
+
+      <!-- New -->
+      <div class="panel">
+        <div class="panel-label">{{ 'imageUploader.new' | translate }}</div>
+        <div class="imgbox" *ngIf="logoPreview; else noNewLogo">
+          <img [src]="logoPreview" [alt]="'imageUploader.logoPreviewAlt' | translate">
+        </div>
+        <ng-template #noNewLogo>
+          <div class="placeholder">{{ 'imageUploader.noNew' | translate }}</div>
+        </ng-template>
+      </div>
+    </div>
+
+   <div class="actions-row">
+        <label class="btn">
+          {{ 'imageUploader.chooseLogo' | translate }}
+          <input type="file" accept="image/*" (change)="onLogoChange($event)" hidden>
+        </label>
+
+        <button class="link" type="button" (click)="clearLogo()" [disabled]="!logoPreview">
+          {{ 'imageUploader.removeLocal' | translate }}
+        </button>
+
+        <span class="spacer"></span>
+
+        <!-- أيقونة حذف عند الحفظ (بدل الـ checkbox) -->
+        <button
+          type="button"
+          class="icon-btn trash"
+          [class.active]="clearLogoOnSave && !logoPreview"
+          [disabled]="!!logoPreview || !currentLogoUrl"
+          (click)="toggleLogoDelete()"
+          [attr.aria-pressed]="clearLogoOnSave && !logoPreview"
+          [attr.title]="'imageUploader.deleteOnSave' | translate"
+          [attr.aria-label]="'imageUploader.deleteOnSave' | translate">
+          <!-- SVG Trash -->
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M9 3h6a1 1 0 0 1 1 1v1h4v2H4V5h4V4a1 1 0 0 1 1-1Zm1 4h4v12a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2V7Zm-4 0h2v12a4 4 0 0 0 4 4h0a4 4 0 0 0 4-4V7h2v12a6 6 0 0 1-6 6h0a6 6 0 0 1-6-6V7Z"/>
+          </svg>
+        </button>
+   </div>
+
+  </section>
+
+  <!-- Sliders -->
+  <h3 class="section-title">
+    {{ 'imageUploader.sliderImagesTitle' | translate:{ count: 5 } }}
+  </h3>
+
+  <div class="grid">
+    <section class="block small" *ngFor="let i of [0,1,2,3,4]">
+      <div class="block-head">
+        <div class="block-title">
+          {{ 'imageUploader.slotNumber' | translate:{ index: (i + 1) } }}
+        </div>
+        <span class="pill warn" *ngIf="clearSliderOnSave[i] && !sliderPreviews[i]">
+          {{ 'imageUploader.willDeleteOnSave' | translate }}
+        </span>
+      </div>
+
+      <div class="cols-2">
+        <!-- Current -->
+        <div class="panel">
+          <div class="panel-label">{{ 'imageUploader.current' | translate }}</div>
+          <div class="imgbox" *ngIf="currentSliderUrls[i]; else noCur">
+            <img [src]="currentSliderUrls[i]!" [alt]="'imageUploader.sliderPreviewAlt' | translate">
+          </div>
+          <ng-template #noCur>
+            <div class="placeholder">{{ 'imageUploader.noCurrent' | translate }}</div>
+          </ng-template>
+        </div>
+
+        <!-- New -->
+        <div class="panel">
+          <div class="panel-label">{{ 'imageUploader.new' | translate }}</div>
+          <div class="imgbox" *ngIf="sliderPreviews[i]; else noNew">
+            <img [src]="sliderPreviews[i]!" [alt]="'imageUploader.sliderPreviewAlt' | translate">
+          </div>
+          <ng-template #noNew>
+            <div class="placeholder">{{ 'imageUploader.noNew' | translate }}</div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <label class="btn">
+          {{ 'imageUploader.chooseImage' | translate }}
+          <input type="file" accept="image/*" (change)="onSliderChange(i, $event)" hidden>
+        </label>
+
+        <button class="link" type="button" (click)="clearSlider(i)" [disabled]="!sliderPreviews[i]">
+          {{ 'imageUploader.removeLocal' | translate }}
+        </button>
+
+        <span class="spacer"></span>
+
+        <!-- أيقونة حذف عند الحفظ -->
+        <button
+          type="button"
+          class="icon-btn trash"
+          [class.active]="clearSliderOnSave[i] && !sliderPreviews[i]"
+          [disabled]="!!sliderPreviews[i] || !currentSliderUrls[i]"
+          (click)="toggleSliderDelete(i)"
+          [attr.aria-pressed]="clearSliderOnSave[i] && !sliderPreviews[i]"
+          [attr.title]="'imageUploader.deleteOnSave' | translate"
+          [attr.aria-label]="'imageUploader.deleteOnSave' | translate">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M9 3h6a1 1 0 0 1 1 1v1h4v2H4V5h4V4a1 1 0 0 1 1-1Zm1 4h4v12a2 2 0 0 1-2 2h0a2 2 0 0 1-2-2V7Zm-4 0h2v12a4 4 0 0 0 4 4h0a4 4 0 0 0 4-4V7h2v12a6 6 0 0 1-6 6h0a6 6 0 0 1-6-6V7Z"/>
+          </svg>
+        </button>
+      </div>
+
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="status">
+      <span *ngIf="uploadError" class="msg error">{{ uploadError }}</span>
+      <span *ngIf="okMsg" class="msg ok">{{ okMsg }}</span>
+    </div>
+
+    <button class="btn primary"
+            [disabled]="uploading || !hasAnyAction()"
+            (click)="upload()">
+      {{ uploading ? ('imageUploader.uploading' | translate) : ('imageUploader.upload' | translate) }}
+    </button>
+  </footer>
+</div>
+
+
+  <!-- Fixed inputs (no drag&drop, no multi-select) -->
+  <!-- <div class="controls">
+    <label>Organization ID</label>
+    <input type="number" min="1" [(ngModel)]="orgId" />
+    <span class="hint">Each image ≤ {{maxSizeMB}}MB</span>
+  </div> -->
+
+<!-- <div class="row">
+  <label class="btn">
+    {{ 'imageUploader.chooseLogo' | translate }}
+    <input type="file" accept="image/*" (change)="onLogoChange($event)" hidden>
+  </label>
+
+  <div class="preview" *ngIf="logoPreview">
+    <img [src]="logoPreview" [alt]="'imageUploader.logoPreviewAlt' | translate">
+    <button class="link" type="button" (click)="clearLogo()">
+      {{ 'imageUploader.remove' | translate }}
+    </button>
+  </div>
+</div>
+
+<h3 class="section-title">
+  {{ 'imageUploader.sliderImagesTitle' | translate:{ count: 5 } }}
+</h3>
+
+<div class="grid">
+  <div class="card" *ngFor="let i of [0,1,2,3,4]">
+    <div class="meta">
+      {{ 'imageUploader.slotNumber' | translate:{ index: (i + 1) } }}
+    </div>
+
+    <label class="btn">
+      {{ 'imageUploader.chooseImage' | translate }}
+      <input type="file" accept="image/*" (change)="onSliderChange(i, $event)" hidden>
+    </label>
+
+    <div class="preview" *ngIf="sliderPreviews[i]">
+      <img [src]="sliderPreviews[i]!" [alt]="'imageUploader.sliderPreviewAlt' | translate">
+      <button class="link danger" type="button" (click)="clearSlider(i)">
+        {{ 'imageUploader.remove' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="uploadError" class="error">{{ uploadError }}</div>
+<div *ngIf="okMsg" class="ok">{{ okMsg }}</div>
+
+<div class="actions">
+  <button class="btn primary" [disabled]="uploading || !hasAnyFile()" (click)="upload()">
+    {{ uploading ? ('imageUploader.uploading' | translate) : ('imageUploader.upload' | translate) }}
+  </button>
+</div> -->
+
+  <!-- Existing gallery (optional) -->
+  <!-- <h3 *ngIf="images.length" class="section-title">Gallery</h3>
+  <div class="grid">
+    <div class="card" *ngFor="let img of images; trackBy: trackById">
+      <img [src]="img.src" [alt]="img.alt || 'image'">
+      <div class="meta">
+        <input [(ngModel)]="img.alt" placeholder="alt text">
+        <button class="link danger" type="button" (click)="removeImage(img)">Delete</button>
+      </div>
+    </div>
+  </div> -->
+<!-- </div> -->

@@ -18,7 +18,16 @@ export class Organization{
   
   whatsappNumber?: string;
 
-  logoUrl?: string;
+  logoUrl?: string | null;
+  logoFullUrl?: string | null;
+
+  
+  sliderImg1FullUrl?: string;
+  sliderImg2FullUrl?: string;
+  sliderImg3FullUrl?: string;
+  sliderImg4FullUrl?: string;
+  sliderImg5FullUrl?: string;
+
 
   statusFl?: number;
 
@@ -37,7 +46,8 @@ export class Organization{
   lat?: string;
 
   organizationParentFk?: number;
-  aboutUs?: string ;
+  aboutUsAr?: string ;
+  aboutUsEn?: string ;
   ourTarget?: string ;
   androidAppLink?: string ;
   appleAppLink?: string ;

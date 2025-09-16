@@ -258,7 +258,29 @@
     "Organization.Long": "Longitude",
     "Organization.downloadAndroid": "Download Link for Android",
     "Organization.downloadIos": "Download Link for iOS",
-    "Organization.aboutCenter": "About the Center",
+    "Organization.aboutUsAr": "About the Center (Arabic)",
+    "Organization.aboutUsEn": "About the Center (English)",
     "error.unknown": "Unknown error",
-    "error.unauthorized": "Sorry... Your session has expired or you do not have permission to access this page"
+    "error.unauthorized": "Sorry... Your session has expired or you do not have permission to access this page",
+    "imageUploader": {
+        "mediaManagerTitle": "Organization Images",
+        "sizeHint": "Max {{size}}MB per image",
+        "logo": "Logo",
+        "chooseLogo": "Choose Logo",
+        "chooseImage": "Choose Image",
+        "deleteOnSave": "Delete on save",
+        "removeLocal": "Remove preview",
+        "willDeleteOnSave": "Will delete on save",
+        "current": "Current",
+        "new": "New",
+        "noCurrent": "No current image",
+        "noNew": "No new image",
+        "logoPreviewAlt": "logo preview",
+        "sliderPreviewAlt": "slider preview",
+        "sliderImagesTitle": "Slider images (up to {{count}})",
+        "slotNumber": "Slot #{{index}}",
+        "upload": "Upload",
+        "uploading": "Uploading…"
+    }
+
 }

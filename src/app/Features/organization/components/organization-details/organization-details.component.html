@@ -21,6 +21,9 @@
                 [buttonVisibility]="ButtonVisibility"
                 (rowSaved)="onOrganizationSaved($event)">
           </app-generic-form>
+          <app-image-manager
+          [organization]="organization">
+          </app-image-manager>
         </app-custom-accordion> 
      </div>
   </ng-container>
