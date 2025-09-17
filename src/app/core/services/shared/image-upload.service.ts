@@ -1,5 +1,6 @@
+// image-upload.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { ApiEndpoints } from '../../constants/api-endpoints';
@@ -8,46 +9,52 @@ export interface OrgImagesPayload {
   orgId: number;
   logo?: File | null;
   sliders: (File | null)[];      // length 5
-  clearLogo?: boolean;
-  clearSliders?: boolean[];      // length 5
+  clearLogo?: boolean;           // نحولها إلى logoD
+  clearSliders?: boolean[];      // length 5 -> sliderImg{N}D
 }
 
 @Injectable({ providedIn: 'root' })
 export class ImageUploadService {
   constructor(private http: HttpClient) {}
 
-  uploadOrgImages(payload: OrgImagesPayload, opts: { debug?: boolean } = {}): Observable<any> {
-    const { debug = false } = opts;
+  /**
+   * @param opts.lang   يرسل هيدر lang (اختياري)
+   * @param opts.debug  لطباعة الـFormData والرد
+   */
+  uploadOrgImages(
+    payload: OrgImagesPayload,
+    opts: { lang?: string; debug?: boolean } = {}
+  ): Observable<any> {
+    const { lang, debug = false } = opts;
 
     const form = new FormData();
     form.append('orgId', String(payload.orgId));
 
-    // Logo: أضِف فقط لو تغيّر (ملف) أو حذف
+    // === ملفات: نرسل الجديد فقط (لا نرسل "null" إطلاقًا) ===
     if (payload.logo) {
       form.append('logo', payload.logo);
-    } else if (payload.clearLogo) {
-      form.append('logo', 'null'); // بدّليها "" لو API يتوقع empty string
     }
-
-    // Sliders: أضِف فقط الخانات المتغيّرة/المحذوفة
     for (let i = 0; i < 5; i++) {
       const f = payload.sliders[i] ?? null;
-      const wantDelete = !!payload.clearSliders?.[i];
-      if (f) {
-        form.append(`sliderImg${i + 1}`, f);
-      } else if (wantDelete) {
-        form.append(`sliderImg${i + 1}`, 'null'); // أو ""
-      }
-      // غير ذلك: لا تُرسل المفتاح ← يظل كما هو في السيرفر
+      if (f) form.append(`sliderImg${i + 1}`, f);
+    }
+
+    // === فلاغات الحذف: دايمًا نرسلها كـ true/false ===
+    form.append('logoD', String(!!payload.clearLogo));
+    for (let i = 0; i < 5; i++) {
+      const del = !!(payload.clearSliders && payload.clearSliders[i]);
+      form.append(`sliderImg${i + 1}D`, String(del));
     }
 
     if (debug) {
       this.logPayload(payload);
-      this.logFormDataDetailed(form);
+      this.logFormData(form);
     }
 
     const url = ApiEndpoints.updateImageOrganization();
-    const req$ = this.http.post(url, form);
+    const headers = lang ? new HttpHeaders({ lang }) : undefined;
+
+    const req$ = this.http.post(url, form, { headers });
 
     return debug
       ? req$.pipe(
@@ -59,7 +66,7 @@ export class ImageUploadService {
           }),
           catchError((err) => {
             console.groupCollapsed('%c[Upload] ❌ Error', 'color:#dc2626;font-weight:600');
-            console.log('URL:', url);
+            console.error('URL:', url);
             console.error(err);
             console.groupEnd();
             return throwError(() => err);
@@ -68,41 +75,32 @@ export class ImageUploadService {
       : req$;
   }
 
-  // ============ DEBUG HELPERS ============
-
-  /** يطبع ملخص الـpayload (هل في ملف/حذف لكل خانة) */
-  private logPayload(payload: OrgImagesPayload) {
+  // -------- DEBUG HELPERS --------
+  private logPayload(p: OrgImagesPayload) {
     console.groupCollapsed('%c[Upload] ⬆️ Payload summary', 'color:#2563eb;font-weight:600');
     console.table({
-      orgId: payload.orgId,
-      logoFile: payload.logo ? `${payload.logo.name} (${payload.logo.type}, ${payload.logo.size}B)` : null,
-      clearLogo: !!payload.clearLogo,
-      slidersCount: payload.sliders?.length ?? 0
+      orgId: p.orgId,
+      hasLogoFile: !!p.logo,
+      clearLogo: !!p.clearLogo
     });
-
-    const slidersInfo = Array.from({ length: 5 }, (_, i) => {
-      const f = payload.sliders[i];
-      const del = payload.clearSliders?.[i] ?? false;
-      return {
-        slot: i + 1,
-        file: f ? `${f.name} (${f.type}, ${f.size}B)` : null,
-        clear: del
-      };
-    });
-    console.table(slidersInfo);
+    const sliders = Array.from({ length: 5 }, (_, i) => ({
+      slot: i + 1,
+      hasFile: !!p.sliders[i],
+      clear: !!(p.clearSliders && p.clearSliders[i])
+    }));
+    console.table(sliders);
     console.groupEnd();
   }
 
-  /**
-   * يطبع الـFormData بشكل مفصل:
-   * - لكل مفتاح مُخطط (orgId, logo, sliderImg1..5): يوضح إذا اتبعت ولا “omitted”
-   * - لو اتبعت كـFile: يطبع الاسم/النوع/الحجم
-   * - لو اتبعت كنص: يطبع القيمة ("null" أو غيره)
-   */
-  private logFormDataDetailed(fd: FormData) {
+  private logFormData(fd: FormData) {
     console.groupCollapsed('%c[Upload] 📨 Outgoing FormData', 'color:#7c3aed;font-weight:600');
-
-    // اجمع القيم في خريطة تسهّل الفحص
+    const keysExpected = [
+      'orgId',
+      'logo',
+      'logoD',
+      ...Array.from({ length: 5 }, (_, i) => `sliderImg${i + 1}`),
+      ...Array.from({ length: 5 }, (_, i) => `sliderImg${i + 1}D`)
+    ];
     const map = new Map<string, any[]>();
     fd.forEach((v, k) => {
       const arr = map.get(k) ?? [];
@@ -110,58 +108,24 @@ export class ImageUploadService {
       map.set(k, arr);
     });
 
-    const plannedKeys = ['orgId', 'logo', ...Array.from({ length: 5 }, (_, i) => `sliderImg${i + 1}`)];
-
-    const rows = plannedKeys.map((key) => {
-      const vals = map.get(key);
-      if (!vals || vals.length === 0) {
-        return { key, sent: false, kind: '—', name: '—', type: '—', size: '—', value: '—' };
-      }
+    const rows = keysExpected.map((k) => {
+      const vals = map.get(k);
+      if (!vals || !vals.length) return { key: k, sent: false, kind: '—', value: '—', name: '—', size: '—', type: '—' };
       const v = vals[0];
       if (v instanceof File) {
-        return {
-          key,
-          sent: true,
-          kind: 'File',
-          name: v.name,
-          type: v.type || '(unknown)',
-          size: `${v.size} B`,
-          value: '—'
-        };
+        return { key: k, sent: true, kind: 'File', value: '—', name: v.name, size: `${v.size}B`, type: v.type || '(?)' };
       }
-      return {
-        key,
-        sent: true,
-        kind: 'Text',
-        name: '—',
-        type: '—',
-        size: '—',
-        value: String(v)
-      };
+      return { key: k, sent: true, kind: 'Text', value: String(v), name: '—', size: '—', type: '—' };
     });
-
     console.table(rows);
 
-    // اطبع أي مفاتيح إضافية غير مخططة (لو فيه)
-    const extras: any[] = [];
+    // أي مفاتيح إضافية
     map.forEach((vals, k) => {
-      if (!plannedKeys.includes(k)) {
+      if (!keysExpected.includes(k)) {
         const v = vals[0];
-        extras.push({
-          key: k,
-          kind: v instanceof File ? 'File' : 'Text',
-          name: v instanceof File ? v.name : '—',
-          type: v instanceof File ? (v.type || '(unknown)') : '—',
-          size: v instanceof File ? `${v.size} B` : '—',
-          value: v instanceof File ? '—' : String(v)
-        });
+        console.log('Extra key:', k, v instanceof File ? v.name : String(v));
       }
     });
-    if (extras.length) {
-      console.log('%cExtra keys detected in FormData:', 'color:#a16207');
-      console.table(extras);
-    }
-
     console.groupEnd();
   }
 }

@@ -17,10 +17,15 @@ import { PreLoginService } from '../../../pre-login/services/pre-login.service';
 export class OrganizationDetailsComponent {
 
 
-  organization$: Observable<Organization>;
 
-  constructor(private preLoginService: PreLoginService) {
-    this.organization$ = this.preLoginService.getOrganizations();
+
+  org$!: Observable<Organization | null>;
+
+  constructor(private orgStore: PreLoginService) { }
+
+  ngOnInit() {
+    this.org$ = this.orgStore.organization$;
+    this.orgStore.load().subscribe();
   }
 
 

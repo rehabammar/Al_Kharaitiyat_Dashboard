@@ -278,7 +278,7 @@
         "logoPreviewAlt": "logo preview",
         "sliderPreviewAlt": "slider preview",
         "sliderImagesTitle": "Slider images (up to {{count}})",
-        "slotNumber": "Slot #{{index}}",
+        "slotNumber": "Image #{{index}}",
         "upload": "Upload",
         "uploading": "Uploading…"
     }

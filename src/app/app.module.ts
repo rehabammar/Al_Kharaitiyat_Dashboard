@@ -66,6 +66,7 @@ import { PayAllPopupComponent } from './Features/financial-transactions/componen
 import { MY_DATE_FORMATS } from './core/util/matrial_date_formater';
 import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
 import { ImageManagerComponent } from './shared/image-manager/image-manager.component';
+import { AppLogoComponent } from './shared/app-template/app-logo/app-logo.component';
 
 
 
@@ -111,7 +112,8 @@ import { ImageManagerComponent } from './shared/image-manager/image-manager.comp
     PreLoginHeaderComponent,
     PayAllPopupComponent,
     OrganizationDetailsComponent,
-    ImageManagerComponent
+    ImageManagerComponent,
+    AppLogoComponent
     
   ],
   imports: [

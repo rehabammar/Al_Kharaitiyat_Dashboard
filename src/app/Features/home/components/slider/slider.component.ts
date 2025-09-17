@@ -13,13 +13,17 @@ import { LanguageService } from '../../../../core/services/shared/language.servi
 })
 export class SliderComponent {
 
-    organization$: Observable<Organization>;
 
-    currentLang : string = 'ar' ;
-  
-    constructor(private preLoginService: PreLoginService  ) {
-      this.organization$ = this.preLoginService.getOrganizations(); 
-      this.currentLang = LanguageService.getLanguage()?.langCode ?? 'ar' ;
-    }
+  currentLang: string = 'ar';
+
+  org$!: Observable<Organization | null>;
+
+  constructor(private orgStore: PreLoginService) { }
+
+  ngOnInit() {
+    this.org$ = this.orgStore.organization$;
+    this.orgStore.load().subscribe();
+  }
+
 
 }

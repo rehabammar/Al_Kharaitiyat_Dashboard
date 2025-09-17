@@ -14,6 +14,7 @@ import {
   OrgImagesPayload
 } from '../../core/services/shared/image-upload.service';
 import { Organization } from '../../Features/pre-login/model/organization.model';
+import { PreLoginService } from '../../Features/pre-login/services/pre-login.service';
 
 @Component({
   selector: 'app-image-manager',
@@ -61,7 +62,7 @@ export class ImageManagerComponent implements OnDestroy, OnChanges {
     'sliderImg5FullUrl'
   ] as const;
 
-  constructor(private uploadSvc: ImageUploadService) { }
+  constructor(private uploadSvc: ImageUploadService ,   private orgStore: PreLoginService,   ) { }
 
   // مزامنة عند تغيّر الـ organization
   ngOnChanges(changes: SimpleChanges): void {
@@ -147,35 +148,43 @@ export class ImageManagerComponent implements OnDestroy, OnChanges {
 
   // ---------- Upload (يدعم حذف عند الحفظ بإرسال null) ----------
   upload(): void {
-    if (!this.orgId || !this.hasAnyAction()) return;
+  if (!this.orgId) return;
 
-    const { clearLogo, clearSliders } = this.computeClearFlags();
+  const { clearLogo, clearSliders } = this.computeClearFlags();
 
-    const payload: OrgImagesPayload = {
-      orgId: this.orgId,
-      logo: this.logoFile,              // يتبعت فقط لو مش null وسيتم ضمه في FormData
-      sliders: this.sliderFiles,        // السيرفس لن يضيف إلا الخانات المتغيّرة/المحذوفة
-      clearLogo,
-      clearSliders
-    };
+  // لو مفيش ملفات جديدة ومفيش حذف مفعّل، خلاص مفيش حاجة نبعته
+  const hasNewFiles = !!this.logoFile || this.sliderFiles.some(Boolean);
+  const hasDeletes  = clearLogo || clearSliders.some(Boolean);
+  if (!hasNewFiles && !hasDeletes) return;
 
-    this.uploading = true; this.uploadError = ''; this.okMsg = '';
+  const payload: OrgImagesPayload = {
+    orgId: this.orgId,
+    logo: this.logoFile || undefined,
+    sliders: this.sliderFiles,
+    clearLogo,
+    clearSliders
+  };
 
-    this.uploadSvc.uploadOrgImages(payload, { debug: true }).subscribe({
-      next: (res) => {
-        this.uploading = false;
-        this.okMsg = 'Uploaded successfully.';
-        this.applyResponseToOrganization(res, payload);
-        this.resetLocalSelections();
-        this.syncFromOrganization();
-      },
-      error: (err) => {
-        this.uploading = false;
-        this.uploadError = 'Upload failed.';
-        console.error(err);
-      }
-    });
-  }
+  this.uploading = true; this.uploadError = ''; this.okMsg = '';
+
+  this.uploadSvc.uploadOrgImages(payload, { debug: true /*, lang: 'ar' */ }).subscribe({
+    next: (res) => {
+      this.uploading = false;
+      this.okMsg = 'Uploaded successfully.';
+    // this.orgStore.patchImagesFromResponse(res);
+     this.orgStore.refreshNow()
+
+      this.resetLocalSelections();
+      this.syncFromOrganization();
+    },
+    error: (err) => {
+      this.uploading = false;
+      this.uploadError = 'Upload failed.';
+      console.error(err);
+    }
+  });
+}
+
 
   private syncFromOrganization(): void {
     if (!this.organization) return;

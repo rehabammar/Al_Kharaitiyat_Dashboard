@@ -64,7 +64,9 @@
   <form class="form-default" (ngSubmit)="useLogin()" #f="ngForm" novalidate>
     <div class="login-form">
       <div class="logo-login">
-        <a routerLink="/"><img src="assets/img/logo/loder.png" alt="Logo" /></a>
+        <a routerLink="/">
+        <app-logo className="app-logo"></app-logo>
+        </a>
       </div>
 
       <h2>{{ 'login' | translate }}</h2>

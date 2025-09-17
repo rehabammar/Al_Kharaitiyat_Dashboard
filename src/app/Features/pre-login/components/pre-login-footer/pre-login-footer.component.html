@@ -1,4 +1,4 @@
-<ng-container *ngIf="organization$ | async as organization">
+<ng-container *ngIf="org$ | async as organization">
 <!-- <ng-container *ngIf="organization"> -->
 
   <footer>
@@ -13,9 +13,12 @@
               <div class="single-footer-caption mb-50">
                 <div class="single-footer-caption mb-30">
                   <!-- logo -->
-                  <div class="footer-logo mb-25 org-info">
-                    <a href="/">
-                      <img src="assets/img/logo/logo.png" style="max-height:60px;" />
+                   <div class="footer-logo mb-25 org-info">
+                    <a routerLink="/">
+                      <app-logo
+                        className="app-logo"
+                        [bustOnChange]="true">
+                      </app-logo>
                     </a>
                   </div>
                   <div class="footer-tittle">

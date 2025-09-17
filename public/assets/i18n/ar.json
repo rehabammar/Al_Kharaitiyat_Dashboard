@@ -278,7 +278,7 @@
         "logoPreviewAlt": "معاينة الشعار",
         "sliderPreviewAlt": "معاينة السلايدر",
         "sliderImagesTitle": "صور السلايدر (حتى {{count}})",
-        "slotNumber": "الخانة #{{index}}",
+        "slotNumber": "صورة #{{index}}",
         "upload": "رفع",
         "uploading": "جارٍ الرفع…"
     }

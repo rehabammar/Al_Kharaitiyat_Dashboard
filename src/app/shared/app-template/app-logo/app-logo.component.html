@@ -1,0 +1,9 @@
+<ng-container *ngIf="org$ | async as org">
+  <img
+    [src]="srcOf(org)"
+    [alt]="altOf(org)"
+    [class]="className"
+    (error)="onError()"
+    loading="lazy"
+  />
+</ng-container>
