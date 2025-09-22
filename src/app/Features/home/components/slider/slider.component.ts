@@ -23,6 +23,7 @@ export class SliderComponent {
   ngOnInit() {
     this.org$ = this.orgStore.organization$;
     this.orgStore.load().subscribe();
+    this.currentLang = LanguageService.getLanguage()?.langCode ?? 'ar' ;
   }
 
 
