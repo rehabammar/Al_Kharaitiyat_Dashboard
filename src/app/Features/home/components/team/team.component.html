@@ -19,6 +19,7 @@
             <a [routerLink]="['/teachers', u.userPk]">{{ u.fullName }}</a>
           </h4>
           <p>{{ u.specialization || u.jobTitle || ('Users.NoBio' | translate : {} : '—') }}</p>
+          <p>{{'User.ExperienceYears' | translate}} : {{u.experienceYears}}</p>
 
           <div class="stars" [attr.aria-label]="safeIntRating(u) + ' / 5'">
             <ng-container *ngFor="let _ of five; let i = index">

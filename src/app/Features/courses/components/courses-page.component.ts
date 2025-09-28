@@ -108,7 +108,7 @@ export class CoursesPageComponent {
       labelKey: 'TeacherCourse.AcademicTerm',
       field: 'academicTermName',
       fieldFK: 'academicTermFk',
-      required: true,
+      required: false,
       isCombobox: true,
       apiPath: "/academicTerms/search",
       displayItemKey: "termName",
@@ -167,19 +167,19 @@ export class CoursesPageComponent {
       width: '220px'
     },
 
-    {
-      labelKey: 'TeacherCourse.courseLocation',
-      field: 'courseTypeName',
-      fieldFK: 'courseTypeFk',
-      required: true,
-      isCombobox: true,
-      apiPath: "/lookupDetails/courseLocation",
-      displayItemKey: "lookupName",
-      primaryKey: "lookupDetailPk",
-      dataFactory: this.lookupDetailDataFactory,
-      width: '140px',
-      showInTable: false
-    },
+    // {
+    //   labelKey: 'TeacherCourse.courseLocation',
+    //   field: 'courseTypeName',
+    //   fieldFK: 'courseTypeFk',
+    //   required: true,
+    //   isCombobox: true,
+    //   apiPath: "/lookupDetails/courseLocation",
+    //   displayItemKey: "lookupName",
+    //   primaryKey: "lookupDetailPk",
+    //   dataFactory: this.lookupDetailDataFactory,
+    //   width: '140px',
+    //   showInTable: false
+    // },
     {
       labelKey: 'TeacherCourse.Status',
       field: 'courseStatusName',
@@ -223,15 +223,15 @@ export class CoursesPageComponent {
       showInTable: false,
       width: '130px'
     },
-    {
-      labelKey: 'TeacherCourse.MaxStudents',
-      field: 'maxStudents',
-      required: true,
-      dataType: 'number',
-      disabled: false,
-      width: '120px',
-      showInTable: false,
-    },
+    // {
+    //   labelKey: 'TeacherCourse.MaxStudents',
+    //   field: 'maxStudents',
+    //   required: true,
+    //   dataType: 'number',
+    //   disabled: false,
+    //   width: '120px',
+    //   showInTable: false,
+    // },
     {
       labelKey: 'TeacherCourse.ActualStudentsCount',
       field: 'actualStudentsCount',
@@ -301,6 +301,7 @@ export class CoursesPageComponent {
     // }
   ];
 
+
   classColumns: TableColumn[] = [
     {
       labelKey: 'Class.ClassPk',
@@ -314,7 +315,7 @@ export class CoursesPageComponent {
     {
       labelKey: 'Class.Title',
       field: 'classTitle',
-      required: true,
+      required: false,
       dataType: 'string',
       disabled: false,
       width: '220px'
@@ -340,8 +341,8 @@ export class CoursesPageComponent {
       fieldFK: 'locationFk',
       required: true,
       isCombobox: true,
-      apiPath: '/lookupDetails/courseLocation',  
-      displayItemKey: 'lookupName',              
+      apiPath: '/lookupDetails/courseLocation',
+      displayItemKey: 'lookupName',
       primaryKey: 'lookupDetailPk',
       dataFactory: this.lookupDetailDataFactory,
       width: '180px'
@@ -516,8 +517,27 @@ export class CoursesPageComponent {
     //   disabled: true,
     //   width: '160px'
     // },
+    {
+      labelKey: 'Class.CenterCarFlag',
+      field: 'centerCarFlag',
+      required: false,
+      isFlag: true,
+      width: '180px',
+      showInTable: false
+    },
+    {
+      labelKey: 'Class.CenterCarCost',
+      field: 'centerCarCost',
+      required: false,    
+      dataType: 'number',
+      disabled: false,
+      width: '160px',
+      showInTable: false,
+    }
 
   ];
+  classFormCloumns: TableColumn[] = [...this.classColumns];
+
 
   courseStudentColumns: TableColumn[] = [
     {
@@ -648,6 +668,16 @@ export class CoursesPageComponent {
   ];
 
 
+  cancelClassReasonColumns: TableColumn[] = [
+    {
+      labelKey: 'Class.CancelClassReason',
+      field: 'cancelReason',
+      required: true,
+      dataType: 'string',
+      disabled: false,
+      showInTable: false,
+    },
+  ];
 
 
 
@@ -707,6 +737,11 @@ export class CoursesPageComponent {
     };
     const id = this.selectedClass.classPk;
     this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
+
+    if (e.field === 'classStatusFk') {
+      this.updateShowCancelResone(e);
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
 
@@ -837,6 +872,20 @@ export class CoursesPageComponent {
         });
       })
     );
+  }
+
+
+  // ========================================
+
+  updateShowCancelResone(e: { field: string; value: any }) {
+    this.classFormCloumns = [];
+    let extra: TableColumn[] = [];
+    if (e.value === 67) {
+      extra = this.cancelClassReasonColumns;
+    }
+    this.classFormCloumns = [...this.classColumns, ...extra];
+
+    this.changeDetectorRef.detectChanges();
   }
 
 

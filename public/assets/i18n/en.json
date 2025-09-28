@@ -199,6 +199,7 @@
     "Reports.Types.Attendance": "Attendance",
     "Reports.Types.Payments": "Payments",
     "Reports.Types.TeacherCourses": "Courses",
+    "Reports.Types.TransportationCosts": "Transportation Costs",
     "Footer.Copyright": "Copyright © {{year}} All rights reserved",
     "Footer.Contact": "Contact",
     "Footer.Email": "Email",

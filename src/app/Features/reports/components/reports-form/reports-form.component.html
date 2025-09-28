@@ -22,6 +22,7 @@
               <option value="attendance">{{ 'Reports.Types.Attendance' | translate }}</option>
               <option value="payments">{{ 'Reports.Types.Payments' | translate }}</option>
               <option value="teacherCourses">{{ 'Reports.Types.TeacherCourses' | translate }}</option>
+              <option value="transportationCosts">{{ 'Reports.Types.TransportationCosts' | translate }}</option>
             </select>
           </div>
 
@@ -58,7 +59,7 @@
           </div>
 
           <!-- Optional: Teacher -->
-          <div *ngIf="reportType === 'teacherCourses' || reportType === 'attendance'">
+          <div *ngIf="reportType === 'teacherCourses' || reportType === 'attendance' || reportType === 'transportationCosts'">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
             </div>

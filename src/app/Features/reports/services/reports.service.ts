@@ -17,6 +17,7 @@ export class ReportsService {
       case ReportsType.attendance:     return 'Attendance';
       case ReportsType.payments:       return 'Payments';
       case ReportsType.teacherCourses: return 'TeacherCoursesReport';
+      case ReportsType.transportationCosts: return 'Transportation';
     }
   }  
 
