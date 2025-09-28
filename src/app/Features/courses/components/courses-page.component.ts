@@ -135,6 +135,7 @@ export class CoursesPageComponent {
       fieldFK: 'coursesSubjectFk',
       required: true,
       isCombobox: true,
+      forceUpdateCombobox: true,
       apiPath: "/lookupDetails/subjects",
       displayItemKey: "lookupName",
       primaryKey: "lookupDetailPk",
