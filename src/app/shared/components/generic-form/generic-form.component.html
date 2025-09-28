@@ -67,7 +67,9 @@
             [selectedKey]="row[column.fieldFK!]"
             (itemSelected)="onComboSelected(column, $event)"
             [params]="getComboParams(column)"      
-            [hasError]="isInvalid(column)">
+            [hasError]="isInvalid(column)"
+            [forceUpdate]="column.forceUpdateCombobox || false"
+            >
           </app-combobox-search>
 
           <div class="error-text" *ngIf="isInvalid(column)">

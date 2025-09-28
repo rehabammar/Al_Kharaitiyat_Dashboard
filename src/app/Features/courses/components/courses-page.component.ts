@@ -122,6 +122,7 @@ export class CoursesPageComponent {
       fieldFK: 'coursesTeacherFk',
       required: true,
       isCombobox: true,
+      forceUpdateCombobox: true,
       apiPath: "/users/search-teachers",
       displayItemKey: "fullName",
       primaryKey: "userPk",

@@ -8,6 +8,7 @@ export interface TableColumn {
   isFlag? :boolean;
   disabled ? : boolean ;
   isCombobox?: boolean;
+  forceUpdateCombobox?: boolean;
   fieldFK?: string;
   apiPath?: string;
   dataFactory?: () => any;
