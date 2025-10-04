@@ -198,7 +198,7 @@ export class CoursesPageComponent {
       labelKey: 'TeacherCourse.Price',
       field: 'coursePrice',
       required: true,
-      dataType: 'number',
+      dataType: 'currency',
       disabled: false,
       width: '120px'
     },

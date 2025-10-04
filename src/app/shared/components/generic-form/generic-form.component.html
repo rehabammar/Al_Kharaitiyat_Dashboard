@@ -144,6 +144,19 @@
               />
               <span class="suffix">%</span>
             </div>
+            <div class="percent-field" *ngSwitchCase="'currency'">
+              <input
+                type="number"
+                class="custom-input"
+                [attr.name]="column.field"
+                [(ngModel)]="row[column.field]"
+                (ngModelChange)="onFieldChanged(column, $event)"
+                [class.input-error]="isInvalid(column)"
+                min="0"
+                step="25"
+              />
+              <span class="suffix">{{'FinancialTransactions.Currency'|translate}}</span>
+            </div>
 
             <!-- EVALUATION (1..5 stars) -->
             <div class="stars"

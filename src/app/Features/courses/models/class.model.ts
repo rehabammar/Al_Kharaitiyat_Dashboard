@@ -1,10 +1,10 @@
-export class Class{
+export class Class {
   paidToCenter?: number;
   locationFk?: number;
   locationEndLong?: number | null;
   paidToTeacher?: number;
   locationEndLat?: number | null;
-  puseMints?: number;                     
+  puseMints?: number;
   statusName?: string;
   locationName?: string;
 
@@ -30,8 +30,8 @@ export class Class{
   actualAmountRequired?: number;
   actualPayedAmount?: number;
 
-  teacherReceivedMoneyFl?: number;        
-  centerReceivedMoneyFl?: number;        
+  teacherReceivedMoneyFl?: number;
+  centerReceivedMoneyFl?: number;
 
   locationStartLat?: number | null;
   locationStartLong?: number | null;
@@ -46,7 +46,11 @@ export class Class{
 
   notes?: string | null;
   classCostForStudent?: number | null;
-  teacherFullName? : string ;
+  teacherFullName?: string;
+
+  centerCarFlag: boolean = false;
+  cancelReason?: string | null;
+  centerCarCost?: number | null;
 
   constructor(init?: Partial<Class>) {
     Object.assign(this, init);
