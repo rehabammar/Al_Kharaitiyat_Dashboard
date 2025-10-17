@@ -1,9 +1,11 @@
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
 import { HomeService } from '../../services/home.servics';
 import { LanguageService } from '../../../../core/services/shared/language.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ClassDetailsFormComponent } from '../class-details-form/class-details-form.component';
 
 type ApiClass = any; // use your real type if you have it
 type Block = {
@@ -42,7 +44,9 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   rows: TeacherRow[] = [];
   loading = false;
 
-  constructor(private homeService: HomeService) { }
+  constructor(private homeService: HomeService , private dialog: MatDialog) { }
+
+
 
   ngOnInit(): void {
     const langCode = LanguageService.getLanguage()?.langCode || 'en';
@@ -265,5 +269,22 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         return 'badge';
     }
   }
+
+  
+openClass(classPk: number) {
+  const ref = this.dialog.open(ClassDetailsFormComponent, {
+    width: '900px',
+    maxWidth: '95vw',
+    data: { classId: classPk },
+    autoFocus: false
+  });
+
+  ref.afterClosed().pipe(take(1)).subscribe((shouldReload: boolean) => {
+    if (shouldReload) {
+      this.sub?.unsubscribe();
+      this.loadData();       
+    }
+  });
+}
 
 }

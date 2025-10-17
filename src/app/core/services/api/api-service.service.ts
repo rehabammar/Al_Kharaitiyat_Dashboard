@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 // import { MatDialog } from '@angular/material/dialog';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError, tap } from 'rxjs/operators';
@@ -58,8 +58,8 @@ export class ApiService {
       // }
     }
 
-
-    // console.error('HTTP error:', error);
+    // console.error('HTTP status:', error.status);
+    // console.error('HTTP error:', error.error.message || error.message);
     this.showErrorDialog(errorMsg);
     return throwError(() => new Error(errorMsg));
   }
@@ -70,11 +70,11 @@ export class ApiService {
         type: 'error',
         messageKey: 'message.somethingWentWrong',
         details: message,
-        autoCloseMs: 0 , 
+        autoCloseMs: 0,
         showCancel: false
       },
-      panelClass: 'dialog-error',     
-      disableClose: true              
+      panelClass: 'dialog-error',
+      disableClose: true
     });
 
   }
@@ -100,13 +100,16 @@ export class ApiService {
 
 
 
-  post<T>(url: string, body: any): Observable<ApiResponse<T>> {
-    const startTime = Date.now();
+  post<T>(url: string, body: any, options: {
+    headers?: HttpHeaders | { [header: string]: string | string[] };
+    params?: HttpParams | { [param: string]: string | number | boolean };
+  } = {}): Observable<ApiResponse<T>> {
+    // const startTime = Date.now();
     console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
 
     this.loadingService.show();
 
-    return this.http.post<ApiResponse<T>>(url, body).pipe(
+    return this.http.post<ApiResponse<T>>(url, body , options).pipe(
       // tap(() => console.log(`[DEBUG] POST Request - Request Time: ${Date.now() - startTime} ms`)),
       map(response => this.handleResponse(response)),
       catchError(error => this.handleError(error)),

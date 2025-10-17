@@ -1,0 +1,46 @@
+.dialog-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 20px;
+  background-color: white;
+}
+
+.title{
+  margin: 0;
+}
+
+.error{
+  color: #c62828;
+  margin-bottom: 8px;
+}
+
+.flex-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* زوّد الـpadding للـDialog content */
+.dialog-body{
+  padding: 20px 24px 24px; /* عدّل الأرقام اللي تحبها */
+}
+
+/* خلي زر الإغلاق شفاف وبدون طبقة هوفر */
+.close-btn{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+.close-btn .mat-icon{
+  color: #6b7280;           /* رمادي */
+}
+.close-btn:hover .mat-icon{
+  color: #111827;           /* يغّمق بسيط عند الهوفر */
+}
+/* منع طبقة الـripple/hover من تلوين الخلفية */
+.close-btn .mat-ripple-element{
+  display: none;
+}

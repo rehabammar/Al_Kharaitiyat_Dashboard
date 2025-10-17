@@ -18,6 +18,7 @@ export class ReportsService {
       case ReportsType.payments:       return 'Payments';
       case ReportsType.teacherCourses: return 'TeacherCoursesReport';
       case ReportsType.transportationCosts: return 'Transportation';
+      case ReportsType.classes: return 'Classes';
     }
   }  
 
@@ -90,7 +91,7 @@ export class ReportsService {
 	// 		--P_start_date
 	// 		--P_end_date
 
-    // console.log("REPORTS PARAMTER " + JSON.stringify(body));
+    console.log("REPORTS PARAMTER " + JSON.stringify(body));
 
     try {
       const resp = await firstValueFrom(this.http.post(ApiEndpoints.generateAppReports(), body, {

@@ -10,6 +10,7 @@ import { MonthlyCollection } from '../models/monthly-collection.model';
 import { DailyClassSummary } from '../models/daily-class-summary.model';
 import { Class } from '../../courses/models/class.model';
 import { formatDate } from '@angular/common';
+import { HttpHeaders } from '@angular/common/http';
 
 
 
@@ -47,12 +48,18 @@ export class HomeService {
 
   getDailyClasses(): Observable<Class[]> {
     const todayStr = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
-    return this.apiService.post<ApiPage<Class>>(ApiEndpoints.getCourseClasses(), { "expectedStartTime": todayStr })
+    return this.apiService.post<ApiPage<Class>>(ApiEndpoints.getCourseClasses(), { "expectedStartTime": todayStr, "page": 0, "size": 500 })
       .pipe(
         map(res => res.data.content));
   }
 
 
+
+  getClassById(classId: number): Observable<Class> {
+    const headers = new HttpHeaders({ 'classId': String(classId) });
+    return this.apiService.post<Class>(ApiEndpoints.getClassById(), {}, { headers })
+      .pipe(map(res => res.data));
+  }
 
 
 

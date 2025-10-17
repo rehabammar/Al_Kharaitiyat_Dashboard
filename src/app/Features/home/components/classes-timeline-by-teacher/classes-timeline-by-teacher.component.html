@@ -23,6 +23,7 @@
         <div class="right-scroll">
           <div class="grid" [style.gridTemplateColumns]="'repeat(' + cols + ', 1fr)'">
             <div class="class-block"
+                 (click)="openClass(b.classPk!)"
                  *ngFor="let b of r.blocks"
                  [style.gridColumn]="b.col">
               <div class="id">{{ b.classPk }}</div>

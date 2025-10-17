@@ -17,25 +17,6 @@ import { ApiEndpoints } from '../../../core/constants/api-endpoints';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, take } from 'rxjs';
 
-interface Course {
-  category: string;
-  title: string;
-  img: string;
-  rating: number;
-  reviews: number;
-  price: number;
-  link: string;
-}
-interface Topic {
-  title: string;
-  img: string;
-  link: string;
-}
-interface ServiceItem {
-  icon: string;
-  title: string;
-  desc: string;
-}
 
 @Component({
   selector: 'app-courses-page',
@@ -530,7 +511,7 @@ export class CoursesPageComponent {
     {
       labelKey: 'Class.CenterCarCost',
       field: 'centerCarCost',
-      required: false,    
+      required: false,
       dataType: 'number',
       disabled: false,
       width: '160px',
@@ -730,21 +711,20 @@ export class CoursesPageComponent {
   selectedClass: Class | null = null;
   onClassSelected(row: Class) {
     this.selectedClass = row;
+    this.updateShowCancelResone();
   }
+
   onselectedClassRowChanged(e: { field: string; value: any }) {
     if (!this.selectedClass) return;
-    this.selectedClass = {
-      ...this.selectedClass,
-      [e.field]: e.value
-    };
+
+    this.selectedClass = { ...this.selectedClass, [e.field]: e.value };
+
     const id = this.selectedClass.classPk;
     this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
 
-    if (e.field === 'classStatusFk') {
-      this.updateShowCancelResone(e);
-      this.changeDetectorRef.detectChanges();
-    }
+    this.updateShowCancelResone();
   }
+
 
 
   onClassSaved(row: Class) {
@@ -757,6 +737,7 @@ export class CoursesPageComponent {
       this.classesTable.upsertByPk('classPk', row);
     }
     this.classesTable.selectRowById(row.classPk);
+    this.updateShowCancelResone();
 
   }
 
@@ -765,6 +746,8 @@ export class CoursesPageComponent {
     this.currentDraftCid = row.__cid;
     this.selectedClass = row;
     this.classesTable.prependRow(row);
+    this.updateShowCancelResone();
+
   }
 
   onClassRowDeleted(e: { type: 'new' | 'persisted'; id?: any; row?: any }) {
@@ -879,13 +862,14 @@ export class CoursesPageComponent {
 
   // ========================================
 
-  updateShowCancelResone(e: { field: string; value: any }) {
-    this.classFormCloumns = [];
-    let extra: TableColumn[] = [];
-    if (e.value === 67) {
-      extra = this.cancelClassReasonColumns;
-    }
-    this.classFormCloumns = [...this.classColumns, ...extra];
+  updateShowCancelResone() {
+    const status = this.selectedClass?.classStatusFk;
+    const needCancelReason = status === 67; // 67 = Canceled
+
+    // IMPORTANT: اعمل نسخة جديدة من المصفوفة عشان الـ change detection
+    this.classFormCloumns = needCancelReason
+      ? [...this.classColumns, ...this.cancelClassReasonColumns]
+      : [...this.classColumns];
 
     this.changeDetectorRef.detectChanges();
   }

@@ -1,0 +1,54 @@
+<ng-container *ngIf="loading; else content">
+  <div class="flex-center" style="min-width: 400px; min-height: 200px;">
+    <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+  </div>
+</ng-container>
+
+<ng-template #content>
+ <div class="dialog-header">
+  <h3 class="title">{{ 'Class.ClassDetails' | translate }}</h3>
+
+  <button mat-icon-button
+          class="close-btn"
+          (click)="dialogRef.close()"
+          aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+
+       <mat-tab-group mat-stretch-tabs="false">
+          <mat-tab label='{{"Class.ClassDetails" | translate}}' >
+                   <app-generic-form
+                        *ngIf="selectedClass"
+                        [columns]="classFormCloumns"
+                        [selectedRow]="selectedClass"
+                        [alwaysEditable]="true"
+                        [primaryKey]="'classPk'"
+                        [apiPath]="'classes'"
+                        (rowSaved)="onRowSaved($event)"
+                        (rowChanged)="onClassRowChanged($event)"
+                        (rowDeleted)="onRowDeleted($event)"
+                        [buttonVisibility]="bottomVisability">
+                    </app-generic-form>
+          </mat-tab>
+          <mat-tab label='{{"StudentAttendance.Attendance" | translate}}'  *ngIf="selectedClass?.classPk">
+                <app-generic-table
+                  #classStudentAttendanceTable
+                  [screenId]="'studentAttendance'"
+                  [primaryKey]="'studentAttendanceClassPk'"
+                  [columns]="studentAttendanceColumns"
+                  [dataFactory]="StudentAttendanceDataFactory"
+                  [apiPath]="'studentAttendanceClasses'"
+                  [searchParameterKey]="'classFk'"
+                  [selectedId]="selectedClass?.classPk"
+                  [isEditableTable]="true">
+                </app-generic-table>
+          </mat-tab>
+        </mat-tab-group>
+
+
+
+</ng-template>

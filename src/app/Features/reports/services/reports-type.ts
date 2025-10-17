@@ -3,4 +3,5 @@ export enum ReportsType {
   payments = 'payments',
   teacherCourses = 'teacherCourses',
   transportationCosts = 'transportationCosts',
+  classes = 'classes',
 }

@@ -24,13 +24,13 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TemplateComponent } from './shared/app-template/template/template.component';
 import { CoursesPageComponent } from './Features/courses/components/courses-page.component';
-import { MatPaginatorIntl, MatPaginatorModule , MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorIntl, MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { GenericTableComponent } from './shared/components/table-components/generic-table/generic-table.component';
 import { TableColumnComponent } from './shared/components/table-components/table-column/table-column.component';
 import { MatIcon } from '@angular/material/icon';
 import { AppButtonComponent } from './shared/components/app-button/app-button.component';
-import { MatAccordion, MatExpansionModule , MatExpansionPanel } from '@angular/material/expansion';
+import { MatAccordion, MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { CustomAccordionComponent } from './shared/components/custom-accordion/custom-accordion.component';
 import { GenericFormComponent } from './shared/components/generic-form/generic-form.component';
 import { ComboboxSearchComponent } from './shared/components/combobox-search/combobox-search.component';
@@ -57,7 +57,7 @@ import { ImageRotatorComponent } from './Features/home/components/image-rotator/
 import { ClassesTimelineByTeacherComponent } from './Features/home/components/classes-timeline-by-teacher/classes-timeline-by-teacher.component';
 import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
 import { PreLoginFooterComponent } from './Features/pre-login/components/pre-login-footer/pre-login-footer.component';
-import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-login-header/pre-login-header.component';              
+import { PreLoginHeaderComponent } from './Features/pre-login/components/pre-login-header/pre-login-header.component';
 import { SearchDialogComponent } from './shared/components/search-dialog/search-dialog.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
@@ -67,6 +67,9 @@ import { MY_DATE_FORMATS } from './core/util/matrial_date_formater';
 import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
 import { ImageManagerComponent } from './shared/image-manager/image-manager.component';
 import { AppLogoComponent } from './shared/app-template/app-logo/app-logo.component';
+import { ClassDetailsFormComponent } from './Features/home/components/class-details-form/class-details-form.component';
+
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -113,50 +116,53 @@ import { AppLogoComponent } from './shared/app-template/app-logo/app-logo.compon
     PayAllPopupComponent,
     OrganizationDetailsComponent,
     ImageManagerComponent,
-    AppLogoComponent
-    
+    AppLogoComponent,
+    ClassDetailsFormComponent
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     // MatDialog,
-     TranslateModule.forRoot({
+    TranslateModule.forRoot({
       loader: provideTranslateHttpLoader({
-        prefix: '/assets/i18n/', 
-        suffix: '.json',        
+        prefix: '/assets/i18n/',
+        suffix: '.json',
       }),
       fallbackLang: 'ar',
     }),
-   HttpClientModule,
-   MatPaginatorModule ,
-   MatPaginator,
-   MatTableModule,
-   MatIcon,
-   MatAccordion,
-   MatExpansionModule,
-   MatExpansionPanel,
-   MatDialogActions,
-   MatDialogContent,
-   MatTabsModule,
-   MatDatepickerModule,
-   MatFormFieldModule,
-   MatInputModule,
-   MatNativeDateModule,
-   BaseChartDirective,
+    HttpClientModule,
+    MatPaginatorModule,
+    MatPaginator,
+    MatTableModule,
+    MatIcon,
+    MatAccordion,
+    MatExpansionModule,
+    MatExpansionPanel,
+    MatDialogActions,
+    MatDialogContent,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    BaseChartDirective,
+    MatProgressSpinnerModule
+
 
   ],
   providers: [
-  { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
-  {
+    { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl },
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-  },
-  { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
-  provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-  provideMessaging(() => getMessaging()),
-  
-  ],  bootstrap: [AppComponent]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideMessaging(() => getMessaging()),
+
+  ], bootstrap: [AppComponent]
 })
 export class AppModule { }
