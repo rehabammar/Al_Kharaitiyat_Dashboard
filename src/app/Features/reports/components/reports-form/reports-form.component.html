@@ -27,8 +27,10 @@
             </select>
           </div>
 
+          
+
           <!-- Start date (required) -->
-          <div>
+          <div *ngIf="reportType !== 'classes' ">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.StartDate' | translate }}</label>
               <span class="required-indicator">*</span>
@@ -47,7 +49,7 @@
           </div>
 
           <!-- End date (required, min=startDate) -->
-          <div>
+          <div *ngIf="reportType !== 'classes' ">
             <div class="header-label-line align-start">
               <label class="form-label">{{ 'Reports.EndDate' | translate }}</label>
               <span class="required-indicator">*</span>
@@ -58,6 +60,26 @@
               {{ 'validation.endDateBeforeStart' | translate: { start: startDate } }}
             </div>
           </div>
+
+
+              <div *ngIf="reportType === 'classes' ">
+            <div class="header-label-line align-start">
+              <label class="form-label">{{ 'Reports.Date' | translate }}</label>
+              <span class="required-indicator">*</span>
+            </div>
+            <input class="custom-input date-field" 
+                    type="date" 
+                    name="startDate"
+                    [(ngModel)]="startDate" 
+                    required /> 
+            <!-- <mat-form-field appearance="fill">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="startDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>   -->
+          </div>
+        
 
           <!-- Optional: Teacher -->
           <div *ngIf="reportType === 'teacherCourses' || reportType === 'attendance' || reportType === 'transportationCosts'">

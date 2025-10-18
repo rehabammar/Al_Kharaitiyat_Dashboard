@@ -57,7 +57,7 @@ export class ReportsService {
         P_user_id:    userId,
         P_user_name:  this.userService.getUser().username,
         P_start_date: startDate ,
-        P_end_date:   endDate ,
+        P_end_date: endDate || startDate ,
         P_teacher_fk: teacherId,
         P_student_fk: studentId,
         filterType: 'teacher' ,

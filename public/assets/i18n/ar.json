@@ -190,6 +190,7 @@
     "Reports.ReportType": "نوع التقرير",
     "Reports.StartDate": "تاريخ البداية",
     "Reports.EndDate": "تاريخ النهاية",
+    "Reports.Date": "التاريخ",
     "Reports.Course": "الدورة",
     "Reports.Teacher": "المعلم",
     "Reports.Student": "الطالب",

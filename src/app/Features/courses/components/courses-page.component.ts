@@ -863,16 +863,55 @@ export class CoursesPageComponent {
   // ========================================
 
   updateShowCancelResone() {
-    const status = this.selectedClass?.classStatusFk;
-    const needCancelReason = status === 67; // 67 = Canceled
-
-    // IMPORTANT: اعمل نسخة جديدة من المصفوفة عشان الـ change detection
-    this.classFormCloumns = needCancelReason
-      ? [...this.classColumns, ...this.cancelClassReasonColumns]
-      : [...this.classColumns];
-
+    this.classFormCloumns = this.buildClassFormColumns();
     this.changeDetectorRef.detectChanges();
   }
+
+  // ========================================
+  private readonly CLASS_STATUS = {
+    STARTED: 65,
+    ENDED: 66,
+    CANCELED: 67,
+  };
+
+  private buildClassFormColumns(): TableColumn[] {
+    // اشتق نسخة جديدة من الأعمدة (مع نسخ عميق للأوبجكتات) عشان الـ change detection
+    const cols = this.classColumns.map(c => ({ ...c }));
+
+    const status = this.selectedClass?.classStatusFk;
+
+    // ابحث عن حقول الوقت الفعلي
+    const startIdx = cols.findIndex(c => c.field === 'actualStartDate');
+    const endIdx = cols.findIndex(c => c.field === 'actualEndDate');
+
+    // أعد القيم الافتراضية
+    if (startIdx !== -1) {
+      cols[startIdx].disabled = true;
+      cols[startIdx].required = false;
+    }
+    if (endIdx !== -1) {
+      cols[endIdx].disabled = true;
+      cols[endIdx].required = false;
+    }
+
+    // فعّل/ألزم حسب الحالة
+    if (status === this.CLASS_STATUS.STARTED && startIdx !== -1) {
+      cols[startIdx].disabled = false;
+      cols[startIdx].required = true;
+    }
+    if (status === this.CLASS_STATUS.ENDED && endIdx !== -1) {
+      cols[endIdx].disabled = false;
+      cols[endIdx].required = true;
+    }
+
+    // سبب الإلغاء لو الحالة ملغاة
+    if (status === this.CLASS_STATUS.CANCELED) {
+      return [...cols, ...this.cancelClassReasonColumns];
+    }
+
+    return cols;
+  }
+
 
 
 

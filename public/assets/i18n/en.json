@@ -189,6 +189,7 @@
     "Reports.Title": "Reports",
     "Reports.ReportType": "Report Type",
     "Reports.StartDate": "Start Date",
+    "Reports.Date": "Date",
     "Reports.EndDate": "End Date",
     "Reports.Course": "Course",
     "Reports.Teacher": "Teacher",

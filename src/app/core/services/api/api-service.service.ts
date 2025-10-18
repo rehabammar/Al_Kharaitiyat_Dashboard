@@ -105,7 +105,7 @@ export class ApiService {
     params?: HttpParams | { [param: string]: string | number | boolean };
   } = {}): Observable<ApiResponse<T>> {
     // const startTime = Date.now();
-    console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
+    // console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
 
     this.loadingService.show();
 
