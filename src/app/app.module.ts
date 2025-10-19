@@ -72,6 +72,12 @@ import { ClassDetailsFormComponent } from './Features/home/components/class-deta
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
+import { NgxMatDatetimepicker , NgxMatDatepickerToggle } from '@ngxmc/datetime-picker';
+
+import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
+
+
+
 
 @NgModule({
   declarations: [
@@ -148,7 +154,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     MatNativeDateModule,
     BaseChartDirective,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+
+    NgxMatDatetimepicker,
+    NgxMatDatepickerToggle
+
 
 
   ],
@@ -162,6 +172,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideMessaging(() => getMessaging()),
+    provideNgxMatMomentDate(),
 
   ], bootstrap: [AppComponent]
 })

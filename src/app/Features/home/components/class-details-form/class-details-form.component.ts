@@ -213,18 +213,18 @@ export class ClassDetailsFormComponent implements OnInit {
   };
 
   ngOnInit(): void {
-  this.homeService.getClassById(this.data.classId).subscribe({
-    next: (cls) => {
-      this.selectedClass = cls;
-      this.loading = false;
-      this.refreshCancelReasonColumns(); // 👈 هنا
-    },
-    error: (err) => {
-      this.error = (err?.message || 'Failed to load class');
-      this.loading = false;
-    }
-  });
-}
+    this.homeService.getClassById(this.data.classId).subscribe({
+      next: (cls) => {
+        this.selectedClass = cls;
+        this.loading = false;
+        this.classFormCloumns = this.buildClassFormColumns();
+      },
+      error: (err) => {
+        this.error = (err?.message || 'Failed to load class');
+        this.loading = false;
+      }
+    });
+  }
 
   // اختياري: مصدر بيانات للكومبو بوكس (لو Generic Form محتاج observable)
   lookupDetailDataFactory(path: string, _q?: any): Observable<any[]> {
@@ -237,7 +237,7 @@ export class ClassDetailsFormComponent implements OnInit {
     this.dialogRef.close(true);
   }
 
- onRowDeleted(_: any) {
+  onRowDeleted(_: any) {
     this.dialogRef.close(true);
   }
 
@@ -246,10 +246,16 @@ export class ClassDetailsFormComponent implements OnInit {
   }
 
   onClassRowChanged(e: { field: string; value: any }) {
-  if (!this.selectedClass) return;
-  this.selectedClass = { ...this.selectedClass, [e.field]: e.value };
-  this.refreshCancelReasonColumns();
-}
+    if (!this.selectedClass) return;
+    this.selectedClass = { ...this.selectedClass, [e.field]: e.value };
+    if (e.field === 'classStatusFk') {
+
+      Promise.resolve().then(() => {
+        this.classFormCloumns = this.buildClassFormColumns();
+      });
+    }
+
+  }
 
 
   openStudentAttendencSearchDialog(): Observable<StudentAttendance | null> {
@@ -300,12 +306,62 @@ export class ClassDetailsFormComponent implements OnInit {
     );
   }
 
-  private refreshCancelReasonColumns(): void {
+  // private refreshCancelReasonColumns(): void {
+  //   const status = this.selectedClass?.classStatusFk;
+  //   const needCancelReason = status === 67; // 67 = Canceled
+  //   this.classFormCloumns = needCancelReason
+  //     ? [...this.classFormCloumns.filter(c => c.field !== 'cancelReason'), ...this.cancelClassReasonColumns]
+  //     : this.classFormCloumns.filter(c => c.field !== 'cancelReason');
+  // }
+
+
+
+  // ========================================
+  private readonly CLASS_STATUS = {
+    STARTED: 65,
+    ENDED: 66,
+    CANCELED: 67,
+  };
+
+  private buildClassFormColumns(): TableColumn[] {
+    // ✳️ اشطب أي تكرارات سابقة لعمود سبب الإلغاء
+    const cols = this.classFormCloumns
+      .filter(c => c.field !== 'cancelReason')
+      .map(c => ({ ...c })); // نسخ عميق بسيط للتريجرينج
+
     const status = this.selectedClass?.classStatusFk;
-    const needCancelReason = status === 67; // 67 = Canceled
-    this.classFormCloumns = needCancelReason
-      ? [...this.classFormCloumns.filter(c => c.field !== 'cancelReason'), ...this.cancelClassReasonColumns]
-      : this.classFormCloumns.filter(c => c.field !== 'cancelReason');
+
+    // ابحث عن حقول الوقت الفعلي
+    const startIdx = cols.findIndex(c => c.field === 'actualStartDate');
+    const endIdx = cols.findIndex(c => c.field === 'actualEndDate');
+
+    // أعد القيم الافتراضية
+    if (startIdx !== -1) {
+      cols[startIdx].disabled = true;
+      cols[startIdx].required = false;
+    }
+    if (endIdx !== -1) {
+      cols[endIdx].disabled = true;
+      cols[endIdx].required = false;
+    }
+
+    // فعّل/ألزم حسب الحالة
+    if ((status === this.CLASS_STATUS.STARTED || status === this.CLASS_STATUS.ENDED) && startIdx !== -1) {
+      cols[startIdx].disabled = false;
+      cols[startIdx].required = true;
+    }
+    if (status === this.CLASS_STATUS.ENDED && endIdx !== -1) {
+      cols[endIdx].disabled = false;
+      cols[endIdx].required = true;
+    }
+
+    // ✳️ أضِف عمود سبب الإلغاء مرة واحدة فقط عند الإلغاء
+    if (status === this.CLASS_STATUS.CANCELED) {
+      return [...cols, ...this.cancelClassReasonColumns];
+    }
+
+    return cols;
   }
+
 
 }

@@ -44,3 +44,32 @@
 .close-btn .mat-ripple-element{
   display: none;
 }
+
+
+
+/* .dialog-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+} */
+
+.dialog-content {
+  padding: 0 16px 16px; /* خليه مريح حوالين التابات */
+}
+
+/* المساحة اللي بتسكرول فعليًا */
+.dialog-scroll {
+  /* اطرح ارتفاع الهيدر والهامش */
+  max-height: calc(90vh - 72px);
+  overflow: auto;
+}
+
+/* تبويب Angular Material: خلّي المحتوى نفسه يقدر يسكروول */
+.mat-mdc-tab-body-content {
+  overflow: auto;
+}
+
+/* لو عندك جداول طويلة جوا التاب، اتأكد إن مفيش height:100vh جوّاها */

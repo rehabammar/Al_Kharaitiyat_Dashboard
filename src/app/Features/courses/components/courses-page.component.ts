@@ -709,21 +709,33 @@ export class CoursesPageComponent {
 
   // ======= Classes bussinces ========= 
   selectedClass: Class | null = null;
+
+
   onClassSelected(row: Class) {
-    this.selectedClass = row;
-    this.updateShowCancelResone();
-  }
+  // 1) اكسر المرجع
+  this.selectedClass = row ? { ...row } : null;
+  Promise.resolve().then(() => {
+     this.classFormCloumns = this.buildClassFormColumns();
+  });
+}
+
+
+  
+
 
   onselectedClassRowChanged(e: { field: string; value: any }) {
     if (!this.selectedClass) return;
 
-    this.selectedClass = { ...this.selectedClass, [e.field]: e.value };
-
-    const id = this.selectedClass.classPk;
-    this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
-
-    this.updateShowCancelResone();
+    const prev = this.selectedClass;
+    this.selectedClass = { ...prev, [e.field]: e.value };
+    // const id = this.selectedClass.classPk;
+    // this.classesTable.patchRowById(id, { [e.field]: e.value } as Partial<Class>);
+    if (e.field === 'classStatusFk') {
+      this.classFormCloumns = this.buildClassFormColumns();
+    }
   }
+
+
 
 
 
@@ -737,7 +749,6 @@ export class CoursesPageComponent {
       this.classesTable.upsertByPk('classPk', row);
     }
     this.classesTable.selectRowById(row.classPk);
-    this.updateShowCancelResone();
 
   }
 
@@ -746,7 +757,6 @@ export class CoursesPageComponent {
     this.currentDraftCid = row.__cid;
     this.selectedClass = row;
     this.classesTable.prependRow(row);
-    this.updateShowCancelResone();
 
   }
 
@@ -862,10 +872,6 @@ export class CoursesPageComponent {
 
   // ========================================
 
-  updateShowCancelResone() {
-    this.classFormCloumns = this.buildClassFormColumns();
-    this.changeDetectorRef.detectChanges();
-  }
 
   // ========================================
   private readonly CLASS_STATUS = {
@@ -895,7 +901,7 @@ export class CoursesPageComponent {
     }
 
     // فعّل/ألزم حسب الحالة
-    if (status === this.CLASS_STATUS.STARTED && startIdx !== -1) {
+    if ((status === this.CLASS_STATUS.STARTED || status === this.CLASS_STATUS.ENDED) && startIdx !== -1) {
       cols[startIdx].disabled = false;
       cols[startIdx].required = true;
     }
