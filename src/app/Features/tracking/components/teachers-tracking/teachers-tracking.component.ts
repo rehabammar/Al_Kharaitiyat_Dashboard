@@ -23,6 +23,22 @@ export class TeachersTrackingComponent implements AfterViewInit {
   female_avatar = 'assets/img/gallery/female_avatar.svg';
   male_avatar = 'assets/img/gallery/male_avatar.svg';
 
+
+
+  
+    //  private sub?: Subscription;
+  
+    // constructor(private bridge: MessagingBridgeService) {}
+  
+    // ngAfterViewInit(): void {
+    //   this.sub = this.bridge.events$.subscribe(e => {
+    //     if (e?.type === 'REFRESH') {
+    //       this.loadTeachers();
+    //     }
+    //   });
+    // }
+  
+
   ngAfterViewInit(): void {
     this.loadTeachers();
     setTimeout(() => this.initMap(), 150);

@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommunicationService } from '../../../communication/services/communication.service';
+import { ConfirmPopupComponent } from '../../../../shared/components/confirm-popup/confirm-popup.component';
 
 @Component({
   selector: 'app-whatsapp-preview-popup',
@@ -16,7 +17,9 @@ export class WhatsappPreviewPopupComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<WhatsappPreviewPopupComponent>,
-    private communicationService: CommunicationService
+    private communicationService: CommunicationService , 
+    private dialog: MatDialog,
+
   ) {
     this.buildDefaultMessages();
   }
@@ -106,8 +109,18 @@ ${studentLines}
 
     this.communicationService.sendBroadcast(payload).subscribe({
       next: () => {
-        alert("✔ تم إرسال الرسائل بنجاح");
-        this.dialogRef.close();   // ← إغلاق البوب أب
+           this.dialog.open(ConfirmPopupComponent, {
+                  data: {
+                    type: 'success',
+                    messageKey: 'message.success',
+                    autoCloseMs: 2000,
+                    showCancel: false,
+        
+                  },
+                  panelClass: 'dialog-success'
+                });
+        
+        this.dialogRef.close();   
       }
     });
   }

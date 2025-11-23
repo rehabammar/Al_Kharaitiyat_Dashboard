@@ -236,6 +236,17 @@ export class CommunicationPageComponent implements OnInit {
         this.sending = false;
         alert("✔ تم إرسال الرسالة الجماعية بنجاح");
 
+          //  this.dialog.open(ConfirmPopupComponent, {
+          //     data: {
+          //       type: 'success',
+          //       messageKey: 'message.success',
+          //       autoCloseMs: 2000,
+          //       showCancel: false,
+        
+          //     },
+          //     panelClass: 'dialog-success'
+          //   });
+
         this.message = '';
         this.broadcastMode = false;
 
