@@ -16,6 +16,9 @@ export class GenericServiceFactory {
     primaryKey: keyof T,
     searchPath?: string , 
     updatePath?: string,
+    updateAllPath?: string,
+    exportPath?: string,
+
 
   ): GenericService<T> {
     return new GenericService<T>(
@@ -24,7 +27,9 @@ export class GenericServiceFactory {
       apiPath,
       primaryKey ,
       searchPath,
-      updatePath
+      updatePath,
+      updateAllPath,
+      exportPath
      
     );
   }

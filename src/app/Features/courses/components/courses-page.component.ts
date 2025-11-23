@@ -712,7 +712,6 @@ export class CoursesPageComponent {
 
 
   onClassSelected(row: Class) {
-  // 1) اكسر المرجع
   this.selectedClass = row ? { ...row } : null;
   Promise.resolve().then(() => {
      this.classFormCloumns = this.buildClassFormColumns();

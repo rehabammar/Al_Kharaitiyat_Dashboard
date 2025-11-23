@@ -95,7 +95,7 @@
                    (change)="onDateInput(column, $any($event.target).value)"
                    (blur)="markTouched()"
                    [disabled]="column.disabled"
-                   [class.input-error]="isInvalid(column)" />
+                  [class.input-error]="isInvalid(column) || dateOrderErrors[column.field]" />
             <!-- DATE INPUT -->
               <input *ngSwitchCase="'date'"
                    class="custom-input date-field"
@@ -106,7 +106,11 @@
                    (change)="onDateInput(column, $any($event.target).value)"
                    (blur)="markTouched()"
                    [disabled]="column.disabled"
-                   [class.input-error]="isInvalid(column)" />
+                  [class.input-error]="isInvalid(column) || dateOrderErrors[column.field]" />
+              <div class="error-text" *ngIf="dateOrderErrors[column.field]">
+                {{ 'validation.endDateBeforeStart' | translate }}
+              </div>
+
             <!-- password INPUT -->
 
             <input *ngSwitchCase="'password'"

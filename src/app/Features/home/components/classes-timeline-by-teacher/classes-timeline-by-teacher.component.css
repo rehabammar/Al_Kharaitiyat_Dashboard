@@ -137,3 +137,55 @@
 }
 .badge.running::before { animation: blink-dot 1s linear infinite; }
 */
+
+
+/* توسيط الـ date picker */
+.date-picker-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+
+::ng-deep .mat-mdc-form-field .mdc-floating-label,
+::ng-deep .mat-mdc-form-field .mdc-floating-label.mdc-floating-label--float-above {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: hsl(var(--bg)) !important;
+  font-family: 'bonFont';
+  opacity: 1 !important;
+}
+
+
+
+/* حجم التاريخ داخل input */
+.date-input {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  padding: 4px !important;
+  text-align: center !important;
+  font-family: 'bonFont' !important;
+
+}
+
+/* تصغير أيقونة الكالندر */
+.date-field .mat-mdc-form-field-icon-suffix {
+  transform: scale(1.2);
+  background-color: hsl(var(--bg)) !important;
+}
+
+/* تقليل ارتفاع الحقل بالكامل */
+.date-field .mat-mdc-form-field-flex {
+  min-height: 25px !important;      /* ارتفاع ممتاز ومناسب */
+}
+
+/* تقليل مساحة الـ input الداخلية */
+.date-field .mat-mdc-form-field-infix {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* تقليل space حول اللابل */
+.date-field .mat-mdc-floating-label {
+  top: 8px !important;
+}

@@ -109,6 +109,14 @@ export class UsersComponent {
       dataType: 'mobile',
       width: '170px'
     },
+     {
+      labelKey: 'User.WhatsApp',
+      field: 'whatsappNumber',
+      required: false,
+      dataType: 'mobile',
+      width: '170px',
+      showInTable: false
+    },
     {
       labelKey: 'User.DateOfBirth',
       field: 'dateOfBirth',
@@ -117,13 +125,7 @@ export class UsersComponent {
       width: '180px'
     },
 
-    // {
-    //   labelKey: 'User.WhatsApp',
-    //   field: 'whatsappNumber',
-    //   required: false,
-    //   dataType: 'string',
-    //   width: '170px'
-    // },
+   
 
     // Comboboxes: Gender / Nationality / UserType
     {

@@ -20,6 +20,8 @@ export class TableColumnComponent {
   @Input() primaryKey!: any;
 
   @Output() fieldChanged = new EventEmitter<{ field: string, value: any }>();
+  @Input() onToggleSelection?: (row: any, checked: boolean) => void;
+
   
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -109,5 +111,14 @@ export class TableColumnComponent {
     return Math.max(0, Math.min(5, Math.floor(raw)));
   }
 
+
+
+  onCheckboxChange(event: Event, row: any) {
+  const input = event.target as HTMLInputElement;
+  const checked = input.checked;
+  this.onToggleSelection?.(row, checked);
+}
+
+  
 
 }

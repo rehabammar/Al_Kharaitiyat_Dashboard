@@ -43,6 +43,8 @@ export class User {
   profileUrl?: string ;
   teacherScore?: number ;
   averageStars?: number ;
+  selected?: boolean;
+
 
   constructor(init?: Partial<User>) {
     Object.assign(this, init);

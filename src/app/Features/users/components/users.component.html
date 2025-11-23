@@ -18,7 +18,8 @@
     [columns]="userColumns"
     [dataFactory]="userDataFactory"
     [apiPath]="'users'"
-    (rowSelected)="onUserSelected($event)">
+    (rowSelected)="onUserSelected($event)"
+    [exportToExcelFl]="true">
   </app-generic-table>
 </app-custom-accordion>
 

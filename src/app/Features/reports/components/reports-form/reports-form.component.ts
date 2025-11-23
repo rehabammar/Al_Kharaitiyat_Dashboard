@@ -10,6 +10,12 @@ import { SearchDialogComponent } from '../../../../shared/components/search-dial
 import { MatDialog } from '@angular/material/dialog';
 import { map, take } from 'rxjs';
 
+enum UserSearchType {
+  Teacher,
+  Student,
+  User
+}
+
 @Component({
   selector: 'app-reports-form',
   standalone: false,
@@ -30,6 +36,9 @@ export class ReportsFormComponent {
 
   reportType!: ReportsType ;
   downloading = false;
+
+   ApiEndpoints = ApiEndpoints ;
+   UserSearchType = UserSearchType ;
 
 
 
@@ -71,25 +80,14 @@ onDownloadReports = async () => {
 
   
 };
-  onTeacherSelected(item : User | null){
-    this.selectedTeacher = item ;
-  }
+ 
 
-  onStudentSelected(item : User | null){
-    this.selectedStudent = item ;
-  }
-
-  onCourseSelected(item : TeacherCourse | null){
-    this.selectedCourse = item ;
-  }
-
-
- openUsersSearchDialog(): void {
+ openUsersSearchDialog(apiPath : string , userSearchType : UserSearchType): void {
   const dialogRef = this.dialog.open(SearchDialogComponent, {
     maxWidth: '80vw',
     width: '50vw',
     data: {
-      apiEndpoint: ApiEndpoints.getAllUsers,
+      apiEndpoint: apiPath,
       columns: [
         {
           labelKey: 'User.UserPk',
@@ -113,6 +111,11 @@ onDownloadReports = async () => {
 
   dialogRef.afterClosed().pipe(take(1)).subscribe((pickedUser: User | null) => {
     if (pickedUser) {
+      if(userSearchType === UserSearchType.Teacher)
+      this.selectedTeacher = pickedUser;    
+      else if(userSearchType === UserSearchType.Student)
+      this.selectedStudent = pickedUser;
+      else
       this.selectedUser = pickedUser;
       this.dir.markForCheck(); 
     }
@@ -120,6 +123,48 @@ onDownloadReports = async () => {
 }
 
   
+clearUser(userType : UserSearchType): void {
+  if(userType === UserSearchType.Teacher)
+  this.selectedTeacher = null;
+  else if(userType === UserSearchType.Student)
+  this.selectedStudent = null;
+  else
+  this.selectedUser = null;
+}
+
+
+openCourseSearchDialog(): void {
+  const dialogRef = this.dialog.open(SearchDialogComponent, {
+    maxWidth: '80vw',
+    width: '60vw',
+    data: {
+      apiEndpoint: '/teacherCourses/search',
+      label: 'Reports.Course', // ترجمته عندك
+      // أعمدة الجدول داخل الدايالوج
+      columns: [
+        { labelKey: 'TeacherCourse.TeacherCoursePk', field: 'teacherCoursePk', dataType: 'number', disabled: true, width: '120px' },
+        { labelKey: 'TeacherCourse.Name', field: 'teacherCourseName', dataType: 'string', width: '260px' },
+        { labelKey: 'TeacherCourse.Subject', field: 'subjectName', dataType: 'string', width: '200px' },
+        { labelKey: 'TeacherCourse.Teacher', field: 'teacherName', dataType: 'string', width: '200px' },
+      ],
+      dataFactory: (row: any) => new TeacherCourse(),
+    },
+  });
+
+  dialogRef.afterClosed().pipe(take(1)).subscribe((picked: TeacherCourse | null) => {
+    if (!picked) return;
+    this.selectedCourse = picked;
+    this.dir.markForCheck();
+  });
+}
+
+clearCourse(): void {
+  this.selectedCourse = null;
+  this.dir.markForCheck();
+}
+
+
+
 }
 
 

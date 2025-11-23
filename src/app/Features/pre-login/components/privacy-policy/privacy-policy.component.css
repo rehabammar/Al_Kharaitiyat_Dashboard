@@ -1,0 +1,147 @@
+:root{
+  --card:#fff;
+  --ink:#1f2430;
+  --muted:#6b7280;
+  --ring:rgba(30,58,138,.14);
+  --maxw:860px;
+}
+
+/* الصفحة */
+.policy{
+  max-width: var(--maxw);
+  /* padding: 0 16px 32px; */
+  color: var(--ink);
+  margin: 0px;
+}
+
+/* الهيرو */
+.policy__hero{
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 70%);
+  color: #fff;
+  border-radius: 0px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 24px rgba(2,6,23,.25);
+  margin-bottom: 12px;
+}
+
+/* صف الهيرو */
+.hero__row{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+
+/* العلامة */
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width: 0;
+}
+
+.app-logo{
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.app-title{
+  margin:0;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-inline-size: 220px;
+  text-align: start;
+  color:#fff;
+}
+
+/* عنوان الصفحة و"آخر تحديث" */
+.page-meta{
+  min-width:0;
+}
+
+.page-title{
+  margin:0;
+  font-size: 20px;
+  font-weight: 900;
+  line-height:1.1;
+  color: white;
+}
+
+.muted{
+  margin: 4px 0 0;
+  opacity:.9;
+  font-size: 12px;
+}
+
+.spacer{ inline-size: 1px; }
+
+
+
+
+/* المحتوى */
+.policy__content{
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 12px 30px var(--ring);
+}
+[dir="rtl"] .policy__content {
+  text-align: right;
+}
+
+[dir="ltr"] .policy__content {
+  text-align: left;
+}
+
+/* ✅ العناوين بنفس محاذاة النص */
+.policy__content h2 {
+  font-size: 18px;
+  margin: 18px 0 8px;
+  font-weight: 800;
+}
+.policy[dir="rtl"] .policy__content h2,
+[dir="rtl"] .policy__content h2 {
+  text-align: right;
+}
+.policy[dir="ltr"] .policy__content h2,
+[dir="ltr"] .policy__content h2 {
+  text-align: left;
+}
+.policy__content p,
+.policy__content li{
+  line-height:1.8;
+  font-size:14px;
+}
+.policy__content ul{
+  margin: 0 0 10px;
+  padding: 0 18px;
+  list-style: disc !important; 
+  
+
+
+}
+
+.note{
+  background:#f1f5f9;
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:13px;
+  color:var(--muted);
+}
+
+address a{ color:#1e3a8a; text-decoration:none; }
+
+/* استجابة */
+@media (max-width: 720px){
+  .hero__row{
+    grid-template-columns: 1fr;
+    gap:8px;
+  }
+  .app-title{ max-inline-size: 100%; text-align:center; }
+  .page-title{ font-size: 18px; text-align:center; }
+  .muted{ text-align:center; }
+}

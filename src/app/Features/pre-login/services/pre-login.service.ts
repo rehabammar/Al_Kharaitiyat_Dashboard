@@ -7,27 +7,25 @@ import { map, tap, finalize, shareReplay } from 'rxjs/operators';
 import { Organization } from '../model/organization.model';
 import { SessionStorageUtil } from '../../../core/util/session-storage';
 import { AppConstants } from '../../../core/constants/app_constants';
+import { User } from '../../auth/models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class PreLoginService {
-  // نحمّل من السيشن لو فيه
-  private readonly initial: Organization | null =
-    SessionStorageUtil.getItem(AppConstants.CURRENT_ORGNIZATION_KEY) ?? null;
-
-  // الحالة المركزية
-  private readonly orgSubject = new BehaviorSubject<Organization | null>(this.initial);
-  /** Observable تشترك عليه كل الكومبوننتس */
-  readonly organization$ = this.orgSubject.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));
-
-  /** قيمة لحظية (snapshot) */
-  get organization(): Organization | null { return this.orgSubject.value; }
-
-  /** منع التكرار: الطلب الجاري */
-  private inFlight$?: Observable<Organization>;
 
   constructor(private api: ApiService) { }
 
-  /** تحميل مرة واحدة (أو force = true لإعادة التحميل) */
+
+  private readonly initial: Organization | null =
+    SessionStorageUtil.getItem(AppConstants.CURRENT_ORGNIZATION_KEY) ?? null;
+
+  private readonly orgSubject = new BehaviorSubject<Organization | null>(this.initial);
+  readonly organization$ = this.orgSubject.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));
+
+  get organization(): Organization | null { return this.orgSubject.value; }
+
+  private inFlight$?: Observable<Organization>;
+
+
   load(force = false): Observable<Organization> {
     const current = this.orgSubject.value;
 
@@ -55,7 +53,6 @@ export class PreLoginService {
     return req$;
   }
 
-  /** إعادة تحميل من السيرفر وتحديث الجميع */
   refresh(): Observable<Organization> {
     return this.load(true);
   }
@@ -64,7 +61,6 @@ export class PreLoginService {
     this.load(true).subscribe();
   }
 
-  /** تعيين المنظمة + حفظها في السيشن */
   private set(org: Organization | null) {
     this.orgSubject.next(org);
     if (org) {
@@ -74,14 +70,12 @@ export class PreLoginService {
     }
   }
 
-  /** Patch محلي (يُحدِّث كل المشتركين فورًا) */
   patch(partial: Partial<Organization>) {
     const curr = this.orgSubject.value ?? new Organization();
     const next = new Organization({ ...curr, ...partial });
     this.set(next);
   }
 
-  /** Patch مخصص للصور بناءً على استجابة API */
   patchImagesFromResponse(res: any) {
     if (!res) return;
 
@@ -112,4 +106,29 @@ export class PreLoginService {
   clear() {
     this.set(null);
   }
+
+
+  // ================== get Users && update User ==================
+
+ 
+  login(username: string, password: string): Observable<User> {
+    const loginRequestBody = {
+      username: username,
+      password: password,
+    };
+
+    return this.api.post<User>(ApiEndpoints.userLogin(), loginRequestBody, {} , false)
+      .pipe(
+        map((response) => response.data)
+      );
+  }
+  
+
+   updateUser(user : User): Observable<User> {
+    return this.api.post<User>(ApiEndpoints.updateUser(), user , {headers: { Authorization: `Bearer ${user.authToken}`,}})
+      .pipe(
+        map((response) => response.data)
+      );
+  }
+
 }

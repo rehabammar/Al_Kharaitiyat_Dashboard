@@ -102,3 +102,15 @@
 
 
 
+.checkbox-cell-wrapper {
+  display: flex;
+  justify-content: center;   /* أفقي */
+  align-items: center;       /* عمودي */
+  height: 100%;
+}
+
+.checkbox-cell-wrapper input[type="checkbox"] {
+  transform: scale(1.2); 
+    accent-color: hsl(var(--bg));
+
+}

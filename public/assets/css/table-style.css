@@ -9,7 +9,7 @@
 }
 
 .table-wrapper {
-  max-height: 60vh;       /* أو height: 400px; */
+  max-height: 70vh;       /* أو height: 400px; */
   overflow-y: auto;       /* سكروول رأسي */
   overflow-x: auto;       /* لو الجدول أعرض من الكونتينر */
   display: block;
@@ -228,5 +228,18 @@ th:hover .sort-icons,
   box-sizing: border-box;
   overflow: hidden; /* ✅ يمنع خروج النص */
 
+}
+
+
+.mat-mdc-row, 
+.mat-mdc-cell {
+  height: 10px !important;
+  /* padding: 4px 8px !important; */
+}
+
+
+.mat-mdc-footer-cell {
+  height: 10px !important;
+  line-height: 20px !important;
 }
 

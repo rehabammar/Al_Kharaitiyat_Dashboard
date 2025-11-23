@@ -3,11 +3,11 @@
     font-weight: 800;
     margin: 0px;
     color : hsl(var(--bg)) !important;
-    height: 50px;
+    height: 40px;
     font-weight: bolder;
     font-size: 25px;
     /* background: rgb(176, 29, 29); */
-    line-height: 50px;
+    line-height: 10px;
 }
 
 

@@ -1,0 +1,170 @@
+<main class="whatsapp-container">
+
+
+
+    <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2"></div>
+    </div>
+  </section>
+
+  <div class="content-wrapper row m-0">
+
+    <!-- USERS LIST -->
+    <div class="col-4 users-panel">
+
+      <div class="card h-100">
+        <div class="text-header-primary">
+          {{ 'communication.usersList' | translate }}
+        </div>
+
+        <div class="card-body d-flex flex-column p-2">
+
+          <div class="search-box">
+            <i class="fa fa-search search-icon"></i>
+            <input
+              type="text"
+              class="search-input"
+              placeholder="{{ 'communication.search' | translate }}"
+              (input)="onSearch($event)"
+            />
+          </div>
+
+          <div class="user-type-filters">
+            <label class="type-option">
+              <input type="checkbox"
+                    [checked]="selectedType === 3"
+                    (change)="onTypeChange(3, $event)" />
+              {{ 'communication.admins' | translate }}
+            </label>
+
+            <label class="type-option">
+              <input type="checkbox"
+                    [checked]="selectedType === 4"
+                    (change)="onTypeChange(4, $event)" />
+              {{ 'communication.teachers' | translate }}
+            </label>
+
+            <label class="type-option">
+              <input type="checkbox"
+                    [checked]="selectedType === 5"
+                    (change)="onTypeChange(5, $event)" />
+              {{ 'communication.students' | translate }}
+            </label>
+          </div>
+
+
+
+
+          <div class="select-actions-compact">
+            <button class="action-btn-compact select-all" (click)="selectAll()">
+              <i class="fa fa-check"></i>
+              {{ 'communication.selectAll' | translate }}
+            </button>
+
+            <button class="action-btn-compact unselect-all" (click)="unselectAll()">
+              <i class="fa fa-times"></i>
+              {{ 'communication.unselectAll' | translate }}
+            </button>
+          </div>
+
+
+
+        <p class="text-header-secondary m-0">
+          {{ 'communication.selectedCount' | translate }}: {{ selectedUsers.length }}
+          &nbsp; / &nbsp;
+          {{ 'communication.totalCount' | translate }}: {{ totalUsers }}
+        </p>
+
+
+          <!-- FIXED: SCROLL WORKING -->
+          <div class="users-scroll">
+            <ul class="list-group">
+              <li *ngFor="let u of filteredUsers"
+                  (click)="openChat(u)"
+                  class="list-group-item user-item">
+
+                  <!-- avatar -->
+                  <img class="user-avatar"
+                      [src]="getUserPhoto(u)"
+                      alt="avatar">
+
+                  <!-- TEXT BLOCK -- الاسم والرقم -->
+                  <div class="user-info">
+                    <div class="user-name">{{ u.fullName }}</div>
+                    <div class="user-phone">{{ u.whatsappNumber }}</div>
+                  </div>
+
+                  <input 
+                    type="checkbox"
+                    [checked]="u.selected"
+                    (click)="$event.stopPropagation()"
+                    (change)="toggleUser(u)">
+              </li>
+
+            </ul>
+          </div>
+
+          <!-- Pagination now visible -->
+          <nav class="mt-2">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPage === 0">
+                <a class="page-link" (click)="prevPage()">‹</a>
+              </li>
+              <li class="page-item disabled">
+                <span class="page-link">{{ currentPage + 1 }} / {{ totalPages }}</span>
+              </li>
+              <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+                <a class="page-link" (click)="nextPage()">›</a>
+              </li>
+            </ul>
+          </nav>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CHAT PANEL -->
+    <div class="col-8 chat-panel">
+
+      <div class="card h-100">
+
+        <div class="text-header-primary">
+          {{ activeUser ? activeUser.fullName : ('communication.messageBox' | translate) }}
+        </div>
+
+        <div class="card-body d-flex flex-column p-2">
+
+          <!-- Messages Scroll -->
+          <div id="chat-box" class="chat-box flex-grow-1 p-2">
+            <div *ngFor="let msg of chatMessages" class="message-bubble outgoing">
+              <div class="bubble-text">{{ msg.whatsappMessage }}</div>
+              <div class="bubble-time">{{ msg.creationDate | date:'short' }}</div>
+            </div>
+          </div>
+
+          <!-- SEND AREA -->
+          <div class="send-box">
+
+            <textarea [(ngModel)]="message"
+                      class="form-control message-input"
+                      placeholder="{{ 'communication.messagePlaceholder' | translate }}">
+            </textarea>
+
+            <button class="btn send-btn ms-2"
+                    [disabled]="sending || (!activeUser && selectedUsers.length === 0)"
+                    (click)="broadcastMode ? sendBroadcastMessage() : sendMessage()">
+              <i class="fa fa-paper-plane"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</main>

@@ -11,12 +11,20 @@ import { ReportsFormComponent } from './Features/reports/components/reports-form
 import { HomeComponent } from './Features/home/components/main-page/home.component';
 import { PreLoginPageComponent } from './Features/pre-login/components/pre-login-page/pre-login-page.component';
 import { OrganizationDetailsComponent } from './Features/organization/components/organization-details/organization-details.component';
+import { PrivacyPolicyComponent } from './Features/pre-login/components/privacy-policy/privacy-policy.component';
+import { DeleteAccountComponent } from './Features/pre-login/components/delete-account/delete-account.component';
+import { TeachersTrackingComponent } from './Features/tracking/components/teachers-tracking/teachers-tracking.component';
+import { PaymnetPageComponent } from './Features/payments/components/paymnet-page/paymnet-page.component';
+import { CommunicationPageComponent } from './Features/communication/components/communication-page/communication-page.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/MainPage', pathMatch: 'full' }, 
   { path: 'MainPage', component: PreLoginPageComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'privacy', component: PrivacyPolicyComponent },
+  { path: 'deleteAccount', component: DeleteAccountComponent },
+
     {
     path: '',
     component: TemplateComponent,
@@ -29,6 +37,15 @@ const routes: Routes = [
       { path: 'financial-transactions', component: FinancialTransactionsPageComponent },
       { path: 'reports', component: ReportsFormComponent },
       { path: 'organization', component: OrganizationDetailsComponent },
+      { path: 'teachersTracking', component: TeachersTrackingComponent },
+      { path: 'payment', component: PaymnetPageComponent },
+      { path: 'communication', component: CommunicationPageComponent },
+
+
+
+      
+
+      
       
     ]
     

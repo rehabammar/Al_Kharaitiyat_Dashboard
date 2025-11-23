@@ -1,0 +1,77 @@
+
+<section class="policy" [dir]="direction">
+
+
+
+  <app-page-header [pageTitle] = "'privacy.title'"></app-page-header>
+
+
+  <!-- المحتوى -->
+  <article class="policy__content">
+    <section id="intro">
+      <h2>{{ 'privacy.sections.intro.title' | translate }}</h2>
+      <p [innerHTML]="'privacy.sections.intro.body' | translate"></p>
+    </section>
+
+    <section id="data">
+      <h2>{{ 'privacy.sections.data.title' | translate }}</h2>
+      <ul>
+        <li>{{ 'privacy.sections.data.items.account' | translate }}</li>
+        <li>{{ 'privacy.sections.data.items.usage' | translate }}</li>
+        <li>{{ 'privacy.sections.data.items.userContent' | translate }}</li>
+        <li>{{ 'privacy.sections.data.items.identifiers' | translate }}</li>
+      </ul>
+      <p class="note">{{ 'privacy.sections.data.note' | translate }}</p>
+    </section>
+
+    <section id="use">
+      <h2>{{ 'privacy.sections.use.title' | translate }}</h2>
+      <ul>
+        <li>{{ 'privacy.sections.use.items.core' | translate }}</li>
+        <li>{{ 'privacy.sections.use.items.notifications' | translate }}</li>
+        <li>{{ 'privacy.sections.use.items.analytics' | translate }}</li>
+        <li>{{ 'privacy.sections.use.items.legal' | translate }}</li>
+      </ul>
+    </section>
+
+    <section id="share">
+      <h2>{{ 'privacy.sections.share.title' | translate }}</h2>
+      <ul>
+        <li>{{ 'privacy.sections.share.items.providers' | translate }}</li>
+        <li>{{ 'privacy.sections.share.items.legal' | translate }}</li>
+      </ul>
+      <p>{{ 'privacy.sections.share.note' | translate }}</p>
+    </section>
+
+    <section id="retention">
+      <h2>{{ 'privacy.sections.retention.title' | translate }}</h2>
+      <p>{{ 'privacy.sections.retention.body' | translate }}</p>
+    </section>
+
+    <section id="security">
+      <h2>{{ 'privacy.sections.security.title' | translate }}</h2>
+      <p>{{ 'privacy.sections.security.body' | translate }}</p>
+    </section>
+
+    <section id="rights">
+      <h2>{{ 'privacy.sections.rights.title' | translate }}</h2>
+      <ul>
+        <li>{{ 'privacy.sections.rights.items.access' | translate }}</li>
+        <li>{{ 'privacy.sections.rights.items.notifications' | translate }}</li>
+        <li>{{ 'privacy.sections.rights.items.deletion' | translate }}</li>
+      </ul>
+      <p>
+        <span [innerHTML]="'privacy.sections.rights.contact' | translate"></span>
+      </p>
+    </section>
+
+    <section id="children">
+      <h2>{{ 'privacy.sections.children.title' | translate }}</h2>
+      <p>{{ 'privacy.sections.children.body' | translate }}</p>
+    </section>
+
+  </article>
+
+<app-pre-login-footer></app-pre-login-footer>
+
+</section>

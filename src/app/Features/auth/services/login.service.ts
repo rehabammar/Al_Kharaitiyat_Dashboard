@@ -24,7 +24,7 @@ export class LoginService  {
         "fbToken":fbToken
     };
 
-    this.apiService.post<User>(ApiEndpoints.userLogin(), loginRequestBody)
+    this.apiService.post<User>(ApiEndpoints.adminLogin(), loginRequestBody)
       .subscribe({
         next: (response) => {
           const user: User = response.data; 

@@ -83,51 +83,50 @@
 
           <!-- Optional: Teacher -->
           <div *ngIf="reportType === 'teacherCourses' || reportType === 'attendance' || reportType === 'transportationCosts'">
-            <div class="header-label-line align-start">
-              <label class="form-label">{{ 'Reports.Teacher' | translate }}</label>
-            </div>
-            <app-combobox-search [apiPath]="'/users/search-teachers'" [dataFactory]="userDataFactory"
-              [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onTeacherSelected($event)">
-            </app-combobox-search>
+             <app-search-field
+              [label]="'Reports.Teacher' | translate"
+              [value]="selectedTeacher?.fullName!"
+              [disabled]="true"
+              [showClear]="!!selectedTeacher"
+              (clear)="clearUser(UserSearchType.Teacher)"
+              (search)="openUsersSearchDialog(ApiEndpoints.getTeacherUsers, UserSearchType.Teacher)">
+            </app-search-field>
           </div>
 
           <!-- Optional: Student -->
           <div *ngIf="reportType === 'attendance'">
-            <div class="header-label-line align-start">
-              <label class="form-label">{{ 'Reports.Student' | translate }}</label>
-            </div>
-            <app-combobox-search [apiPath]="'/users/search-students'" [dataFactory]="userDataFactory"
-              [primaryKey]="'userPk'" [displayItemKey]="'fullName'" (itemSelected)="onStudentSelected($event)">
-            </app-combobox-search>
+            <app-search-field
+              [label]="'Reports.Student' | translate"
+              [value]="selectedStudent?.fullName!"
+              [disabled]="true"
+              [showClear]="!!selectedStudent"
+              (clear)="clearUser(UserSearchType.Student)"
+              (search)="openUsersSearchDialog(ApiEndpoints.getStudentUsers, UserSearchType.Student)">
+            </app-search-field>
           </div>
 
           <!-- Optional: User -->
           <div *ngIf="reportType === 'payments'" >
-            <div class="header-label-line align-start">
-              <label class="form-label">{{ 'Reports.User' | translate }}</label>
-            </div>
-            <div class="input-icon-wrapper">
-            <input
-                matInput
-                class="custom-input"
-                [value]="selectedUser?.fullName || ''"
-                [disabled]="true"> 
-            <button type="button" class="search-icon" (click)="openUsersSearchDialog()">
-              <mat-icon>search</mat-icon>
-            </button>
-            </div>
-         
+            <app-search-field
+              [label]="'Reports.User' | translate"
+              [value]="selectedUser?.fullName!"
+              [disabled]="true"
+              [showClear]="!!selectedUser"
+              (clear)="clearUser(UserSearchType.User)"
+              (search)="openUsersSearchDialog(ApiEndpoints.getAllUsers, UserSearchType.User)">
+            </app-search-field>
           </div>
 
           <!-- Optional: Course -->
           <div *ngIf="reportType === 'attendance'">
-            <div class="header-label-line align-start">
-              <label class="form-label">{{ 'Reports.Course' | translate }}</label>
-            </div>
-            <app-combobox-search [apiPath]="'/teacherCourses/search'" [dataFactory]="courseDataFactory"
-              [primaryKey]="'teacherCoursePk'" [displayItemKey]="'teacherCourseName'"
-              (itemSelected)="onCourseSelected($event)">
-            </app-combobox-search>
+         <app-search-field
+            [label]="'Reports.Course' | translate"
+            [value]="selectedCourse?.teacherCourseName!"
+            [showClear]="!!selectedCourse"
+            (clear)="clearCourse()"
+            (search)="openCourseSearchDialog()">
+          </app-search-field>
+
           </div>
 
         </div>

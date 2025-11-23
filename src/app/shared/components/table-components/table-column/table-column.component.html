@@ -10,121 +10,138 @@
 
 <!-- خلية قيمة -->
 <ng-template #valueCell>
-  <ng-container *ngIf="isEditableTable && selectedRow === currentRow && !column.disabled; else readOnlyCell">
 
-    <!-- نختار نوع الإدخال -->
-    <ng-container [ngSwitch]="true">
+  <!--  ⭐⭐⭐ تعديل مهم هنا ⭐⭐⭐ -->
+  <!-- لو checkbox → نعرضه مباشرة بدون شروط -->
 
-      <!-- 1) ComboBox / Autocomplete -->
-      <div *ngSwitchCase="column.isCombobox">
-       <app-combobox-search
-            [apiPath]="column.apiPath!"
-            [dataFactory]="column.dataFactory!"
-            [primaryKey]="column.primaryKey!"
-            [displayItemKey]="column.displayItemKey!"
-            [selectedKey]="selectedRow[column.fieldFK!]"
-            (itemSelected)="onComboSelected(column, $event)"
-            >
+  <ng-container *ngIf="column.isCheckbox; else editableCell">
+      <div class="checkbox-cell-wrapper">
+    <input 
+      type="checkbox"
+      [checked]="currentRow['selected'] === true"
+      (change)="onCheckboxChange($event, currentRow)">
+      </div>
+  </ng-container>
+
+  <!-- باقي الأنواع حسب شروط editable -->
+  <ng-template #editableCell>
+    <ng-container *ngIf="isEditableTable && selectedRow === currentRow && !column.disabled; else readOnlyCell">
+
+      <ng-container [ngSwitch]="true">
+
+        <!-- 1) ComboBox -->
+        <div *ngSwitchCase="column.isCombobox">
+          <app-combobox-search
+              [apiPath]="column.apiPath!"
+              [dataFactory]="column.dataFactory!"
+              [primaryKey]="column.primaryKey!"
+              [displayItemKey]="column.displayItemKey!"
+              [selectedKey]="selectedRow[column.fieldFK!]"
+              (itemSelected)="onComboSelected(column, $event)">
           </app-combobox-search>
-      </div>
+        </div>
 
+        <!-- 2) Search field -->
+        <div *ngSwitchCase="column.searchField" class="input-icon-wrapper">
+          <input
+            matInput
+            class="custom-input"
+            [attr.name]="column.field"
+            [placeholder]="column.searchFieldplaceholder | translate"
+            [ngModel]="currentRow[column.field]"
+            (ngModelChange)="updateColumnData($event)"
+            (keyup.enter)="column.onSearch?.(currentRow)"
+            [class.input-error]="isFieldInvalid()"
+            [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'"
+            [disabled]="selectedRow[primaryKey] != null">
 
-      <!-- 2) Search field (input + أيقونة/زر) -->
-      <div *ngSwitchCase="column.searchField" class="input-icon-wrapper">
-        <input
-          matInput
-          class="custom-input"
-          [attr.name]="column.field"
-          [placeholder]="column.searchFieldplaceholder | translate"
-          [ngModel]="currentRow[column.field]"
-          (ngModelChange)="updateColumnData($event)"
-          (keyup.enter)="column.onSearch?.(currentRow)"
-          [class.input-error]="isFieldInvalid()"
-          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'"
-          [disabled]="selectedRow[primaryKey] != null">
-        
-        <button type="button" class="search-icon" (click)="updateCurrentRowAfterSelection()" *ngIf="selectedRow[primaryKey] == null">
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
+          <button type="button" class="search-icon" 
+                  (click)="updateCurrentRowAfterSelection()" 
+                  *ngIf="selectedRow[primaryKey] == null">
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
 
-      <!-- 3) Input عادي -->
-      <div *ngSwitchDefault class="input-icon-wrapper">
-        <input
-          matInput
-          class="custom-input"
-          [attr.name]="column.field"
-          [type]="column.dataType === 'number' ? 'number' : 'text'"
-          [placeholder]="column.labelKey | translate"
-          [(ngModel)]="currentRow[column.field]"
-          (ngModelChange)="updateColumnData($event)"
-          [class.input-error]="isFieldInvalid()"
-          [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
-        <mat-icon *ngIf="column.searchIcon" class="search-icon" (click)="column.onTap?.(currentRow)">search</mat-icon>
-      </div>
+        <!-- 3) Input عادي -->
+        <div *ngSwitchDefault class="input-icon-wrapper">
+          <input
+            matInput
+            class="custom-input"
+            [attr.name]="column.field"
+            [type]="column.dataType === 'number' ? 'number' : 'text'"
+            [placeholder]="column.labelKey | translate"
+            [(ngModel)]="currentRow[column.field]"
+            (ngModelChange)="updateColumnData($event)"
+            [class.input-error]="isFieldInvalid()"
+            [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+          <mat-icon *ngIf="column.searchIcon" class="search-icon" (click)="column.onTap?.(currentRow)">search</mat-icon>
+        </div>
+
+      </ng-container>
 
     </ng-container>
+  </ng-template>
 
-  </ng-container>
 </ng-template>
 
 <!-- عرض فقط -->
 <ng-template #readOnlyCell>
   <div class="input-icon-wrapper">
+
     <!-- date -->
-  <ng-container *ngIf="column.dataType === 'datetime' || column.dataType === 'date'; else notDate">
-    <span class="custom-label" dir="ltr">
-      <ng-container *ngIf="currentRow[column.field]; else dash">
-        <ng-container [ngSwitch]="column.dataType">
-          <!-- datetime -->
-          <span *ngSwitchCase="'datetime'">
-            {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
-          </span>
+    <ng-container *ngIf="column.dataType === 'datetime' || column.dataType === 'date'; else notDate">
+      <span class="custom-label" dir="ltr">
+        <ng-container *ngIf="currentRow[column.field]; else dash">
+          <ng-container [ngSwitch]="column.dataType">
 
-          <!-- date only -->
-          <span *ngSwitchCase="'date'">
-            {{ currentRow[column.field] | date:'yyyy-MM-dd' }}
-          </span>
+            <span *ngSwitchCase="'datetime'">
+              {{ currentRow[column.field] | date:'yyyy-MM-dd hh:mm a' }}
+            </span>
+
+            <span *ngSwitchCase="'date'">
+              {{ currentRow[column.field] | date:'yyyy-MM-dd' }}
+            </span>
+
+          </ng-container>
         </ng-container>
-      </ng-container>
-      <ng-template #dash>—</ng-template>
-    </span>
-  </ng-container>
-
-
-  <!-- غير التاريخ -->
-  <ng-template #notDate>
-
-    <!-- evaluation / rating (read-only) -->
-    <ng-container *ngIf="column.dataType === 'evaluation' || column.dataType === 'rating'; else maybeCurrency">
-      <div class="stars" [attr.aria-label]="safeIntRating(currentRow, column.field) + ' / 5'">
-        <ng-container *ngFor="let _ of five; let i = index">
-          <span class="star" [class.filled]="i < safeIntRating(currentRow, column.field)">★</span>
-        </ng-container>
-      </div>
+        <ng-template #dash>—</ng-template>
+      </span>
     </ng-container>
 
-    <!-- currency -->
-    <ng-template #maybeCurrency>
-      <ng-container *ngIf="column.dataType === 'currency'; else plain">
-        <span class="custom-label">
-          <ng-container *ngIf="currentRow[column.field] != null; else dash">
-            {{ currentRow[column.field] | number:'1.2-2' }}
-            {{ 'FinancialTransactions.Currency' | translate }}
+    <!-- غير التاريخ -->
+    <ng-template #notDate>
+
+      <!-- evaluation -->
+      <ng-container *ngIf="column.dataType === 'evaluation' || column.dataType === 'rating'; else maybeCurrency">
+        <div class="stars" [attr.aria-label]="safeIntRating(currentRow, column.field) + ' / 5'">
+          <ng-container *ngFor="let _ of five; let i = index">
+            <span class="star" [class.filled]="i < safeIntRating(currentRow, column.field)">★</span>
           </ng-container>
-          <ng-template #dash>—</ng-template>
-        </span>
+        </div>
       </ng-container>
 
-      <!-- النصوص العادية -->
-      <ng-template #plain>
-        <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
-          {{ currentRow[column.field] || '—' }}
-        </span>
-      </ng-template>
-    </ng-template>
+      <!-- currency -->
+      <ng-template #maybeCurrency>
+        <ng-container *ngIf="column.dataType === 'currency'; else plain">
+          <span class="custom-label">
+            <ng-container *ngIf="currentRow[column.field] != null; else dash">
+              {{ currentRow[column.field] | number:'1.2-2' }}
+              {{ 'FinancialTransactions.Currency' | translate }}
+            </ng-container>
+            <ng-template #dash>—</ng-template>
+          </span>
+        </ng-container>
 
-  </ng-template>
+        <!-- النصوص -->
+        <ng-template #plain>
+          <span class="custom-label" [dir]="column.dataType === 'mobile' ? 'ltr' : 'auto'">
+            {{ currentRow[column.field] || '—' }}
+          </span>
+        </ng-template>
+
+      </ng-template>
+
+    </ng-template>
 
   </div>
 </ng-template>

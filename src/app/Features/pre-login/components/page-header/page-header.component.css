@@ -1,0 +1,64 @@
+/* الشعار */
+.app-header-background {
+ background: linear-gradient(
+        180deg,
+        #1d3a64 0%,     /* أزرق غامق */
+        #4A90E2 100% 
+    );
+  padding-block: 10px;
+}
+.app-logo {
+  height: 60px;
+  max-width: 100%;
+  padding: 5px;
+  object-fit: contain;
+}
+
+/* بلوك اللوجو + العنوان */
+.app-header {
+  padding: 2px;
+  width: clamp(140px, 22vw, 220px);
+  display: flex;
+  flex-direction: column; /* العناصر تحت بعض */
+  align-items: center;
+  gap: 5px;
+}
+
+/* عنوان التطبيق */
+.app-title {
+  color: #fff;
+  padding-block-end: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+}
+
+/* صف الهيدر */
+.header-bottom,
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative; /* لو محتاج لعناصر تانية */
+}
+
+.header-center-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  flex: 1; /* يخلي العنوان ياخد المساحة المتبقية */
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .header-center-title {
+    font-size: 14px;
+  }
+}

@@ -28,7 +28,8 @@
                 [searchParameterKey]="'payeeFk'"
                 [selectedId]="orgnizationId"
                 [showInTableFooter]="true"
-                (rowSelected)="onTransactionSelected($event)">
+                (rowSelected)="onTransactionSelected($event)"
+                [exportToExcelFl]="true">
               </app-generic-table>
             </ng-template>
           </mat-tab>
@@ -47,6 +48,7 @@
                 [selectedId]="orgnizationId"
                 [showInTableFooter]="true"
                 (rowSelected)="onTransactionSelected($event)"
+                [exportToExcelFl]="true"
                 >
               </app-generic-table>
             </ng-template>
@@ -63,8 +65,11 @@
                 [dataFactory]="financialTransactionDataFactory"
                 [apiPath]="'financialTransactions'"
                 [customSearchPath]="'search-students-payments'"
+                [customExportPath]="'export-students-payments'"
                 [showInTableFooter]="true"
-                (rowSelected)="onTransactionSelected($event)">
+                (rowSelected)="onTransactionSelected($event)"
+                [exportToExcelFl]="true"
+                >
               </app-generic-table>
             </ng-template>
           </mat-tab>

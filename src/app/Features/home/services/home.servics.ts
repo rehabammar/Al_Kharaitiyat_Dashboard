@@ -46,9 +46,9 @@ export class HomeService {
   }
 
 
-  getDailyClasses(): Observable<Class[]> {
-    const todayStr = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
-    return this.apiService.post<ApiPage<Class>>(ApiEndpoints.getCourseClasses(), { "expectedStartTime": todayStr, "page": 0, "size": 500 })
+  getDailyClasses(date: string): Observable<Class[]> {
+    // const todayStr = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+    return this.apiService.post<ApiPage<Class>>(ApiEndpoints.getCourseClasses(), { "expectedStartTime": date, "page": 0, "size": 500 })
       .pipe(
         map(res => res.data.content));
   }

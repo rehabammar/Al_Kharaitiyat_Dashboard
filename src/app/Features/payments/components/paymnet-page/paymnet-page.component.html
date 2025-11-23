@@ -1,0 +1,56 @@
+  <main>
+  <!-- Slider / Breadcrumb -->
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2">
+      </div>
+    </div>
+  </section>
+  
+  <div class="accordion-container">
+  <app-custom-accordion title="payment.invoices">
+
+          <!-- Student Payments -->
+              <app-generic-table
+                #studentsTable
+                [primaryKey]="'transactionPk'"
+                [columns]="financialTransactionsColumns"
+                [dataFactory]="financialTransactionDataFactory"
+                [apiPath]="'financialTransactions'"
+                [customSearchPath]="'search-students-payments'"
+                [customUpatedAllPath]="'student-payment'"
+                [selectedId]="OUTSTANDING"
+                [searchParameterKey]="'transactionStatusFk'"
+                [showInTableFooter]="true"
+                [enableSaveAll]="true"
+                [onToggleSelection]="onStudentToggle"
+                [overridePage]="1000"
+
+                >
+              </app-generic-table>
+
+                            <!-- (rowSelected)="onTransactionSelected($event)" -->
+
+    </app-custom-accordion>
+    <br>
+    <!--financial Transaction Details -->
+    <!-- <app-custom-accordion title="FinancialTransactions.Details">
+      <app-generic-form
+       [primaryKey]="'transactionPk'"
+       [columns]="financialTransactionsColumns"
+       [dataFactory]="financialTransactionDataFactory"
+       [apiPath]="'financialTransactions'"
+       [selectedRow]="selectedFinancialTransactions"
+       [commitLabel]="'FinancialTransactions.PayTransaction'"
+       [customUpdatedPath]="updatePath"
+       (rowChanged)="onTransactionRowChanged($event)"
+       (rowSaved)="onTransactionSaved($event)"
+       [confirmBeforeSave]="true"
+      [buttonVisibility]="buttonVisibility"
+       >
+      </app-generic-form>
+    </app-custom-accordion> -->
+
+  </div>
+  </main>
+  

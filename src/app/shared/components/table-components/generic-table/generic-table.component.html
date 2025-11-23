@@ -25,6 +25,45 @@
 
     </ng-container>
 
+      <app-button  *ngIf="exportToExcelFl"
+          [label]="'excel'"
+          [imageSrc]="'/assets/img/icon/excel.png'"
+          [onClick]="exportToExcel">
+      </app-button>
+
+      <app-button 
+          *ngIf="enableSaveAll"  
+          [label]="'payment.pay'"
+          [imageSrc]="'/assets/img/icon/save.svg'"
+          [onClick]="saveAll"
+          [disabled]="buttonDisabled['updateAll'] || selectedRows.length===0">
+      </app-button>
+
+      <app-button
+          *ngIf="enableSaveAll"
+          [label]="'SelectAll'"
+          [imageSrc]="'/assets/img/icon/select_all_big_check.svg'"
+          [onClick]="selectAllRows">
+      </app-button>
+
+      <app-button
+          *ngIf="enableSaveAll"
+          [label]="'UnselectAll'"
+          [imageSrc]="'/assets/img/icon/deselect.svg'"
+          [onClick]="unselectAllRows">
+      </app-button>
+
+      <app-button
+          *ngIf="enableSaveAll"
+          [label]="'SendWhatsApp'"
+          [imageSrc]="'/assets/img/icon/whatsapp.svg'"
+          [onClick]="openWhatsappPopup"
+          [disabled]="selectedRows.length===0">
+      </app-button>
+
+
+
+
     <!-- <app-button 
       [label]="'rollback'"
       [imageSrc]="'/assets/img/icon/rollback.png'"
@@ -37,14 +76,6 @@
       [imageSrc]="'/assets/img/icon/print.png'"
       [onClick]="print"
       [disabled]="buttonDisabled['print']">
-    </app-button>
-
-    <app-button 
-      [label]="'excel'"
-      [imageSrc]="'/assets/img/icon/excel.png'"
-      [onClick]="exportToExcel"
-      [disabled]="buttonDisabled['excel']">
-
     </app-button>
 
     <app-button 
@@ -92,8 +123,14 @@
         </th>
 
         <td mat-cell *matCellDef="let row" [style.width]="column.width">
-          <app-table-column [column]="column" [currentRow]="row" [selectedRow]="selectedRow"
-            [isSaveAttempted]="isSaveAttempted" [isEditableTable]="isEditableTable" [primaryKey]="primaryKey"
+          <app-table-column 
+            [column]="column"
+            [currentRow]="row"
+            [selectedRow]="selectedRow"
+            [isSaveAttempted]="isSaveAttempted"
+            [isEditableTable]="isEditableTable"
+            [primaryKey]="primaryKey"
+            [onToggleSelection]="toggleSelection.bind(this)"
             (fieldChanged)="onFieldChanged(row, $event)">
           </app-table-column>
         </td>

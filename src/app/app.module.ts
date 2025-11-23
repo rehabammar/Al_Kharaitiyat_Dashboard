@@ -75,6 +75,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxMatDatetimepicker , NgxMatDatepickerToggle } from '@ngxmc/datetime-picker';
 
 import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
+import { SearchFieldComponent } from './shared/components/search-field/search-field.component';
+import { PrivacyPolicyComponent } from './Features/pre-login/components/privacy-policy/privacy-policy.component';
+import { DeleteAccountComponent } from './Features/pre-login/components/delete-account/delete-account.component';
+import { ChangeLangComponent } from './Features/pre-login/components/change-lang/change-lang.component';
+import { PageHeaderComponent } from './Features/pre-login/components/page-header/page-header.component';
+import { TeachersTrackingComponent } from './Features/tracking/components/teachers-tracking/teachers-tracking.component';
+import { MapMarkerComponent } from './Features/tracking/components/map-marker/map-marker.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PaymnetPageComponent } from './Features/payments/components/paymnet-page/paymnet-page.component';
+import { CommunicationPageComponent } from './Features/communication/components/communication-page/communication-page.component';
+import { WhatsappPreviewPopupComponent } from './Features/payments/components/whatsapp-preview-popup/whatsapp-preview-popup.component';
 
 
 
@@ -123,7 +134,17 @@ import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
     OrganizationDetailsComponent,
     ImageManagerComponent,
     AppLogoComponent,
-    ClassDetailsFormComponent
+    ClassDetailsFormComponent,
+    SearchFieldComponent,
+    PrivacyPolicyComponent,
+    DeleteAccountComponent,
+    ChangeLangComponent,
+    PageHeaderComponent,
+    TeachersTrackingComponent,
+    MapMarkerComponent,
+    PaymnetPageComponent,
+    CommunicationPageComponent,
+    WhatsappPreviewPopupComponent,
 
   ],
   imports: [
@@ -157,7 +178,9 @@ import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
     MatProgressSpinnerModule,
 
     NgxMatDatetimepicker,
-    NgxMatDatepickerToggle
+    NgxMatDatepickerToggle,
+
+    MatCheckboxModule,
 
 
 

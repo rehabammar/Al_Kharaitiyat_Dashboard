@@ -1,0 +1,132 @@
+.delete-account-container {
+  max-width: 420px;
+  margin: 60px auto;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 25px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  color: #1d3a64;
+  transition: all 0.3s ease-in-out;
+}
+
+.delete-account-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.delete-instructions {
+  font-size: 15px;
+  margin-bottom: 25px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  text-align: start;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #2a4973;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.form-control {
+  width: 100%;
+  border: 1px solid #c9d6e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: border 0.2s ease;
+}
+
+.form-control:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.4);
+  outline: none;
+}
+
+/* زر تأكيد البيانات (أزرق) */
+.btn-primary {
+  background: linear-gradient(90deg, #1d3a64, #4a90e2);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.25);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #163153, #3f7fd1);
+  transform: translateY(-1px);
+}
+
+/* زر حذف الحساب (أحمر) */
+.btn-danger {
+  background: linear-gradient(90deg, #c93a3a, #ff6a6a);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.25);
+}
+
+.btn-danger:hover {
+  background: linear-gradient(90deg, #b22e2e, #ff4747);
+  transform: translateY(-1px);
+}
+
+.user-preview {
+  margin-top: 30px;
+  padding: 18px 15px;
+  background: #f9fbfe;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  text-align: start;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-preview h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1d3a64;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.user-preview p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .delete-account-container {
+    margin: 40px 15px;
+    padding: 25px 20px;
+  }
+
+  .delete-instructions {
+    font-size: 13px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  button.btn {
+    font-size: 13px;
+  }
+}

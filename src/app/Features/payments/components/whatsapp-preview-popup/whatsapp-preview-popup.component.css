@@ -1,0 +1,66 @@
+.popup-container {
+  padding: 20px;
+  direction: rtl;
+}
+
+.popup-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #075e54;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-title i {
+  font-size: 26px;
+  color: #25d366;
+}
+
+.popup-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.message-preview-box {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 250px;     
+  white-space: pre-wrap; 
+}
+
+
+
+.popup-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background: #888 !important;
+  color: white !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.send-btn {
+  background: #25d366 !important;
+  color: white !important;
+  padding: 8px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(37, 211, 102, 0.3);
+}
+
+.send-btn:hover {
+  background: #1ebe5d !important;
+}

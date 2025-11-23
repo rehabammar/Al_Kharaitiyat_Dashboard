@@ -323,6 +323,11 @@ export class FinancialTransactionsPageComponent implements OnInit {
       v = { ...defaultVisibility, showSave: false };
     }
 
+    if (row.paymentMethodFk == null) {
+      row.paymentMethodFk = 68;
+
+    }
+
     this.buttonVisibility = v;
     this.changeDetectorRef.markForCheck();
   }

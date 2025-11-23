@@ -1,0 +1,33 @@
+<div class="header-label-line align-start" *ngIf="label">
+  <label class="form-label">{{ label }}</label>
+</div>
+
+<div class="compound-row">
+  <!-- الصندوق ذو البوردر والراديوس -->
+  <div class="compound-input">
+    <input
+      matInput
+      class="compound-input__field"
+      [value]="value || ''"
+      [disabled]="disabled" />
+
+    <!-- زر مسح (داخل الصندوق – يظهر لو فيه قيمة و showClear=true) -->
+    <button
+      type="button"
+      class="icon-btn clear"
+      *ngIf="showClear && value"
+      (click)="clear.emit()"
+      aria-label="Clear">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- زر بحث (خارج الصندوق – بدون بوردر) -->
+  <button
+    type="button"
+    class="icon-btn search-out"
+    (click)="search.emit()"
+    aria-label="Search">
+    <mat-icon>search</mat-icon>
+  </button>
+</div>

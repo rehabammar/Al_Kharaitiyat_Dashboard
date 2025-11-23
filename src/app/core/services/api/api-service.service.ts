@@ -38,17 +38,21 @@ export class ApiService {
     return response;
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
+  private handleError(error: HttpErrorResponse, checkStatusCode: boolean = true): Observable<never> {
     let errorMsg = this.translationService.instant('error.unknown');
+    console.log("Error received in handleError:", error.error);
+
 
     if (error instanceof ApiException) {
       errorMsg = error.message;
+    } else if (error.error["message"] !== undefined && typeof error.error["message"] === 'string') {
+      errorMsg = error.error["message"]
     } else if (error.error instanceof ErrorEvent) {
       errorMsg = `Network error: ${error.error.message}`
     } else {
 
 
-      if (error.status === 401) {
+      if (error.status === 401 && checkStatusCode) {
         errorMsg = this.translationService.instant('error.unauthorized');
         this.router.navigate(['/login'], { replaceUrl: true });
       }
@@ -102,17 +106,24 @@ export class ApiService {
 
   post<T>(url: string, body: any, options: {
     headers?: HttpHeaders | { [header: string]: string | string[] };
-    params?: HttpParams | { [param: string]: string | number | boolean };
-  } = {}): Observable<ApiResponse<T>> {
+    params?: HttpParams | {
+      [param: string]: string | number | boolean
+    };
+  } = {},
+    checkStatusCode: boolean = true
+  ): Observable<ApiResponse<T>> {
     // const startTime = Date.now();
-    // console.log(`[DEBUG] POST Request - URL: ${url}, Body: ${JSON.stringify(body)}`);
+
+    console.log(`[DEBUG] POST Request - URL: ${url}`);
+    console.log(`[DEBUG] POST Body - ${JSON.stringify(body)}`);
+    console.log(`[DEBUG] POST Headers - ${JSON.stringify(options.headers || {})}`);
 
     this.loadingService.show();
 
-    return this.http.post<ApiResponse<T>>(url, body , options).pipe(
+    return this.http.post<ApiResponse<T>>(url, body, options).pipe(
       // tap(() => console.log(`[DEBUG] POST Request - Request Time: ${Date.now() - startTime} ms`)),
       map(response => this.handleResponse(response)),
-      catchError(error => this.handleError(error)),
+      catchError(error => this.handleError(error, checkStatusCode)),
       finalize(() => {
         this.loadingService.hide();
         // console.log(`[DEBUG] POST Request Completed in ${Date.now() - startTime} ms`);

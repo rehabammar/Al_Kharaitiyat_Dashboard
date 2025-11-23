@@ -1,0 +1,74 @@
+<main class="page">
+
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2"></div>
+    </div>
+  </section>
+
+  <div class="tracking-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <h3 class="text-header-primary">اختيار المدرسين</h3>
+
+      <!-- Search -->
+      <!-- <input 
+        class="search-box"
+        placeholder="ابحث عن مدرس..."
+        [(ngModel)]="searchTerm"> -->
+
+
+        <div class="search-box">
+            <i class="fa fa-search search-icon"></i>
+            <input
+              type="text"
+              class="search-input"
+              placeholder="{{ 'communication.search' | translate }}"
+              [(ngModel)]="searchTerm"
+            />
+          </div>
+        
+
+      <!-- Buttons -->
+    
+
+      <div class="select-actions-compact">
+            <button class="action-btn-compact select-all" (click)="selectAll()">
+              <i class="fa fa-check"></i>
+              {{ 'communication.selectAll' | translate }}
+            </button>
+
+            <button class="action-btn-compact unselect-all" (click)="clearAll()">
+              <i class="fa fa-times"></i>
+              {{ 'communication.unselectAll' | translate }}
+            </button>
+      </div>
+
+      <!-- Teachers List -->
+      <div class="teachers-list">
+        <div class="teacher-item"
+             *ngFor="let t of filteredTeachers()">    
+        <mat-checkbox
+          [(ngModel)]="t.selected"
+          (change)="updateMarkers()">
+          <span class="checkbox-content">
+            <img [src]="photoUrl(t)" class="avatar-sm">
+            {{ t.teacherFullName }}
+          </span>
+        </mat-checkbox>
+         
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- Map -->
+    <div class="map-container">
+      <div id="map" class="map"></div>
+    </div>
+
+  </div>
+
+</main>

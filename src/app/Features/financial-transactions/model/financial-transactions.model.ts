@@ -59,6 +59,8 @@ export class FinancialTransaction {
   payerFkName?: string;
   receiverFkName?: string;
 
+  whatsappNumber?: string;
+  
   constructor(init?: Partial<FinancialTransaction>) {
   }
 }

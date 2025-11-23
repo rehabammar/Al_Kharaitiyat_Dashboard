@@ -56,7 +56,9 @@
               "public/assets/css/style.css",
               "public/assets/css/form-style.css",
               "public/assets/css/table-style.css",
-              "public/assets/css/tokens.css"
+              "public/assets/css/tokens.css",
+              "node_modules/leaflet/dist/leaflet.css"
+
             ],
             "scripts": [
               "public/assets/js/vendor/modernizr-3.5.0.min.js",

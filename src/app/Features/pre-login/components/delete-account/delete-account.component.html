@@ -1,0 +1,50 @@
+<app-page-header [pageTitle]="'deleteAccountTitle' | translate"></app-page-header>
+
+<div class="delete-account-container">
+
+  <p class="delete-instructions">
+    {{ 'deleteAccountInstruction' | translate }}
+  </p>
+
+  <form (ngSubmit)="onDeleteRequest()" #deleteForm="ngForm">
+    <div class="form-group">
+      <label for="username">{{ 'deleteAccountUsername' | translate }}</label>
+      <input
+        id="username"
+        type="text"
+        class="form-control"
+        [(ngModel)]="username"
+        name="username"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">{{ 'deleteAccountPassword' | translate }}</label>
+      <input
+        id="password"
+        type="password"
+        class="form-control"
+        [(ngModel)]="password"
+        name="password"
+        required
+      />
+    </div>
+
+    <button class="btn btn-primary" [disabled]="deleteForm.invalid">
+      {{ 'deleteAccountConfirmData' | translate }}
+    </button>
+  </form>
+
+  <div *ngIf="userData" class="user-preview">
+    <h4>{{ 'deleteAccountUserData' | translate }}</h4>
+    <p><strong>{{ 'deleteAccountFullName' | translate }}:</strong> {{ userData.fullName }}</p>
+    <p><strong>{{ 'deleteAccountEmail' | translate }}:</strong> {{ userData.email }}</p>
+
+    <button class="btn btn-danger" (click)="confirmDeleteDialog()">
+      {{ 'deleteAccountFinalDelete' | translate }}
+    </button>
+  </div>
+</div>
+
+<app-pre-login-footer></app-pre-login-footer>

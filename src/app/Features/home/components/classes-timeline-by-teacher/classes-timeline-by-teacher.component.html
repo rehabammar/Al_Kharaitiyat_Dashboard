@@ -1,4 +1,21 @@
 <app-custom-accordion title="Class.DailyClass">
+
+<div class="date-picker-container">
+  <mat-form-field appearance="outline" class="date-field">
+    <mat-label>{{ 'dailyClass.selectDate' | translate }}</mat-label>
+
+    <input matInput
+           class="date-input"
+           [matDatepicker]="picker"
+           [(ngModel)]="selectedDate"
+           (dateChange)="loadData()">
+
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>
+
+
   <div class="timeline-container">
   <div class="schedule">
     <!-- header -->

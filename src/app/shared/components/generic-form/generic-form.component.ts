@@ -90,6 +90,7 @@ export class GenericFormComponent<T extends Record<string, any>>
     this.mobileColumns = this.findMobileColumns();
     this.syncLocalFromRow();
     this.buildDependentsIndex();
+    this.validateDateOrders();
 
   }
 
@@ -99,6 +100,8 @@ export class GenericFormComponent<T extends Record<string, any>>
       this.resetBaseline();
       this.mobileColumns = this.findMobileColumns();
       this.syncLocalFromRow();
+      this.validateDateOrders();
+
     }
 
     // لو المسارات أو الأساسيات اتغيرت (أعد تهيئة الخدمة)
@@ -184,6 +187,8 @@ export class GenericFormComponent<T extends Record<string, any>>
     }
 
     if (this.showErrors) this.showErrors = false;
+    this.validateDateOrders();
+
   }
   toggleFlag(field: string) {
     if (!this.selectedRow) return;
@@ -281,8 +286,10 @@ export class GenericFormComponent<T extends Record<string, any>>
   // ========== Utils ==========
 
   get saveDisabled(): boolean {
-    return !this.selectedRow || this.isLoading || !this.isDirty;
+    const anyOrderErr = Object.values(this.dateOrderErrors).some(Boolean);
+    return !this.selectedRow || this.isLoading || !this.isDirty || anyOrderErr;
   }
+
 
 
   private markChanged(field: string) {
@@ -439,8 +446,9 @@ export class GenericFormComponent<T extends Record<string, any>>
 
   private doSave() {
     if (!this.selectedRow) return;
-    const invalid = this.columns.filter(c => this.isMissingRequired(c));
-    if (invalid.length) { this.showErrors = true; return; }
+    if (!this.validateAndShowErrors()) {
+      return;
+    }
 
     this.isLoading = true;
     this.service.save(this.selectedRow).subscribe({
@@ -608,6 +616,72 @@ export class GenericFormComponent<T extends Record<string, any>>
     const full = value ? `+974${value}` : null;
     this.onFieldChanged(column, full);
   }
+
+
+  // === Date order errors (end must be after start) ===
+  dateOrderErrors: Record<string, boolean> = {};
+
+  private readonly dateOrderPairs = [
+    { start: 'expectedStartTime', end: 'expectedEndTime' },
+    { start: 'actualStartDate', end: 'actualEndDate' },
+  ];
+
+  private toDateSafe(v: any): Date | null {
+    if (!v) return null;
+    const d = new Date(v);
+    return isNaN(d.getTime()) ? null : d;
+  }
+
+  private isFieldDisabled(field: string): boolean {
+    const col = this.columns.find(c => c.field === field);
+    return !!col?.disabled;
+  }
+
+  private hasField(field: string): boolean {
+    return this.columns.some(c => c.field === field);
+  }
+
+  private validateDateOrders(): void {
+    this.dateOrderErrors = {};
+    if (!this.selectedRow) return;
+
+    for (const { start, end } of this.dateOrderPairs) {
+      // لو واحد من الحقلين مش موجود في النموذج، سيبه
+      if (!this.hasField(start) || !this.hasField(end)) continue;
+
+      // لو الحقل “نهاية” مقفول/عرض فقط (e.g. actualEndDate)، سيب الفحص
+      if (this.isFieldDisabled(end)) continue;
+
+      const s = this.toDateSafe((this.selectedRow as any)[start]);
+      const e = this.toDateSafe((this.selectedRow as any)[end]);
+
+      // افحص بس لما الاتنين ليهم قيمة صحيحة
+      if (s && e && e <= s) {
+        this.dateOrderErrors[end] = true; // علِّم الحقل الغلط
+      }
+    }
+
+    this.cdr.markForCheck();
+  }
+
+  private get hasDateOrderErrors(): boolean {
+    return Object.values(this.dateOrderErrors).some(Boolean);
+  }
+
+  private validateAndShowErrors(): boolean {
+    this.validateDateOrders();
+
+    const hasMissingRequired = this.columns.some(c => this.isMissingRequired(c));
+
+    const hasBlocking = hasMissingRequired || this.hasDateOrderErrors;
+
+    this.showErrors = hasBlocking;
+
+    this.cdr.markForCheck();
+
+    return !hasBlocking;
+  }
+
 
 
 

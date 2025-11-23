@@ -7,6 +7,9 @@ import { LanguageService } from '../../../../core/services/shared/language.servi
 import { MatDialog } from '@angular/material/dialog';
 import { ClassDetailsFormComponent } from '../class-details-form/class-details-form.component';
 
+import { formatDate } from '@angular/common';
+
+
 type ApiClass = any; // use your real type if you have it
 type Block = {
   col: string;             // CSS grid-column: "start / end"
@@ -43,6 +46,9 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   hourLabels: HourLabel[] = [];
   rows: TeacherRow[] = [];
   loading = false;
+
+  selectedDate: Date = new Date();
+
 
   constructor(private homeService: HomeService , private dialog: MatDialog) { }
 
@@ -88,7 +94,9 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   loadData() {
 
     this.loading = true;
-    this.sub = this.homeService.getDailyClasses()
+    const dateStr = formatDate(this.selectedDate, 'yyyy-MM-dd', 'en-US');
+
+    this.sub = this.homeService.getDailyClasses(dateStr)
       .pipe(
         catchError(err => {
           console.error('getDailyClasses error', err);

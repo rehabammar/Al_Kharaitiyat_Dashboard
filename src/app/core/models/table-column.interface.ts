@@ -28,6 +28,9 @@ export interface TableColumn {
   maxLength?: number;   
   fullRow?: boolean;    
 
+  isCheckbox?: boolean;   
+
+
 
 }
 

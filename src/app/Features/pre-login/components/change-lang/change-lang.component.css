@@ -1,0 +1,39 @@
+.lang-box{
+  top: 16px;
+  inset-inline-start: 16px; 
+  z-index: 10;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,.35);
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  backdrop-filter: blur(2px);
+  margin: 0;                    
+  max-width: max-content;
+}
+.langStyle{
+  color:#fff; text-decoration:none; font-weight:500;
+  padding:6px 10px; border-radius:6px;
+  background: rgba(255, 255, 255, 0.659);
+  transition: transform .2s ease, background-color .2s ease;
+}
+.langStyle:hover{ background: rgba(255, 255, 255, 0.595); transform: translateY(-2px); }
+
+
+/* لو الصفحة بالعربي (RTL) الصندوق في اليمين */
+[dir="rtl"] .lang-box {
+  margin-left: auto;
+}
+
+/* لو الصفحة بالإنجليزي (LTR) الصندوق في الشمال */
+[dir="ltr"] .lang-box {
+  margin-right: auto;
+}
+
+
+
+@media (max-width: 768px) {
+  .header-bottom {
+    padding-inline: 10px; /* بدل padding-left عشان يشتغل مع الاتجاهين */
+  }
+}

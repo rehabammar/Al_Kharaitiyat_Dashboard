@@ -35,9 +35,10 @@ export class GenericService<T extends Record<string, any>> {
     private primaryKey: keyof T,
     private searchPath?: string,
     private updatePath?: string,
-
+    private updateAllPath?: string,
+    private exportPath?: string,
   ) {
-    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath, this.searchPath, this.updatePath);
+    this.apiMap = ApiEndpoints.buildCrudEndpoints(this.apiPath, this.searchPath, this.updatePath, this.updateAllPath, this.exportPath);
     // console.table(
     //   Object.entries(this.apiMap).map(([k, v]) => ({ key: k, type: typeof v }))
     // );
@@ -135,26 +136,58 @@ export class GenericService<T extends Record<string, any>> {
 
 
 
-  exportToExcel(pageNumber: number, pageSize: number, columns: any, filters?: any, extraParams?: Record<string, any>) {
-    const requestBody = {
-      voPkgName: "sso.model.vo.",
-      // isRtl: this.langProvider.getRtlFlag() == 1 ? true : false,
-      pageNumber,
-      pageSize,
-      filters,
-      parameters: extraParams,
-      columns: columns
-    };
-    this.apiService.downloadFile(this.apiMap.EXPORT_EXCEL(), requestBody).subscribe(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      // a.download = 'report.xlsx';
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
+  // exportToExcel(pageNumber: number, pageSize: number, columns: any, filters?: any, extraParams?: Record<string, any>) {
+  //   const requestBody = {
+  //     voPkgName: "sso.model.vo.",
+  //     // isRtl: this.langProvider.getRtlFlag() == 1 ? true : false,
+  //     pageNumber,
+  //     pageSize,
+  //     filters,
+  //     parameters: extraParams,
+  //     columns: columns
+  //   };
+  //       console.log(`[DEBUG] POST Request - URL: ${this.apiMap.EXPORT_EXCEL()}, Body: ${JSON.stringify(requestBody)}`);
+
+  //   this.apiService.downloadFile(this.apiMap.EXPORT_EXCEL(), requestBody).subscribe(blob => {
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement('a');
+  //     a.href = url;
+  //     // a.download = 'report.xlsx';
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //   });
+
+  // }
+
+
+  exportToExcel(requestBody: any) {
+
+    console.log(`[DEBUG] POST Request - URL: ${this.apiMap.EXPORT_EXCEL()}, Body: ${JSON.stringify(requestBody)}`);
+    this.apiService.downloadFile(this.apiMap.EXPORT_EXCEL(), requestBody)
+      .subscribe(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        // a.download = 'export.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
 
   }
+
+
+  saveAll(rows: T[]): Observable<any> {
+    if (!rows || rows.length === 0) {
+      console.warn("No rows to save");
+      return new Observable(obs => { obs.complete(); });
+    }
+    return this.apiService.post<any>(this.apiMap.UPDATE_ALL(), rows).pipe(
+      tap(() => {
+        this.showSuccessPopup();
+      })
+    );
+  }
+
 
   showSuccessPopup() {
     this.dialog.open(ConfirmPopupComponent, {

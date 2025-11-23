@@ -1,0 +1,8 @@
+<div class="lang-box">
+  <ng-container *ngFor="let row of languagesList">
+    <a href="javascript:void(0);" *ngIf="row.langCode !== selectedLanguage.langCode"
+      (click)="changeLanguage(row.langCode!)">
+      <i class="fas fa-language"></i>&nbsp;{{ row.langName }}
+    </a>
+  </ng-container>
+</div>

@@ -28,12 +28,13 @@ export function apiRoot(path: string): string {
 // ========= endpoints =========
 export class ApiEndpoints {
 
-  static buildCrudEndpoints = (basePath: string, searchPath?: string, updatePath?: string) => ({
+  static buildCrudEndpoints = (basePath: string, searchPath?: string, updatePath?: string , updateAllPath?: string ,  exportPath? : string) => ({
     GET:          () => api(`${basePath}/${searchPath ?? 'search'}`),
     ADD:          () => api(`${basePath}/save`),
     UPDATE:       () => api(`${basePath}/${updatePath ?? 'update'}`),
+    UPDATE_ALL:       () => api(`${basePath}/${updateAllPath ?? 'updateAll'}`),
     DELETE:       () => api(`${basePath}/delete`),
-    EXPORT_EXCEL: () => api(`${basePath}/excel`)
+    EXPORT_EXCEL: () => api(`${basePath}/${exportPath ?? 'export'}`)
   });
 
   static userApi = api('users'); // بدل `${baseUrl}/users`
@@ -41,7 +42,9 @@ export class ApiEndpoints {
   // ✅ إصلاح: استخدم apiRoot + ترميز
   static getImage = (path: string) => apiRoot(`images/getImage?path=${encodeURIComponent(path)}`);
 
-  static userLogin                 = () => api('register/auth/loginAdmins');
+  static adminLogin                 = () => api('register/auth/loginAdmins');
+  static userLogin                 = () => api('register/auth/login');
+
   static resetPasswordRequest      = () => api('users/request-reset-password');
   static resetPasswordVerification = () => api('users/reset-password-verification');
   static resetPassword             = () => api('users/reset-password');
@@ -52,6 +55,9 @@ export class ApiEndpoints {
   static changePassword            = () => api('users/change-password');
   static changeUserProfilePicture  = () => api('users/upload-profile-picture');
   static saveNewStudent            = () => api('users/save-student');
+
+  static updateUser            = () => api('users/update');
+
 
   static getOrganizations          = () => api('organizations/getById');
 
@@ -134,6 +140,13 @@ export class ApiEndpoints {
   static findStudentsNotInCourse   = '/users/findStudentsNotInCourse';
   static findStudentsNotInClass    = '/users/findStudentsNotInClass';
   static getAllUsers               = '/users/search';
+  static getTeacherUsers           = '/users/search-teachers';
+  static getStudentUsers           = '/users/search-students';
+
+
+
+
+  static getUsersList           = () => api('users/search');
 
   static getTeachersList           = () => api('users/search-teachers');
   static getTeachersListForDashboard = () => api('users/search-teachers-dashboard');
@@ -149,6 +162,15 @@ export class ApiEndpoints {
   static totalOutstandingOnUser  = () => api('financialTransactions/total-outstanding-on-user');
 
   static updateImageOrganization  = () => api('organizations/update-with-images');
+
+  static getTodayTeachersStatus = () => api('classes/today-teachers-status');
+
+
+  static sendWatsappMessages = () => api('whatsapp/send');
+  static getWatsappMessages = () => api('whatsappSentMessages/search');
+
+  
+  
 
 
 }

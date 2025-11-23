@@ -1,0 +1,21 @@
+<div class="popup-container">
+
+  <h2 class="popup-title">
+    <i class="fa-brands fa-whatsapp"></i>
+    معاينة رسالة واتساب
+  </h2>
+
+
+
+  <textarea
+    [(ngModel)]="messageTemplate"
+    rows="10"
+    class="message-preview-box">
+  </textarea>
+
+  <div class="popup-actions">
+    <button class="btn cancel-btn" (click)="dialogRef.close()">إلغاء</button>
+    <button class="btn send-btn" (click)="sendNow()">إرسال الآن</button>
+  </div>
+
+</div>
