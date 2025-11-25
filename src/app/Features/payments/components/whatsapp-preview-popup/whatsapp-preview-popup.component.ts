@@ -17,15 +17,19 @@ export class WhatsappPreviewPopupComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<WhatsappPreviewPopupComponent>,
-    private communicationService: CommunicationService , 
-    private dialog: MatDialog,
-
+    private communicationService: CommunicationService,
+    private dialog: MatDialog
   ) {
-    this.buildDefaultMessages();
+    if (data.type === 'teacher') {
+      this.buildTeacherMessages();
+    } else {
+      this.buildStudentMessages();
+    }
   }
 
+
   /** تجهيز الرسائل */
-  buildDefaultMessages() {
+  buildStudentMessages() {
 
     const grouped: Record<string, any[]> = {};
 
@@ -76,6 +80,8 @@ ${studentLines}
 
 ────────────────
 💵 *إجمالي المستحق:* ${total} ريال
+💵 *إجمالي الباص:* ${0.0} ريال
+
 ────────────────
 
 💳 تذكير بسداد المستحقات.
@@ -91,8 +97,81 @@ ${studentLines}
     });
 
     this.finalMessages = messages;
-    this.messageTemplate = messages[0]?.message || '';
+    this.messageTemplate = messages
+      .map(m => m.message)
+      .join("\n\n============================\n\n");
+
   }
+
+
+  buildTeacherMessages() {
+
+    const grouped: Record<string, any[]> = {};
+
+    // Group by teacher WhatsApp only (all classes in one message)
+    this.data.rows.forEach((row: any) => {
+      const key = row.teacherWhatsappNumber;
+      if (!grouped[key]) grouped[key] = [];
+      grouped[key].push(row);
+    });
+
+    const messages: any[] = [];
+
+    Object.keys(grouped).forEach(number => {
+
+      const rows = grouped[number];
+
+      const teacherName = rows[0].teacherFkName;
+
+      // Format each class block
+      const classLines = rows.map(r => {
+
+        const formattedDate = new Date(r.actualStartDate).toLocaleString('ar', {
+          year: 'numeric', month: 'long', day: 'numeric',
+          hour: '2-digit', minute: '2-digit'
+        });
+
+        return `
+تم تسجيل بيانات *الحصة رقم ${r.relatedClassFk}*:
+
+📅 *التاريخ:* ${formattedDate}
+
+📘 *قائمة الطلاب:*
+👤 الطالب: ${r.payerFkName}
+💰 المستحق: ${r.amountRemaining} ريال
+
+────────────────`;
+      }).join("\n");
+
+      // Total amount for teacher
+      const total = rows.reduce((sum, r) => sum + (r.amountRemaining || 0), 0);
+
+      // Final formatted WhatsApp message
+      const message =
+        `السلام عليكم أستاذ *${teacherName}* 👋،
+
+${classLines}
+
+💵 *إجمالي المستحقات:* ${total} ريال
+────────────────
+
+نشكركم على جهودكم ونأمل لكم مزيدًا من التوفيق والنجاح 🌟`;
+
+      const finalNum = number?.startsWith('+') ? number : `+${number}`;
+
+      messages.push({
+        number: finalNum,
+        message,
+        userFk: rows[0].coursesTeacherFk
+      });
+    });
+
+    this.finalMessages = messages;
+    this.messageTemplate = messages
+      .map(m => m.message)
+      .join("\n\n============================\n\n");  }
+
+
 
   /** إرسال الرسائل */
   sendNow() {
@@ -109,18 +188,18 @@ ${studentLines}
 
     this.communicationService.sendBroadcast(payload).subscribe({
       next: () => {
-           this.dialog.open(ConfirmPopupComponent, {
-                  data: {
-                    type: 'success',
-                    messageKey: 'message.success',
-                    autoCloseMs: 2000,
-                    showCancel: false,
-        
-                  },
-                  panelClass: 'dialog-success'
-                });
-        
-        this.dialogRef.close();   
+        this.dialog.open(ConfirmPopupComponent, {
+          data: {
+            type: 'success',
+            messageKey: 'message.success',
+            autoCloseMs: 2000,
+            showCancel: false,
+
+          },
+          panelClass: 'dialog-success'
+        });
+
+        this.dialogRef.close();
       }
     });
   }

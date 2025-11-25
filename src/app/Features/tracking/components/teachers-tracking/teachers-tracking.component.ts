@@ -3,6 +3,8 @@ import * as L from 'leaflet';
 import { TeacherTracking } from '../../models/teacher-tracking.model';
 import { TeachersTrackingService } from '../../services/tracking.service';
 import { MapMarkerComponent } from '../map-marker/map-marker.component';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { MessagingBridgeService } from '../../../../core/services/shared/messaging-bridge.service';
 
 @Component({
   selector: 'app-teachers-tracking',
@@ -12,7 +14,12 @@ import { MapMarkerComponent } from '../map-marker/map-marker.component';
 })
 export class TeachersTrackingComponent implements AfterViewInit {
 
-  constructor(private trackingService: TeachersTrackingService) { }
+  private sub?: Subscription;
+
+  constructor(
+    private trackingService: TeachersTrackingService,
+    private bridge: MessagingBridgeService
+  ) { }
 
   map!: L.Map;
   markers: L.Marker[] = [];
@@ -24,25 +31,17 @@ export class TeachersTrackingComponent implements AfterViewInit {
   male_avatar = 'assets/img/gallery/male_avatar.svg';
 
 
-
-  
-    //  private sub?: Subscription;
-  
-    // constructor(private bridge: MessagingBridgeService) {}
-  
-    // ngAfterViewInit(): void {
-    //   this.sub = this.bridge.events$.subscribe(e => {
-    //     if (e?.type === 'REFRESH') {
-    //       this.loadTeachers();
-    //     }
-    //   });
-    // }
-  
-
   ngAfterViewInit(): void {
     this.loadTeachers();
     setTimeout(() => this.initMap(), 150);
+
+    this.sub = this.bridge.events$.subscribe(e => {
+      if (e?.type === 'REFRESH') {
+        this.refreshTeacherLocations();
+      }
+    });
   }
+
 
   // =============================
   // Load today's teachers status
@@ -106,9 +105,9 @@ export class TeachersTrackingComponent implements AfterViewInit {
   photoUrl(u: TeacherTracking): string {
     // const raw = (u.profileUrl ?? '').trim();
     // if (!raw) {
-      if (u.genderFk == 1) return this.male_avatar;
-      else return this.female_avatar;
-      // return this.male_avatar;
+    if (u.genderFk == 1) return this.male_avatar;
+    else return this.female_avatar;
+    // return this.male_avatar;
     // }
 
 
@@ -134,7 +133,7 @@ export class TeachersTrackingComponent implements AfterViewInit {
       // Marker HTML with status
       const html = MapMarkerComponent.renderMarker(
         t.teacherFullName || "",
-       this.photoUrl(t),
+        this.photoUrl(t),
         t.teacherStatus || "OFFLINE"
       );
 
@@ -156,4 +155,24 @@ export class TeachersTrackingComponent implements AfterViewInit {
       this.map.fitBounds(group.getBounds(), { padding: [20, 20] });
     }
   }
+
+
+  refreshTeacherLocations() {
+  this.trackingService.getTodayTeachersStatus().subscribe(data => {
+
+    data.forEach(updated => {
+      const original = this.teachers.find(t => t.teacherUserPk === updated.teacherUserPk);
+
+      if (original) {
+        original.locationStartLat = updated.locationStartLat;
+        original.locationStartLong = updated.locationStartLong;
+
+        original.teacherStatus = updated.teacherStatus;
+      }
+    });
+
+    this.updateMarkers();
+  });
+}
+
 }

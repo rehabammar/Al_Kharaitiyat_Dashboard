@@ -57,7 +57,14 @@
           *ngIf="enableSaveAll"
           [label]="'SendWhatsApp'"
           [imageSrc]="'/assets/img/icon/whatsapp.svg'"
-          [onClick]="openWhatsappPopup"
+          [onClick]="openWhatsappPopup.bind(this, 'student')"
+          [disabled]="selectedRows.length===0">
+      </app-button>
+        <app-button
+          *ngIf="enableSaveAll"
+          [label]="'SendWhatsAppToTeacher'"
+          [imageSrc]="'/assets/img/icon/whatsapp.svg'"
+          [onClick]="openWhatsappPopup.bind(this, 'teacher')"
           [disabled]="selectedRows.length===0">
       </app-button>
 

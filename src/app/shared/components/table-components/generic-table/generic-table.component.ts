@@ -774,13 +774,14 @@ export class GenericTableComponent<T extends Record<string, any>> implements Aft
   };
 
 
-openWhatsappPopup = () => {
+openWhatsappPopup = ( type : string ) => {
   if (this.selectedRows.length === 0) return;
 
   this.dialog.open(WhatsappPreviewPopupComponent, {
     width: '500px',
     data: {
-      rows: this.selectedRows
+      rows: this.selectedRows,
+      type: type
     }
   });
 };
