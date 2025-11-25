@@ -74,11 +74,24 @@ export class TeachersTrackingComponent implements AfterViewInit {
   // =============================
   // Search
   // =============================
-  filteredTeachers() {
-    return this.teachers.filter(t =>
-      (t.teacherFullName || "").includes(this.searchTerm)
-    );
-  }
+ filteredTeachers() {
+  const term = (this.searchTerm || "").trim();
+
+  if (term === "") return this.teachers;
+
+  const isNumeric = /^[0-9]+$/.test(term);
+
+  return this.teachers.filter(t => {
+    if (isNumeric) {
+      return t.teacherUserPk?.toString().includes(term);
+    } else {
+      return (t.teacherFullName || "")
+        .toLowerCase()
+        .includes(term.toLowerCase());
+    }
+  });
+}
+
 
   // =============================
   // Selection
