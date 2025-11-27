@@ -74,7 +74,7 @@
             <!-- HEADER: الاسم + الإجمالي -->
             <div class="teacher-header">
 
-            <mat-checkbox  class="styled-checkbox"
+            <!-- <mat-checkbox  class="styled-checkbox"
                           [(ngModel)]="t.selected"
                           (change)="updateMarkers()">
             </mat-checkbox>
@@ -82,8 +82,25 @@
               <span class="checkbox-content">
                 <img [src]="photoUrl(t)" class="avatar-sm">
                 <span class="teacher-name">{{ t.teacherFullName }}</span>
-              </span>
+              </span> -->
 
+                <div class="teacher-row">
+                  <!-- <mat-checkbox
+                    class="styled-checkbox"
+                    [(ngModel)]="t.selected"
+                    (change)="updateMarkers()"
+                  >
+                </mat-checkbox> -->
+
+                   <input type="checkbox"
+                    [checked]="t.selected"
+                    (change)="updateMarkers()" />
+
+                  <div class="teacher-info">
+                    <img [src]="photoUrl(t)" class="teacher-avatar">
+                    <span class="teacher-name">{{ t.teacherFullName }}</span>
+                  </div>
+                </div>
 
 
 

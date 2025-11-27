@@ -288,15 +288,92 @@
 }
 
 
-.styled-checkbox.mat-checkbox .mat-checkbox-layout .mat-checkbox-inner-container {
-  transform: scale(0.2) !important;
-  transform-origin: right center !important;
+
+/* ===========================
+   تحسين شكل الـ row بالكامل
+   =========================== */
+.teacher-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  gap: 10px;               /* المسافة بين checkbox والصورة */
 }
 
-.styled-checkbox .mat-checkbox-frame {
-  border-width: 2px !important;
+/* ===========================
+   تحسين الـ checkbox
+   =========================== */
+.styled-checkbox.mat-checkbox .mat-checkbox-layout .mat-checkbox-inner-container {
+  transform: scale(0.8) !important;
+  margin-right: 1px;       /* يبعده عن الصورة */
 }
+
+/* .styled-checkbox .mat-checkbox-frame {
+  border-width: 2px !important;
+} */
 
 .styled-checkbox.mat-checkbox-checked .mat-checkbox-checkmark-path {
   stroke-width: 2.5px !important;
+}
+
+/* ===========================
+   الصورة والاسم
+   =========================== */
+.teacher-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;                /* المسافة بين الصورة والاسم */
+}
+
+.teacher-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ccc;
+}
+
+.teacher-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+}
+
+
+.mdc-checkbox__background {
+    display: inline-flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 15px;
+    height: 15px;
+    border: 2px solid currentColor;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    will-change: background-color, border-color;
+    transition: background-color 90ms 
+    cubic-bezier(0.4, 0, 0.6, 1), border-color 90ms 
+    cubic-bezier(0.4, 0, 0.6, 1);
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    border-color: var(--mdc-checkbox-unselected-icon-color, var(--mat-sys-on-surface-variant));
+    top: calc((var(--mdc-checkbox-state-layer-size, 10px) - 15px) / 2);
+    left: calc((var(--mdc-checkbox-state-layer-size, 10px) - 15px) / 2);
+}
+
+.mdc-checkbox {
+    display: inline-block;
+    position: relative;
+    flex: 0 0 15px;
+    box-sizing: content-box;
+    width: 15px;
+    height: 15px;
+    line-height: 0;
+    white-space: nowrap;
+    cursor: pointer;
+    vertical-align: bottom;
+    padding: calc((var(--mdc-checkbox-state-layer-size, 40px) - 18px) / 2);
+    margin: calc((var(--mdc-checkbox-state-layer-size, 40px) - var(--mdc-checkbox-state-layer-size, 40px)) / 2);
 }
