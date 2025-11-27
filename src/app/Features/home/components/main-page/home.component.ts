@@ -25,6 +25,7 @@ export class HomeComponent {
   ngAfterViewInit(): void {
     this.sub = this.bridge.events$.subscribe(e => {
       if (e?.type === 'REFRESH') {
+        console.log('Refreshing home page data...');
         this.monthlyFinancialTransactions?.loadData?.();
         this.dailyClassSummary?.loadDate?.();
         this.classesTimeline?.loadData?.();

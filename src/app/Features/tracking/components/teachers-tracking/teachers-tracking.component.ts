@@ -37,7 +37,9 @@ export class TeachersTrackingComponent implements AfterViewInit {
 
     this.sub = this.bridge.events$.subscribe(e => {
       if (e?.type === 'REFRESH') {
+        console.log('Refreshing teacher locations...'); 
         this.refreshTeacherLocations();
+        
       }
     });
   }
@@ -175,22 +177,26 @@ export class TeachersTrackingComponent implements AfterViewInit {
   }
 
 
-  refreshTeacherLocations() {
+refreshTeacherLocations() {
   this.trackingService.getTodayTeachersStatus().subscribe(data => {
 
-    data.forEach(updated => {
-      const original = this.teachers.find(t => t.teacherUserPk === updated.teacherUserPk);
+    // نعمل Map للبيانات الجديدة
+    const updatedList = data.map(newTeacher => {
+      const oldTeacher = this.teachers.find(t => t.teacherUserPk === newTeacher.teacherUserPk);
 
-      if (original) {
-        original.locationStartLat = updated.locationStartLat;
-        original.locationStartLong = updated.locationStartLong;
-
-        original.teacherStatus = updated.teacherStatus;
-      }
+      return {
+        ...newTeacher,
+        selected: oldTeacher ? oldTeacher.selected : true, 
+        lat: newTeacher.locationStartLat,
+        lng: newTeacher.locationStartLong,
+        avatar: newTeacher.profileUrl,
+      };
     });
 
-    this.updateMarkers();
+    this.teachers = updatedList;  
+    this.updateMarkers();         
   });
 }
+
 
 }
