@@ -11,48 +11,66 @@
     <!-- Sidebar -->
     <aside class="sidebar">
 
-      <h3 class="text-header-primary">اختيار المدرسين</h3>
-        <div class="search-box">
-            <i class="fa fa-search search-icon"></i>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="{{ 'communication.search' | translate }}"
-              [(ngModel)]="searchTerm"
-            />
-          </div>
-        
+      <h3 class="text-header-primary">
+        {{ 'tracking.selectTeachers' | translate }}
+      </h3>
+
+      <!-- Search box -->
+      <div class="search-box">
+        <i class="fa fa-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="{{ 'communication.search' | translate }}"
+          [(ngModel)]="searchTerm"
+        />
+      </div>
 
       <!-- Buttons -->
-    
-
       <div class="select-actions-compact">
-            <button class="action-btn-compact select-all" (click)="selectAll()">
-              <i class="fa fa-check"></i>
-              {{ 'communication.selectAll' | translate }}
-            </button>
+        <button class="action-btn-compact select-all" (click)="selectAll()">
+          <i class="fa fa-check"></i>
+          {{ 'communication.selectAll' | translate }}
+        </button>
 
-            <button class="action-btn-compact unselect-all" (click)="clearAll()">
-              <i class="fa fa-times"></i>
-              {{ 'communication.unselectAll' | translate }}
-            </button>
+        <button class="action-btn-compact unselect-all" (click)="clearAll()">
+          <i class="fa fa-times"></i>
+          {{ 'communication.unselectAll' | translate }}
+        </button>
       </div>
 
       <!-- Teachers List -->
-      <div class="teachers-list">
-        <div class="teacher-item"
-             *ngFor="let t of filteredTeachers()">    
-        <mat-checkbox
-          [(ngModel)]="t.selected"
-          (change)="updateMarkers()">
+      <div class="teacher-item" *ngFor="let t of filteredTeachers()">
+
+        <mat-checkbox [(ngModel)]="t.selected" (change)="updateMarkers()">
           <span class="checkbox-content">
             <img [src]="photoUrl(t)" class="avatar-sm">
             {{ t.teacherFullName }}
           </span>
         </mat-checkbox>
-         
+
+        <!-- Stats Row -->
+        <div class="teacher-stats-row">
+          <span class="stat scheduled">
+            📅 {{ 'tracking.scheduled' | translate }}: {{ t.scheduledCount }}
+          </span>
+
+          <span class="stat started">
+            ▶ {{ 'tracking.started' | translate }}: {{ t.startedCount }}
+          </span>
+
+          <span class="stat finished">
+            ✔ {{ 'tracking.finished' | translate }}: {{ t.finishedCount }}
+          </span>
+
+          <span class="stat canceled">
+            ✖ {{ 'tracking.canceled' | translate }}: {{ t.canceledCount }}
+          </span>
         </div>
+
+
       </div>
+
 
     </aside>
 

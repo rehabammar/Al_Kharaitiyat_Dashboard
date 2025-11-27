@@ -787,6 +787,20 @@ openWhatsappPopup = ( type : string ) => {
 };
 
 
+confirmSaveAllForPyments = () => {
+    if (!this.selectAllRows) return;
+    this.dialog.open(ConfirmPopupComponent, {
+      data: {
+        type: 'confirmation',
+        messageKey: 'message.confirmPayment',
+        showCancel: true
+      }
+    }).afterClosed().subscribe(res => {
+      if (res?.result === 1) this.saveAll();
+    });
+  };
+
+
 
 
 }

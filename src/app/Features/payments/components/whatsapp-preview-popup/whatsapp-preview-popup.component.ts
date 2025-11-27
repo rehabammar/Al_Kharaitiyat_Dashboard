@@ -11,8 +11,10 @@ import { ConfirmPopupComponent } from '../../../../shared/components/confirm-pop
 })
 export class WhatsappPreviewPopupComponent {
 
-  messageTemplate: string = '';
-  finalMessages: { number: string, message: string, userFk: number }[] = [];
+  finalMessages: { number: string, message: string, userFk: number  , name : string}[] = [];
+
+  selectedIndex: number = 0;   // المؤشر الحالي للطالب المحدد
+  messageTemplate: string = ''; // النص الذي يظهر في textarea
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -25,12 +27,13 @@ export class WhatsappPreviewPopupComponent {
     } else {
       this.buildStudentMessages();
     }
+
+    // تحميل الرسالة الأولى في textarea
+    this.messageTemplate = this.finalMessages[0]?.message || '';
   }
 
-
-  /** تجهيز الرسائل */
+  /** بناء رسائل الطلاب */
   buildStudentMessages() {
-
     const grouped: Record<string, any[]> = {};
 
     this.data.rows.forEach((row: any) => {
@@ -42,12 +45,9 @@ export class WhatsappPreviewPopupComponent {
     const messages: any[] = [];
 
     Object.keys(grouped).forEach(number => {
-
       const rows = grouped[number];
 
-      /** 1) تفاصيل كل حصة */
       const studentLines = rows.map(row => {
-
         const formattedDate = new Date(row.actualStartDate).toLocaleString('ar', {
           year: 'numeric',
           month: 'long',
@@ -63,14 +63,12 @@ export class WhatsappPreviewPopupComponent {
 *المعلم:* ${row.teacherFkName}
 *التاريخ:* ${formattedDate}
 💰 *المبلغ:* ${row.amountRemaining} ريال`;
-      }).join('\n\n');
+      }).join("\n\n");
 
-      /** 2) إجمالي المبالغ */
       const total = rows.reduce((sum, r) => sum + (r.amountRemaining || 0), 0);
 
-      /** 3) الرسالة النهائية */
-      const fullMessage =
-        `السلام عليكم ورحمة الله وبركاته 🌿،
+      const fullMessage = `
+السلام عليكم ورحمة الله وبركاته 🌿،
 
 تم إرسال هذه الرسالة بشكل آلي من قبل *مركز الخريطيات التعليمي* 🎓.
 
@@ -80,111 +78,114 @@ ${studentLines}
 
 ────────────────
 💵 *إجمالي المستحق:* ${total} ريال
-💵 *إجمالي الباص:* ${0.0} ريال
-
+💵 *إجمالي الباص:* ${0} ريال
 ────────────────
 
 💳 تذكير بسداد المستحقات.
-🙏 شاكرين حسن تعاونكم المستمر.`;
-
-      const finalNum = number.startsWith('+') ? number : `+${number}`;
+🙏 شاكرين حسن تعاونكم المستمر.`.trim();
 
       messages.push({
-        number: finalNum,
+        number: number.startsWith('+') ? number : `+${number}`,
         message: fullMessage,
-        userFk: rows[0].payerFk
+        userFk: rows[0].payerFk,
+        name: rows[0].payerFkName,
       });
     });
 
     this.finalMessages = messages;
-    this.messageTemplate = messages
-      .map(m => m.message)
-      .join("\n\n============================\n\n");
-
   }
 
+  /** بناء رسائل المعلمين */
+buildTeacherMessages() {
+  const groupedByTeacher: Record<string, any[]> = {};
 
-  buildTeacherMessages() {
+  // Group by teacher WhatsApp
+  this.data.rows.forEach((row: any) => {
+    const key = row.teacherWhatsappNumber;
+    if (!groupedByTeacher[key]) groupedByTeacher[key] = [];
+    groupedByTeacher[key].push(row);
+  });
 
-    const grouped: Record<string, any[]> = {};
+  const messages: any[] = [];
 
-    // Group by teacher WhatsApp only (all classes in one message)
-    this.data.rows.forEach((row: any) => {
-      const key = row.teacherWhatsappNumber;
-      if (!grouped[key]) grouped[key] = [];
-      grouped[key].push(row);
+  Object.keys(groupedByTeacher).forEach((number: string) => {
+    const teacherRows: any[] = groupedByTeacher[number];
+    const teacherName: string = teacherRows[0].teacherFkName;
+
+    // Group inside by classId
+    const classes: Record<number, any[]> = {};
+
+    teacherRows.forEach((r: any) => {
+      const classId = r.relatedClassFk;
+      if (!classes[classId]) classes[classId] = [];
+      classes[classId].push(r);
     });
 
-    const messages: any[] = [];
+    let finalText =
+      `السلام عليكم أستاذ *${teacherName}* 👋،\n\n`;
 
-    Object.keys(grouped).forEach(number => {
+    let totalAll = 0;
 
-      const rows = grouped[number];
+    Object.keys(classes).forEach((classId: any) => {
+      const rows: any[] = classes[classId];
 
-      const teacherName = rows[0].teacherFkName;
-
-      // Format each class block
-      const classLines = rows.map(r => {
-
-        const formattedDate = new Date(r.actualStartDate).toLocaleString('ar', {
-          year: 'numeric', month: 'long', day: 'numeric',
-          hour: '2-digit', minute: '2-digit'
-        });
-
-        return `
-تم تسجيل بيانات *الحصة رقم ${r.relatedClassFk}*:
-
-📅 *التاريخ:* ${formattedDate}
-
-📘 *قائمة الطلاب:*
-👤 الطالب: ${r.payerFkName}
-💰 المستحق: ${r.amountRemaining} ريال
-
-────────────────`;
-      }).join("\n");
-
-      // Total amount for teacher
-      const total = rows.reduce((sum, r) => sum + (r.amountRemaining || 0), 0);
-
-      // Final formatted WhatsApp message
-      const message =
-        `السلام عليكم أستاذ *${teacherName}* 👋،
-
-${classLines}
-
-💵 *إجمالي المستحقات:* ${total} ريال
-────────────────
-
-نشكركم على جهودكم ونأمل لكم مزيدًا من التوفيق والنجاح 🌟`;
-
-      const finalNum = number?.startsWith('+') ? number : `+${number}`;
-
-      messages.push({
-        number: finalNum,
-        message,
-        userFk: rows[0].coursesTeacherFk
+      const formattedDate = new Date(rows[0].actualStartDate).toLocaleString('ar', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
       });
+
+      finalText +=
+        `تم تسجيل بيانات *الحصة رقم ${classId}*:\n\n` +
+        `📅 *التاريخ:* ${formattedDate}\n\n` +
+        `📘 *قائمة الطلاب:*\n`;
+
+      rows.forEach((r: any) => {
+        finalText +=
+          `👤 الطالب: ${r.payerFkName}\n` +
+          `💰 المستحق: ${r.amountRemaining} ريال\n\n`;
+      });
+
+      finalText += `────────────────\n\n`;
+
+      totalAll += rows.reduce(
+        (sum: number, r: any) => sum + (r.amountRemaining || 0),
+        0
+      );
     });
 
-    this.finalMessages = messages;
-    this.messageTemplate = messages
-      .map(m => m.message)
-      .join("\n\n============================\n\n");  }
+    finalText +=
+      `💵 *إجمالي المستحقات:* ${totalAll} ريال\n` +
+      `────────────────\n\n` +
+      `نشكركم على جهودكم ونأمل لكم مزيدًا من التوفيق والنجاح 🌟`;
+
+    messages.push({
+      number: number.startsWith('+') ? number : `+${number}`,
+      message: finalText,
+      userFk: teacherRows[0].coursesTeacherFk,
+      name: teacherName
+    });
+  });
+
+  this.finalMessages = messages;
+}
 
 
+  /** تغيير الشخص المحدد */
+  onChangeSelected() {
+    this.messageTemplate = this.finalMessages[this.selectedIndex].message;
+  }
+
+  /** عند التعديل داخل textarea */
+  onMessageChange() {
+    this.finalMessages[this.selectedIndex].message = this.messageTemplate;
+  }
 
   /** إرسال الرسائل */
   sendNow() {
-
-    // لو المستخدم عدل الرسالة بنفسه — نطبق التعديل على كل الرسائل
-    this.finalMessages = this.finalMessages.map(m => ({
-      ...m,
-      message: this.messageTemplate
-    }));
-
     const payload = { messages: this.finalMessages };
-
-    console.log("WHATSAPP FINAL PAYLOAD:", payload);
 
     this.communicationService.sendBroadcast(payload).subscribe({
       next: () => {
@@ -194,7 +195,6 @@ ${classLines}
             messageKey: 'message.success',
             autoCloseMs: 2000,
             showCancel: false,
-
           },
           panelClass: 'dialog-success'
         });

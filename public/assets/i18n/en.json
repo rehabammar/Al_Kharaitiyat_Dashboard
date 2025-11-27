@@ -19,7 +19,7 @@
     "commit": "Commit",
     "SelectAll": "Select All",
     "UnselectAll": "Unselect All",
-    "SendWhatsApp": "Send WhatsApp",
+    "SendWhatsApp": "Send WhatsApp to Students",
     "SendWhatsAppToTeacher": "Send WhatsApp to Teacher",
     "excel": "Excel",
     "label.ok": "OK",
@@ -399,7 +399,17 @@
   "communication.admins": "Admins",
   "communication.teachers": "Teachers",
   "communication.students": "Students",
-  "communication.totalCount": "Total Users"
+  "communication.totalCount": "Total Users",
+  "whatsapp.previewTitle": "WhatsApp Message Preview",
+  "whatsapp.editMessageForReceiver": "Edit Message for Recipient",
+  "buttons.cancel": "Cancel",
+  "buttons.sendNow": "Send Now",
+  "tracking.selectTeachers": "Select Teachers",
+  "tracking.scheduled": "Scheduled",
+  "tracking.started": "Started",
+  "tracking.finished": "Finished",
+  "tracking.canceled": "Canceled"
+
 
 
 }

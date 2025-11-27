@@ -1,14 +1,18 @@
 export class TeacherTracking {
   teacherUserPk?: number;
+  genderFk?: number;
+
   teacherFullName?: string;
   teacherUsername?: string;
   profilePicturePath?: string;
+  profileUrl?: string;
   phoneNumber?: string;
 
   finishedCount?: number;
   startedCount?: number;
   scheduledCount?: number;
   canceledCount?: number;
+  totalToday?: number;
 
   classPk?: number;
   classTitle?: string;
@@ -19,17 +23,16 @@ export class TeacherTracking {
   actualStartDate?: string | null;
   actualEndDate?: string | null;
 
-  locationStartLat?: number;
-  locationStartLong?: number;
+  locationStartLat?: number | null;
+  locationStartLong?: number | null;
   locationEndLat?: number | null;
   locationEndLong?: number | null;
 
-  teacherStatus?: 'ONLINE' | 'OFFLINE';
-  profileUrl?: string;
-  genderFk?: number;
-  
-  selected?: boolean = false;
+  teacherStatus?: string;
 
-  constructor(init?: Partial<TeacherTracking>) {}
+  selected: boolean = false;
 
+  constructor(init?: Partial<TeacherTracking>) {
+    Object.assign(this, init);
+  }
 }

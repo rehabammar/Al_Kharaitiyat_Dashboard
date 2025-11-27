@@ -35,7 +35,7 @@
           *ngIf="enableSaveAll"  
           [label]="'payment.pay'"
           [imageSrc]="'/assets/img/icon/save.svg'"
-          [onClick]="saveAll"
+          [onClick]="confirmSaveAllForPyments"
           [disabled]="buttonDisabled['updateAll'] || selectedRows.length===0">
       </app-button>
 

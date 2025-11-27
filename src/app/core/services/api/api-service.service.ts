@@ -114,9 +114,9 @@ export class ApiService {
   ): Observable<ApiResponse<T>> {
     // const startTime = Date.now();
 
-    console.log(`[DEBUG] POST Request - URL: ${url}`);
-    console.log(`[DEBUG] POST Body - ${JSON.stringify(body)}`);
-    console.log(`[DEBUG] POST Headers - ${JSON.stringify(options.headers || {})}`);
+    // console.log(`[DEBUG] POST Request - URL: ${url}`);
+    // console.log(`[DEBUG] POST Body - ${JSON.stringify(body)}`);
+    // console.log(`[DEBUG] POST Headers - ${JSON.stringify(options.headers || {})}`);
 
     this.loadingService.show();
 

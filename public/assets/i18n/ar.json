@@ -19,7 +19,7 @@
     "commit": "حفظ",
     "SelectAll": "الكل",
     "UnselectAll": "إلغاء الكل",
-    "SendWhatsApp": "إرسال واتساب",
+    "SendWhatsApp": "إرسال واتساب للطلاب",
     "SendWhatsAppToTeacher": "إرسال واتساب للمعلم",
     "excel": "إكسيل",
     "label.ok": "موافق",
@@ -398,7 +398,17 @@
     "communication.admins": "مديرين",
     "communication.teachers": "مدرّسين",
     "communication.students": "طلاب",
-    "communication.totalCount": "إجمالي المستخدمين"
+    "communication.totalCount": "إجمالي المستخدمين",
+    "whatsapp.previewTitle": "معاينة رسالة واتساب",
+    "whatsapp.editMessageForReceiver": "تعديل الرسالة للمتسلم",
+    "buttons.cancel": "إلغاء",
+    "buttons.sendNow": "إرسال الآن",
+    "tracking.selectTeachers": "اختيار المدرسين",
+    "tracking.scheduled": "مجدولة",
+    "tracking.started": "بدأت",
+    "tracking.finished": "انتهت",
+    "tracking.canceled": "أُلغيت"
+
 
 
 

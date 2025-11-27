@@ -47,16 +47,21 @@ export class TeachersTrackingComponent implements AfterViewInit {
   // Load today's teachers status
   // =============================
   loadTeachers() {
-    this.trackingService.getTodayTeachersStatus().subscribe(data => {
-      this.teachers = data.map(t => ({
-        ...t,
-        selected: false,
-        lat: t.locationStartLat,
-        lng: t.locationStartLong,
-        avatar: t.profileUrl
-      }));
-    });
-  }
+  this.trackingService.getTodayTeachersStatus().subscribe(data => {
+    this.teachers = data.map(t => ({
+      ...t,
+      selected: true,   // ← كل المدرسين مختارين من البداية
+      lat: t.locationStartLat,
+      lng: t.locationStartLong,
+      avatar: t.profileUrl
+    }));
+
+    this.updateMarkers();
+  });
+}
+
+
+
 
   // =============================
   // Init Leaflet Map

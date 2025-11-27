@@ -32,6 +32,13 @@ export class CommunicationPageComponent implements OnInit {
   pageSize = 1000;
   totalUsers = 0;
 
+  
+  environment = {
+  production: true,
+  apiHost: 'http://157.180.65.178:8080'
+};
+
+
   constructor(private commService: CommunicationService) { }
 
   ngOnInit() {
@@ -276,22 +283,43 @@ export class CommunicationPageComponent implements OnInit {
   }
 
 
-  getUserPhoto(u: User): string {
-    const url = (u.profilePicturePath ?? '').trim();
+  // getUserPhoto(u: User): string {
+  //   const url = (u.profilePicturePath ?? '').trim();
 
-    // لو فيه URL فعلي
-    if (url && /^https?:\/\//i.test(url)) return url;
+  //   // لو فيه URL فعلي
+  //   if (url && /^https?:\/\//i.test(url)) return url;
 
-    // لو مش موجود — نحدد حسب الجندر
-    if (u.genderFk === 1) {
-      return 'assets/img/gallery/female_avatar.svg';
-    } else if (u.genderFk === 2) {
-      return 'assets/img/gallery/female_avatar.svg';
-    }
+  //   // لو مش موجود — نحدد حسب الجندر
+  //   if (u.genderFk === 1) {
+  //     return 'assets/img/gallery/male_avatar.svg';
+  //   } else if (u.genderFk === 2) {
+  //     return 'assets/img/gallery/female_avatar.svg';
+  //   }
 
-    // افتراضي (ذكر)
-    return 'assets/img/male-avatar.png';
+  //   // افتراضي (ذكر)
+  //   return 'assets/img/male_avatar.png';
+  // }
+
+  
+   getUserPhoto(u: User): string {
+  const raw = (u.profileUrl ?? u.profilePicturePath ?? '').trim();
+  if (!raw) {
+    if(u.genderFk == 1) return 'assets/img/gallery/male_avatar.svg' ;
+    else return 'assets/img/gallery/female_avatar.svg' ;
   }
+    
+
+  // collapse accidental double slashes (but keep "http://" intact)
+  const fixed = raw.replace(/([^:]\/)\/+/g, '$1');
+
+  // if absolute URL, use it as-is
+  if (/^https?:\/\//i.test(fixed)) return fixed;
+
+  // if relative, prefix with API host (optional; remove if not needed)
+  const base = this.environment.apiHost?.replace(/\/+$/, '') ?? '';
+  const path = fixed.replace(/^\/+/, '');
+  return base ? `${base}/${path}` : path;
+}
 
 
 

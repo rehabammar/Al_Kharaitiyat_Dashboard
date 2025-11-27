@@ -2,20 +2,43 @@
 
   <h2 class="popup-title">
     <i class="fa-brands fa-whatsapp"></i>
-    معاينة رسالة واتساب
+    {{ 'whatsapp.previewTitle' | translate }}
   </h2>
 
+  <!-- اختيار المتسلم -->
+  <label class="label-title">
+    {{ 'whatsapp.editMessageForReceiver' | translate }}
+  </label>
+
+  <select
+    [(ngModel)]="selectedIndex"
+    (change)="onChangeSelected()"
+    class="student-selector">
+
+    <option *ngFor="let msg of finalMessages; let i = index" [value]="i">
+      {{ msg.name }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (&#x200E;{{ msg.number }})
+    </option>
 
 
+
+  </select>
+
+  <!-- صندوق الرسالة -->
   <textarea
     [(ngModel)]="messageTemplate"
-    rows="10"
+    (ngModelChange)="onMessageChange()"
+    rows="12"
     class="message-preview-box">
   </textarea>
 
   <div class="popup-actions">
-    <button class="btn cancel-btn" (click)="dialogRef.close()">إلغاء</button>
-    <button class="btn send-btn" (click)="sendNow()">إرسال الآن</button>
+    <button class="cancel-btn" (click)="dialogRef.close()">
+      {{ 'buttons.cancel' | translate }}
+    </button>
+
+    <button class="send-btn" (click)="sendNow()">
+      {{ 'buttons.sendNow' | translate }}
+    </button>
   </div>
 
 </div>
