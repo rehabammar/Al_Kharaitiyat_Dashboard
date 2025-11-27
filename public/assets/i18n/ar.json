@@ -403,11 +403,13 @@
     "whatsapp.editMessageForReceiver": "تعديل الرسالة للمتسلم",
     "buttons.cancel": "إلغاء",
     "buttons.sendNow": "إرسال الآن",
-    "tracking.selectTeachers": "اختيار المدرسين",
+    "tracking.selectTeachers": "متابعة المدرسين",
     "tracking.scheduled": "مجدولة",
     "tracking.started": "بدأت",
     "tracking.finished": "انتهت",
-    "tracking.canceled": "أُلغيت"
+    "tracking.canceled": "أُلغيت",
+    "tracking.totalClasses": "الإجمالي"
+
 
 
 

@@ -31,7 +31,7 @@
   font-size: 20px;
   line-height: 22px;
   text-align: start;
-  padding: 15px 0;
+  padding: 5px 0;
   display: block;
 }
 
@@ -52,6 +52,7 @@
   font-size: 14px;
   text-align: start;
   transition: 0.2s;
+  font-family: 'bonFont';
 }
 
 .search-input:focus {
@@ -79,101 +80,191 @@
   margin-bottom: 12px;
 }
 
+.select-actions-compact {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* الزرار العام */
 .action-btn-compact {
   flex: 1;
-  padding: 7px 8px;
-  font-size: 12px;
-  border-radius: 8px;
+  padding: 9px 10px;
+  font-size: 13px;
+  font-family: 'bonFont';
+  border-radius: 10px;
+
   border: none;
+  outline: none;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
+
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.15s;
+
+  transition: 0.25s ease;
+  box-shadow: 
+    0 3px 6px rgba(0,0,0,0.15),
+    0 0 0 rgba(255,255,255,0.4) inset;
+
+  letter-spacing: 0.3px;
 }
 
+/* Select ALL */
 .select-all {
-  background: #22c55e !important;
+  background: linear-gradient(135deg, #22c55e, #16a34a) !important;
 }
 
+.select-all:hover {
+  background: linear-gradient(135deg, #16a34a, #15803d) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 10px rgba(34,197,94,0.30),
+    0 0 0 rgba(255,255,255,0.4) inset;
+}
+
+/* Unselect ALL */
 .unselect-all {
-  background: #ef4444 !important;
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
 }
 
-/* ================================
-   TEACHERS LIST
-================================ */
-.teachers-list {
-  margin-top: 5px;
+.unselect-all:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 10px rgba(239,68,68,0.30),
+    0 0 0 rgba(255,255,255,0.4) inset;
+}
+
+/* الأيقونات */
+.action-btn-compact i {
+  font-size: 14px;
+  filter: brightness(1.1);
 }
 
 .teacher-item {
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start !important;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-
-.checkbox-content {
+/* الاسم + الإجمالي */
+.teacher-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;   /* ← زي ما طلبت */
+  width: 100%;
+  margin-bottom: 8px;
 }
 
-/* Avatar */
+.teacher-name {
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'bonFont';
+  gap: 8px;
+
+}
+
+/* إجمالي الحصص */
+
+.total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* لو عايزها تبدأ من start خليها flex-start */
+  margin-bottom: 6px;
+}
+
+.total-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #0d6efd;
+  margin-bottom: 2px;
+  font-family: 'bonFont';
+}
+
+
+.total-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0d6efd;
+  /* font-family: 'bonFont'; */
+}
+
+.premium-total {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+
+  background: linear-gradient(135deg, #ffffff, #f2f6ff);
+  border: 1px solid rgba(13, 110, 253, 0.25);
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #0d6efd;
+
+  box-shadow: 0 3px 8px rgba(0,0,0,0.07);
+  backdrop-filter: blur(2px);
+
+  transition: all 0.2s ease;
+}
+
+/* .premium-total::before {
+  content: "📊"; 
+  font-size: 14px;
+} */
+
+.premium-total:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+
+
+
+/* صورة المدرس */
 .avatar-sm {
-  width: 28px;
-  height: 28px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
 }
 
-/* Fix Material Checkbox Spacing */
-.teacher-item .mat-checkbox-layout {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-}
-
-.teacher-item .mat-checkbox-inner-container {
-  transform: scale(1.2);
-}
-
-/* ================================
-   TEACHER STATS
-================================ */
+/* صف الإحصائيات */
 .teacher-stats-row {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;                 /* مسافة بين العناصر */
-  margin: 6px 0 0 35px;
-  white-space: nowrap;       /* يمنع النزول للسطر */
+  align-items: center;    /* محاذاة عمودية */
+  justify-content: center; /* 🟣 محاذاة أفقية في المنتصف */
+  gap: 5px;
+  flex-wrap: wrap;        /* يسمح بالنزول لسطر تاني لو المساحة ضاقت */
+  width: 100%;            /* مهم علشان الـ center يشتغل مضبوط */
+  margin-top: 6px;
 }
 
 .stat {
   display: flex;
   align-items: center;
-  gap: 4px;                  /* مسافة بين الأيقونة والاسم */
-  background: #f4f4f4;
-  padding: 2px 6px;
+  gap: 4px;
+  padding: 4px 7px;
+  font-size: 12px;
   border-radius: 6px;
-  font-size: 11px;           /* خط صغير */
-  font-weight: 600;
+  font-weight: 400;
+  white-space: nowrap;
+  font-family: 'bonFont';
 }
 
-/* ألوان الحالات */
+/* الألوان */
 .stat.scheduled { background: #fff8e1; color: #8a6d00; }
 .stat.started   { background: #e0f0ff; color: #004a80; }
 .stat.finished  { background: #e7f7e9; color: #1b5e20; }
 .stat.canceled  { background: #fdecea; color: #b71c1c; }
 
-/* أيقونة أصغر */
 .stat::first-letter {
   font-size: 12px;
 }
@@ -194,4 +285,18 @@
 .map {
   width: 100%;
   height: 100%;
+}
+
+
+.styled-checkbox.mat-checkbox .mat-checkbox-layout .mat-checkbox-inner-container {
+  transform: scale(0.2) !important;
+  transform-origin: right center !important;
+}
+
+.styled-checkbox .mat-checkbox-frame {
+  border-width: 2px !important;
+}
+
+.styled-checkbox.mat-checkbox-checked .mat-checkbox-checkmark-path {
+  stroke-width: 2.5px !important;
 }

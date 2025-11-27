@@ -86,6 +86,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { PaymnetPageComponent } from './Features/payments/components/paymnet-page/paymnet-page.component';
 import { CommunicationPageComponent } from './Features/communication/components/communication-page/communication-page.component';
 import { WhatsappPreviewPopupComponent } from './Features/payments/components/whatsapp-preview-popup/whatsapp-preview-popup.component';
+import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
 
 
 
@@ -196,6 +197,11 @@ import { WhatsappPreviewPopupComponent } from './Features/payments/components/wh
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideMessaging(() => getMessaging()),
     provideNgxMatMomentDate(),
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: NoCacheI18nInterceptor,
+    multi: true
+  }
 
   ], bootstrap: [AppComponent]
 })

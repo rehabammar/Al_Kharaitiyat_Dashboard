@@ -404,11 +404,13 @@
   "whatsapp.editMessageForReceiver": "Edit Message for Recipient",
   "buttons.cancel": "Cancel",
   "buttons.sendNow": "Send Now",
-  "tracking.selectTeachers": "Select Teachers",
+  "tracking.selectTeachers": "Teachers Tracking",
   "tracking.scheduled": "Scheduled",
   "tracking.started": "Started",
   "tracking.finished": "Finished",
-  "tracking.canceled": "Canceled"
+  "tracking.canceled": "Canceled",
+  "tracking.totalClasses": "Total"
+
 
 
 

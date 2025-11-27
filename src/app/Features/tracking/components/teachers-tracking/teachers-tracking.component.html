@@ -40,7 +40,7 @@
       </div>
 
       <!-- Teachers List -->
-      <div class="teacher-item" *ngFor="let t of filteredTeachers()">
+      <!-- <div class="teacher-item" *ngFor="let t of filteredTeachers()">
 
         <mat-checkbox [(ngModel)]="t.selected" (change)="updateMarkers()">
           <span class="checkbox-content">
@@ -49,27 +49,88 @@
           </span>
         </mat-checkbox>
 
-        <!-- Stats Row -->
         <div class="teacher-stats-row">
           <span class="stat scheduled">
-            📅 {{ 'tracking.scheduled' | translate }}: {{ t.scheduledCount }}
+            📅 {{ 'tracking.scheduled' | translate }}&nbsp;:&nbsp;&nbsp;{{ t.scheduledCount }}
           </span>
 
           <span class="stat started">
-            ▶ {{ 'tracking.started' | translate }}: {{ t.startedCount }}
+            ▶ {{ 'tracking.started' | translate }}&nbsp;:&nbsp;&nbsp;{{ t.startedCount }}
           </span>
 
           <span class="stat finished">
-            ✔ {{ 'tracking.finished' | translate }}: {{ t.finishedCount }}
+            ✔ {{ 'tracking.finished' | translate }}&nbsp;:&nbsp;&nbsp;{{ t.finishedCount }}
           </span>
 
           <span class="stat canceled">
-            ✖ {{ 'tracking.canceled' | translate }}: {{ t.canceledCount }}
+            ✖ {{ 'tracking.canceled' | translate }}&nbsp;:&nbsp;&nbsp;{{ t.canceledCount }}
           </span>
         </div>
 
 
-      </div>
+      </div> -->
+       <div class="teacher-item" *ngFor="let t of filteredTeachers()">
+
+            <!-- HEADER: الاسم + الإجمالي -->
+            <div class="teacher-header">
+
+            <mat-checkbox  class="styled-checkbox"
+                          [(ngModel)]="t.selected"
+                          (change)="updateMarkers()">
+            </mat-checkbox>
+
+              <span class="checkbox-content">
+                <img [src]="photoUrl(t)" class="avatar-sm">
+                <span class="teacher-name">{{ t.teacherFullName }}</span>
+              </span>
+
+
+
+
+
+              <!-- Total Today -->
+              <div class="total-container">
+                <!-- <div class="total-label">
+                  {{ 'tracking.totalClasses' | translate }}
+                </div> -->
+
+                <span class="premium-total">
+                  <div class="total-label">
+                  {{ 'tracking.totalClasses' | translate }}
+                </div>
+                <div class="total-count">
+                  {{ t.totalToday }}
+                </div>
+                  
+                </span>
+              </div>
+
+
+
+            </div>
+
+            <!-- STATS ROW -->
+            <div class="teacher-stats-row">
+
+              <span class="stat scheduled">
+                📅 {{ 'tracking.scheduled' | translate }} : {{ t.scheduledCount }}
+              </span>
+
+              <span class="stat started">
+                ▶ {{ 'tracking.started' | translate }} : {{ t.startedCount }}
+              </span>
+
+              <span class="stat finished">
+                ✔ {{ 'tracking.finished' | translate }} : {{ t.finishedCount }}
+              </span>
+
+              <span class="stat canceled">
+                ✖ {{ 'tracking.canceled' | translate }} : {{ t.canceledCount }}
+              </span>
+
+            </div>
+
+          </div>
 
 
     </aside>
