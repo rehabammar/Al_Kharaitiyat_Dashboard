@@ -24,8 +24,6 @@
     "@danielmoncada/angular-datetime-picker": "^20.0.0",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
-    "@ngxmc/datetime-picker": "^19.2.2",
-    "@ngxmc/moment-adapter": "^19.2.2",
     "chart.js": "^4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "firebase": "^11.10.0",
@@ -38,6 +36,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.1.4",
+    "@angular-devkit/core": "^19.1.4",
     "@angular/cli": "^19.1.4",
     "@angular/compiler-cli": "^19.1.0",
     "@types/jasmine": "~5.1.0",

@@ -72,9 +72,9 @@ import { ClassDetailsFormComponent } from './Features/home/components/class-deta
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
-import { NgxMatDatetimepicker , NgxMatDatepickerToggle } from '@ngxmc/datetime-picker';
+// import { NgxMatDatetimepicker , NgxMatDatepickerToggle } from '@ngxmc/datetime-picker';
 
-import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
+// import { provideNgxMatMomentDate } from '@ngxmc/moment-adapter';
 import { SearchFieldComponent } from './shared/components/search-field/search-field.component';
 import { PrivacyPolicyComponent } from './Features/pre-login/components/privacy-policy/privacy-policy.component';
 import { DeleteAccountComponent } from './Features/pre-login/components/delete-account/delete-account.component';
@@ -178,8 +178,8 @@ import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
     BaseChartDirective,
     MatProgressSpinnerModule,
 
-    NgxMatDatetimepicker,
-    NgxMatDatepickerToggle,
+    // NgxMatDatetimepicker,
+    // NgxMatDatepickerToggle,
 
     MatCheckboxModule,
 
@@ -196,7 +196,7 @@ import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideMessaging(() => getMessaging()),
-    provideNgxMatMomentDate(),
+    // provideNgxMatMomentDate(),
     {
     provide: HTTP_INTERCEPTORS,
     useClass: NoCacheI18nInterceptor,
