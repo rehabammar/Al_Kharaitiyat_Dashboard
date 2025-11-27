@@ -32,35 +32,31 @@ export class TeachersTrackingComponent implements AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    this.loadTeachers();
-    setTimeout(() => this.initMap(), 150);
+  this.initMap();                 
+  setTimeout(() => this.loadTeachers(), 150); 
+  this.sub = this.bridge.events$.subscribe(e => {
+    if (e?.type === 'REFRESH') {
+      this.refreshTeacherLocations();
+    }
+  });
+}
 
-    this.sub = this.bridge.events$.subscribe(e => {
-      if (e?.type === 'REFRESH') {
-        console.log('Refreshing teacher locations...'); 
-        this.refreshTeacherLocations();
-        
-      }
-    });
-  }
 
 
   // =============================
   // Load today's teachers status
   // =============================
-  loadTeachers() {
+loadTeachers() {
   this.trackingService.getTodayTeachersStatus().subscribe(data => {
     this.teachers = data.map(t => ({
       ...t,
-      selected: true,   // ← كل المدرسين مختارين من البداية
-      lat: t.locationStartLat,
-      lng: t.locationStartLong,
-      avatar: t.profileUrl
+      selected: true,
     }));
 
     this.updateMarkers();
   });
 }
+
 
 
 
@@ -139,64 +135,131 @@ export class TeachersTrackingComponent implements AfterViewInit {
     // return "";
   }
 
+updateMarkers() {
 
-  updateMarkers() {
-    // Remove old markers
-    this.markers.forEach(m => this.map.removeLayer(m));
-    this.markers = [];
+  // =============================
+  // 1) SAFE: لو الماب لسه متعملتش
+  // =============================
+  if (!this.map) {
+    console.warn('Map not initialized yet, skipping marker update.');
+    return;
+  }
 
-    const group = L.featureGroup();
+  // =============================
+  // 2) Remove old markers safely
+  // =============================
+  this.markers.forEach(m => {
+    if (m && this.map.hasLayer(m)) {
+      this.map.removeLayer(m);
+    }
+  });
+  this.markers = [];
 
-    this.teachers.filter(t => t.selected).forEach(t => {
-      if (!t.locationStartLat || !t.locationStartLong) return;
+  const group = L.featureGroup();
 
-      // Marker HTML with status
-      const html = MapMarkerComponent.renderMarker(
-        t.teacherFullName || "",
-        this.photoUrl(t),
-        t.teacherStatus || "OFFLINE"
-      );
+  // =============================
+  // 3) Filter valid teachers ONLY
+  // =============================
+  const validTeachers = this.teachers.filter(t => {
+    const lat = Number(t.locationStartLat);
+    const lng = Number(t.locationStartLong);
 
-      const icon = L.divIcon({
-        html,
-        className: "my-teacher-marker",
-        iconSize: [45, 50],
-        iconAnchor: [22, 45]
-      });
+    return (
+      t.selected &&
+      !isNaN(lat) &&
+      !isNaN(lng) &&
+      lat !== 0 &&
+      lng !== 0 &&
+      lat >= -90 && lat <= 90 &&
+      lng >= -180 && lng <= 180
+    );
+  });
 
-      const marker = L.marker([t.locationStartLat, t.locationStartLong], { icon });
+  // =============================
+  // 4) Add markers safely
+  // =============================
+  validTeachers.forEach(t => {
 
+    const lat = Number(t.locationStartLat);
+    const lng = Number(t.locationStartLong);
+
+    const html = MapMarkerComponent.renderMarker(
+      t.teacherFullName || "",
+      this.photoUrl(t),
+      t.teacherStatus || "OFFLINE"
+    );
+
+    const icon = L.divIcon({
+      html,
+      className: "my-teacher-marker",
+      iconSize: [45, 50],
+      iconAnchor: [22, 45]
+    });
+
+    const marker = L.marker([lat, lng], { icon });
+
+    if (marker && this.map) {
       marker.addTo(this.map);
       this.markers.push(marker);
       group.addLayer(marker);
-    });
-
-    if (this.markers.length > 0) {
-      this.map.fitBounds(group.getBounds(), { padding: [20, 20] });
     }
+  });
+
+  // =============================
+  // 5) No markers? → Stop safely
+  // =============================
+  if (this.markers.length === 0) {
+    console.warn('No valid markers to display.');
+    return;
   }
+
+  // =============================
+  // 6) Resize & Auto-Focus
+  // =============================
+  setTimeout(() => {
+
+    if (!this.map) return;
+
+    this.map.invalidateSize();
+
+    if (this.markers.length === 1) {
+      // focus on single teacher
+      this.map.flyTo(this.markers[0].getLatLng(), 15, {
+        animate: true,
+        duration: 0.6
+      });
+    } else {
+      // fit all teachers on the screen
+      this.map.fitBounds(group.getBounds(), {
+        padding: [40, 40],
+        animate: true,
+        duration: 0.6
+      });
+    }
+
+  }, 150);
+}
+
+
 
 
 refreshTeacherLocations() {
   this.trackingService.getTodayTeachersStatus().subscribe(data => {
 
-    // نعمل Map للبيانات الجديدة
     const updatedList = data.map(newTeacher => {
       const oldTeacher = this.teachers.find(t => t.teacherUserPk === newTeacher.teacherUserPk);
 
       return {
         ...newTeacher,
-        selected: oldTeacher ? oldTeacher.selected : true, 
-        lat: newTeacher.locationStartLat,
-        lng: newTeacher.locationStartLong,
-        avatar: newTeacher.profileUrl,
+        selected: oldTeacher ? oldTeacher.selected : true
       };
     });
 
-    this.teachers = updatedList;  
-    this.updateMarkers();         
+    this.teachers = updatedList;
+    this.updateMarkers();
   });
 }
+
 
 
 }
