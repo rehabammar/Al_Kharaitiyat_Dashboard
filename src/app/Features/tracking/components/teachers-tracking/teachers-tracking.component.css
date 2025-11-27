@@ -261,8 +261,8 @@
 
 /* الألوان */
 .stat.scheduled { background: #fff8e1; color: #8a6d00; }
-.stat.started   { background: #e0f0ff; color: #004a80; }
-.stat.finished  { background: #e7f7e9; color: #1b5e20; }
+.stat.started   { background: #e7f7e9; color: #1b5e20;}
+.stat.finished  { background: #e0f0ff; color: #004a80; }
 .stat.canceled  { background: #fdecea; color: #b71c1c; }
 
 .stat::first-letter {

@@ -7523,12 +7523,78 @@ del {
   transform: translate(-50%, -50%);
 }
 
+/* ===========================
+   DEFAULT (OFFLINE / RED)
+=========================== */
+.marker-wrapper.status-offline .marker-avatar {
+  border: 3px solid #ef4444;
+}
+
+.marker-wrapper.status-offline .pulse-ring {
+  border-color: rgba(239, 68, 68, 0.6);
+}
+
+.marker-wrapper.status-offline .status-dot {
+  background: #ef4444;
+}
+
+.marker-wrapper.status-offline .marker-name {
+  background: #fee2e2ee;
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+/* ===========================
+     STARTED = GREEN
+=========================== */
+.marker-wrapper.status-started .marker-avatar {
+  border: 3px solid #22c55e;
+}
+
+.marker-wrapper.status-started .pulse-ring {
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+.marker-wrapper.status-started .status-dot {
+  background: #22c55e;
+}
+
+.marker-wrapper.status-started .marker-name {
+  background: #d1fae5ee;
+  border-color: #10b981;
+  color: #065f46;
+}
+
+/* ===========================
+     FINISHED = BLUE
+=========================== */
+.marker-wrapper.status-finished .marker-avatar {
+  border: 3px solid #3b82f6;
+}
+
+.marker-wrapper.status-finished .pulse-ring {
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+.marker-wrapper.status-finished .status-dot {
+  background: #3b82f6;
+}
+
+.marker-wrapper.status-finished .marker-name {
+  background: #dbeafeee;
+  border-color: #3b82f6;
+  color: #1e3a8a;
+}
+
+/* ===========================
+      SHARED ELEMENTS
+=========================== */
+
 .marker-avatar {
   width: 70px;
   height: 70px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #4ade80; /* أخضر */
   background: white;
   position: relative;
   z-index: 3;
@@ -7540,7 +7606,7 @@ del {
   object-fit: cover;
 }
 
-/* الوميض الخارجي */
+/* Pulse effect */
 .pulse-ring {
   position: absolute;
   top: 50%;
@@ -7566,7 +7632,7 @@ del {
   }
 }
 
-/* النقطة الخضراء */
+/* Status dot */
 .status-dot {
   position: absolute;
   bottom: 2px;
@@ -7578,10 +7644,17 @@ del {
   z-index: 4;
 }
 
-/* الاسم تحت الصورة */
+/* Name box */
 .marker-name {
-  margin-top: 4px;
-  font-size: 13px;
-  font-weight: 500;
-  color: black;
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  backdrop-filter: blur(4px);
 }

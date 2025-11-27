@@ -5,6 +5,9 @@ import { TeachersTrackingService } from '../../services/tracking.service';
 import { MapMarkerComponent } from '../map-marker/map-marker.component';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MessagingBridgeService } from '../../../../core/services/shared/messaging-bridge.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ClassDetailsFormComponent } from '../../../home/components/class-details-form/class-details-form.component';
+import { take } from 'rxjs/internal/operators/take';
 
 @Component({
   selector: 'app-teachers-tracking',
@@ -18,7 +21,8 @@ export class TeachersTrackingComponent implements AfterViewInit {
 
   constructor(
     private trackingService: TeachersTrackingService,
-    private bridge: MessagingBridgeService
+    private bridge: MessagingBridgeService,
+    private dialog: MatDialog
   ) { }
 
   map!: L.Map;
@@ -199,6 +203,14 @@ updateMarkers() {
     const marker = L.marker([lat, lng], { icon });
 
     if (marker && this.map) {
+
+      // ⭐ CLICK EVENT → OPEN CLASS
+      marker.on('click', () => {
+        if (t.classPk) {
+          this.openClass(t.classPk);
+        }
+      });
+
       marker.addTo(this.map);
       this.markers.push(marker);
       group.addLayer(marker);
@@ -240,6 +252,21 @@ updateMarkers() {
   }, 150);
 }
 
+
+openClass(classPk: number) {
+  const ref = this.dialog.open(ClassDetailsFormComponent, {
+    width: '900px',
+    maxWidth: '95vw',
+    data: { classId: classPk },
+    autoFocus: false
+  });
+
+  ref.afterClosed().pipe(take(1)).subscribe((shouldReload: boolean) => {
+    if (shouldReload) {
+      this.sub?.unsubscribe();
+    }
+  });
+}
 
 
 
