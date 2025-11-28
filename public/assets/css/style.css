@@ -7658,3 +7658,15 @@ del {
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   backdrop-filter: blur(4px);
 }
+
+
+.dialog-warning .mat-mdc-dialog-surface {
+  border-top: 4px solid #d97706 !important;
+}
+.mat-mdc-dialog-container {
+  z-index: 10000 !important;
+}
+
+.cdk-overlay-container {
+  z-index: 9999 !important;
+}

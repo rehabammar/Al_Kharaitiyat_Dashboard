@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommunicationService } from '../../services/communication.service';
 import { User } from '../../../auth/models/user.model';
 import { finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmPopupComponent } from '../../../../shared/components/confirm-popup/confirm-popup.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-communication-page',
@@ -29,17 +32,20 @@ export class CommunicationPageComponent implements OnInit {
 
   // Pagination
   currentPage = 0;
-  pageSize = 1000;
+  pageSize = 2000;
   totalUsers = 0;
 
-  
+
+  sidebarOpen = false;
+
+
   environment = {
-  production: true,
-  apiHost: 'http://157.180.65.178:8080'
-};
+    production: true,
+    apiHost: 'http://157.180.65.178:8080'
+  };
 
 
-  constructor(private commService: CommunicationService) { }
+  constructor(private commService: CommunicationService , private dialog: MatDialog, private translate : TranslateService) { }
 
   ngOnInit() {
     this.loadUsers();
@@ -173,6 +179,8 @@ export class CommunicationPageComponent implements OnInit {
 
       this.scrollToBottom();
     });
+
+    this.sidebarOpen = false;
   }
 
 
@@ -195,6 +203,23 @@ export class CommunicationPageComponent implements OnInit {
   /** SEND SINGLE MESSAGE **/
   sendMessage() {
     if (!this.message.trim() || !this.activeUser) return;
+
+    if (!this.activeUser?.whatsappNumber || this.activeUser.whatsappNumber.trim() === '') {
+
+       this.dialog.open(ConfirmPopupComponent, {
+            data: {
+              type: 'warning',
+              titleKey: 'label.warning',
+              messageKey: 'communication.noWhatsappNumberDescription',
+              okLabel: 'label.ok',
+              showCancel: false               
+            },
+            panelClass: 'dialog-warning',
+            disableClose: true
+          })
+      return;
+    }
+
 
     const payload = {
       messages: [{
@@ -226,42 +251,94 @@ export class CommunicationPageComponent implements OnInit {
 
   /** SEND BROADCAST MESSAGE **/
   sendBroadcastMessage() {
-    if (!this.message.trim() || this.selectedUsers.length === 0) return;
+  if (!this.message.trim() || this.selectedUsers.length === 0) return;
 
-    const payload = {
-      messages: this.selectedUsers.map(u => ({
-        number: u.whatsappNumber?.startsWith('+') ? u.whatsappNumber : `+${u.whatsappNumber}`,
-        message: this.message,
-        userFk: u.userPk
-      }))
-    };
+  // 1️⃣ فلترة المستخدمين الذين لا يملكون رقم واتساب
+  const validUsers = this.selectedUsers.filter(u =>
+    u.whatsappNumber && u.whatsappNumber.trim() !== ''
+  );
 
-    this.sending = true;
+  const removedUsers = this.selectedUsers.length - validUsers.length;
 
-    this.commService.sendBroadcast(payload).subscribe({
+  if (validUsers.length === 0) {
+    this.dialog.open(ConfirmPopupComponent, {
+      data: {
+        type: 'warning',
+        titleKey: 'communication.warningTitle',
+        messageKey: 'communication.noValidUsersToSend',
+        okLabel: 'label.ok',
+        showCancel: false
+      },
+      panelClass: 'dialog-warning'
+    });
+    return;
+  }
+
+  // 2️⃣ لودينغ أثناء الإرسال
+  const loadingRef = this.dialog.open(ConfirmPopupComponent, {
+    data: {
+      type: 'info',
+      titleKey: 'communication.sendingTitle',
+      message: this.translate.instant('communication.sendingToUsers', { count: validUsers.length }),
+      showCancel: false
+    },
+    panelClass: 'dialog-info',
+    disableClose: true
+  });
+
+  // 3️⃣ تجهيز الرسائل
+  const payload = {
+    messages: validUsers.map(u => ({
+      number: u.whatsappNumber!.startsWith('+') ? u.whatsappNumber : `+${u.whatsappNumber}`,
+      message: this.message,
+      userFk: u.userPk
+    }))
+  };
+
+  this.sending = true;
+
+  // 4️⃣ إرسال
+  this.commService.sendBroadcast(payload)
+    .pipe(finalize(() => {
+      this.sending = false;
+      loadingRef.close();
+    }))
+    .subscribe({
       next: () => {
-        this.sending = false;
-        alert("✔ تم إرسال الرسالة الجماعية بنجاح");
 
-          //  this.dialog.open(ConfirmPopupComponent, {
-          //     data: {
-          //       type: 'success',
-          //       messageKey: 'message.success',
-          //       autoCloseMs: 2000,
-          //       showCancel: false,
-        
-          //     },
-          //     panelClass: 'dialog-success'
-          //   });
+        // 5️⃣ رسالة استبعاد المستخدمين بدون واتساب
+        if (removedUsers > 0) {
+          this.dialog.open(ConfirmPopupComponent, {
+            data: {
+              type: 'warning',
+              titleKey: 'communication.warningTitle',
+              message: this.translate.instant('communication.removedUsers', { count: removedUsers }),
+              okLabel: 'label.ok',
+              showCancel: false
+            },
+            panelClass: 'dialog-warning'
+          });
+        }
+
+        // 6️⃣ Success Dialog
+        this.dialog.open(ConfirmPopupComponent, {
+          data: {
+            type: 'success',
+            titleKey: 'communication.successTitle',
+            messageKey: 'communication.broadcastSuccess',
+            autoCloseMs: 2000,
+            showCancel: false
+          },
+          panelClass: 'dialog-success'
+        });
 
         this.message = '';
         this.broadcastMode = false;
-
-        // Unselect all after broadcast
         this.unselectAll();
       }
     });
-  }
+}
+
 
   /** PAGINATION **/
   get totalPages(): number {
@@ -300,26 +377,26 @@ export class CommunicationPageComponent implements OnInit {
   //   return 'assets/img/male_avatar.png';
   // }
 
-  
-   getUserPhoto(u: User): string {
-  const raw = (u.profileUrl ?? u.profilePicturePath ?? '').trim();
-  if (!raw) {
-    if(u.genderFk == 1) return 'assets/img/gallery/male_avatar.svg' ;
-    else return 'assets/img/gallery/female_avatar.svg' ;
+
+  getUserPhoto(u: User): string {
+    const raw = (u.profileUrl ?? u.profilePicturePath ?? '').trim();
+    if (!raw) {
+      if (u.genderFk == 1) return 'assets/img/gallery/male_avatar.svg';
+      else return 'assets/img/gallery/female_avatar.svg';
+    }
+
+
+    // collapse accidental double slashes (but keep "http://" intact)
+    const fixed = raw.replace(/([^:]\/)\/+/g, '$1');
+
+    // if absolute URL, use it as-is
+    if (/^https?:\/\//i.test(fixed)) return fixed;
+
+    // if relative, prefix with API host (optional; remove if not needed)
+    const base = this.environment.apiHost?.replace(/\/+$/, '') ?? '';
+    const path = fixed.replace(/^\/+/, '');
+    return base ? `${base}/${path}` : path;
   }
-    
-
-  // collapse accidental double slashes (but keep "http://" intact)
-  const fixed = raw.replace(/([^:]\/)\/+/g, '$1');
-
-  // if absolute URL, use it as-is
-  if (/^https?:\/\//i.test(fixed)) return fixed;
-
-  // if relative, prefix with API host (optional; remove if not needed)
-  const base = this.environment.apiHost?.replace(/\/+$/, '') ?? '';
-  const path = fixed.replace(/^\/+/, '');
-  return base ? `${base}/${path}` : path;
-}
 
 
 

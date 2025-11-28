@@ -6,10 +6,17 @@
     </div>
   </section>
 
+      
+  <button class="toggle-sidebar-btn" (click)="sidebarOpen = !sidebarOpen">
+        <i class="fa fa-bars"></i>
+  </button>
+
   <div class="tracking-layout">
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+
+
+     <aside class="sidebar" [class.open]="sidebarOpen">
 
       <h3 class="text-header-primary">
         {{ 'tracking.selectTeachers' | translate }}

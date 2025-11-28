@@ -2,16 +2,25 @@
 
 
 
-    <section class="slider-area slider-area2">
+  <section class="slider-area slider-area2">
     <div class="slider-active">
       <div class="single-slider slider-height2"></div>
     </div>
   </section>
 
+  <button class="toggle-sidebar-btn" (click)="sidebarOpen = !sidebarOpen">
+     <i class="fa fa-bars"></i>
+  </button>
+
+  <div class="overlay" *ngIf="sidebarOpen" (click)="sidebarOpen = false"></div>
+
+
+
   <div class="content-wrapper row m-0">
 
     <!-- USERS LIST -->
-    <div class="col-4 users-panel">
+    <div class="col-4 users-panel" [class.open]="sidebarOpen">
+
 
       <div class="card h-100">
         <div class="text-header-primary">
@@ -84,29 +93,36 @@
                   (click)="openChat(u)"
                   class="list-group-item user-item">
 
-                  <!-- avatar -->
-                  <img class="user-avatar"
-                      [src]="getUserPhoto(u)"
-                      alt="avatar">
+                <img class="user-avatar"
+                    [src]="getUserPhoto(u)"
+                    alt="avatar">
 
-                  <!-- TEXT BLOCK -- الاسم والرقم -->
-                  <div class="user-info">
-                    <div class="user-name">{{ u.fullName }}</div>
-                    <div class="user-phone">{{ u.whatsappNumber }}</div>
+                <div class="user-info">
+                  <div class="user-name-row">
+                    <span class="user-name">{{ u.fullName }}</span>
                   </div>
+                  <div class="user-phone">{{ u.whatsappNumber }}</div>
+                </div>
 
+                <!-- AREA OF USER ID ABOVE CHECKBOX -->
+                <div class="user-select-area">
+                  <span class="user-id-small">{{ u.userPk }}</span>
                   <input 
                     type="checkbox"
                     [checked]="u.selected"
                     (click)="$event.stopPropagation()"
-                    (change)="toggleUser(u)">
+                    (change)="toggleUser(u)"
+                    class="user-checkbox">
+                </div>
+
               </li>
+
 
             </ul>
           </div>
 
           <!-- Pagination now visible -->
-          <nav class="mt-2">
+          <!-- <nav class="mt-2">
             <ul class="pagination justify-content-center">
               <li class="page-item" [class.disabled]="currentPage === 0">
                 <a class="page-link" (click)="prevPage()">‹</a>
@@ -118,7 +134,7 @@
                 <a class="page-link" (click)="nextPage()">›</a>
               </li>
             </ul>
-          </nav>
+          </nav> -->
 
         </div>
       </div>
@@ -152,7 +168,7 @@
                       placeholder="{{ 'communication.messagePlaceholder' | translate }}">
             </textarea>
 
-            <button class="btn send-btn ms-2"
+            <button class="send-btn ms-2"
                     [disabled]="sending || (!activeUser && selectedUsers.length === 0)"
                     (click)="broadcastMode ? sendBroadcastMessage() : sendMessage()">
               <i class="fa fa-paper-plane"></i>

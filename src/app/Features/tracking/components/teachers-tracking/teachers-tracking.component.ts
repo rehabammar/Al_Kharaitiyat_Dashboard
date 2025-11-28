@@ -34,6 +34,9 @@ export class TeachersTrackingComponent implements AfterViewInit {
   female_avatar = 'assets/img/gallery/female_avatar.svg';
   male_avatar = 'assets/img/gallery/male_avatar.svg';
 
+  sidebarOpen = false;
+
+
 
   ngAfterViewInit(): void {
   this.initMap();                 
