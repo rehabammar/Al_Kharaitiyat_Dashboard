@@ -15,8 +15,11 @@ export class PreLoginService {
   constructor(private api: ApiService) { }
 
 
-  private readonly initial: Organization | null =
-    SessionStorageUtil.getItem(AppConstants.CURRENT_ORGNIZATION_KEY) ?? null;
+  // private readonly initial: Organization | null =
+  //   SessionStorageUtil.getItem(AppConstants.CURRENT_ORGNIZATION_KEY) ?? null;
+
+  private readonly initial: Organization | null = null;
+
 
   private readonly orgSubject = new BehaviorSubject<Organization | null>(this.initial);
   readonly organization$ = this.orgSubject.asObservable().pipe(shareReplay({ bufferSize: 1, refCount: true }));

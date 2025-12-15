@@ -16,6 +16,7 @@ import { DeleteAccountComponent } from './Features/pre-login/components/delete-a
 import { TeachersTrackingComponent } from './Features/tracking/components/teachers-tracking/teachers-tracking.component';
 import { PaymnetPageComponent } from './Features/payments/components/paymnet-page/paymnet-page.component';
 import { CommunicationPageComponent } from './Features/communication/components/communication-page/communication-page.component';
+import { ActionLogComponent } from './Features/action_log/components/action-log/action-log.component';
 
 
 const routes: Routes = [
@@ -40,12 +41,8 @@ const routes: Routes = [
       { path: 'teachersTracking', component: TeachersTrackingComponent },
       { path: 'payment', component: PaymnetPageComponent },
       { path: 'communication', component: CommunicationPageComponent },
+      { path: 'action-log', component: ActionLogComponent },
 
-
-
-      
-
-      
       
     ]
     

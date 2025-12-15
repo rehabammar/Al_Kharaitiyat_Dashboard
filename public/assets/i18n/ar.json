@@ -416,7 +416,23 @@
     "tracking.started": "بدأت",
     "tracking.finished": "انتهت",
     "tracking.canceled": "أُلغيت",
-    "tracking.totalClasses": "الإجمالي"
+    "tracking.totalClasses": "الإجمالي",
+
+    "ActionLog.Title": "سجل نشاط النظام",
+    "ActionLog.Id": "المعرف",
+    "ActionLog.User": "المستخدم",
+    "ActionLog.Username": "اسم المستخدم",
+    "ActionLog.FullName": "الاسم الكامل",
+    "ActionLog.ActionType": "نوع العملية",
+    "ActionLog.TableName": "اسم الجدول",
+    "ActionLog.RecordId": "رقم السجل",
+    "ActionLog.IpAddress": "عنوان IP",
+    "ActionLog.UserAgent": "بيانات المتصفح",
+    "ActionLog.ActionDate": "تاريخ العملية",
+    "ActionLog.OldData": "البيانات قبل التعديل",
+    "ActionLog.NewData": "البيانات بعد التعديل",
+    "ActionLog.SqlQuery": "أمر قاعدة البيانات",
+    "ActionLog.Organization": "الجهة"
 
 
 

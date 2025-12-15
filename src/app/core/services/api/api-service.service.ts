@@ -30,6 +30,11 @@ export class ApiService {
 
   ) { }
 
+  private isRedirecting401 = false;
+  private errorDialogOpen = false;
+
+
+
   private handleResponse<T>(response: ApiResponse<T>): ApiResponse<T> {
     if (!response.success) {
       throw new ApiException(response.message);
@@ -37,51 +42,126 @@ export class ApiService {
 
     return response;
   }
+  private closeAllDialogs() {
+    this.dialog.closeAll();
+    this.errorDialogOpen = false;
+  }
+
 
   private handleError(error: HttpErrorResponse, checkStatusCode: boolean = true): Observable<never> {
+
     let errorMsg = this.translationService.instant('error.unknown');
-    console.log("Error received in handleError:", error.error);
 
+    // console.log("=== ERROR OCCURRED ===");
+    // console.log(error);
 
+    // استخراج status الحقيقي من HTTP أو body
+    const backendStatus =
+      error.status ||
+      error.error?.data?.statusCode ||
+      error.error?.statusCode ||
+      null;
+
+    // console.log("Extracted backend status:", backendStatus);
+
+    // استخراج رسالة السيرفر
     if (error instanceof ApiException) {
       errorMsg = error.message;
-    } else if (error.error["message"] !== undefined && typeof error.error["message"] === 'string') {
-      errorMsg = error.error["message"]
+    } else if (typeof error.error?.message === 'string') {
+      errorMsg = error.error.message;
     } else if (error.error instanceof ErrorEvent) {
-      errorMsg = `Network error: ${error.error.message}`
-    } else {
-
-
-      if (error.status === 401 && checkStatusCode) {
-        errorMsg = this.translationService.instant('error.unauthorized');
-        this.router.navigate(['/login'], { replaceUrl: true });
-      }
-      // else {
-
-      //   errorMsg = `Server error (status ${error.status}): ${error.message}`;
-      // }
+      errorMsg = `Network error: ${error.error.message}`;
     }
 
-    // console.error('HTTP status:', error.status);
-    // console.error('HTTP error:', error.error.message || error.message);
-    this.showErrorDialog(errorMsg);
+    // ---------------------------
+    // 🔥 معالجة 401 Unauthorized
+    // ---------------------------
+    if (backendStatus === 401 && checkStatusCode) {
+
+      // console.log("401 detected");
+
+      // لا تفتح popup أو تعمل redirect مرتين
+      if (!this.isRedirecting401) {
+        this.isRedirecting401 = true;
+
+        // اغلاق أي popups مفتوحة لمنع التكرار
+        this.dialog.closeAll();
+
+        // ⭐ افتح Popup واحد فقط للمستخدم
+        if (!this.errorDialogOpen) {
+          this.errorDialogOpen = true;
+
+          const dialogRef = this.dialog.open(ConfirmPopupComponent, {
+            data: {
+              type: 'error',
+              messageKey: 'error.unauthorized',
+              details: errorMsg,
+              autoCloseMs: 0,
+              showCancel: false
+            },
+            panelClass: 'dialog-error',
+            disableClose: true
+          });
+
+          // بعد ما المستخدم يقفل الـ popup → روح للّوجين
+          dialogRef.afterClosed().subscribe(() => {
+
+            this.errorDialogOpen = false;
+
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("userId");
+
+            this.router.navigate(['/login'], { replaceUrl: true });
+
+            setTimeout(() => {
+              this.isRedirecting401 = false;
+            }, 500);
+          });
+        }
+      }
+
+      return throwError(() => new Error("Unauthorized"));
+    }
+
+    // ---------------------------
+    // 🔥 باقي الأخطاء العادية
+    // ---------------------------
+    if (!this.errorDialogOpen) {
+      this.errorDialogOpen = true;
+
+      this.dialog.open(ConfirmPopupComponent, {
+        data: {
+          type: 'error',
+          messageKey: 'message.somethingWentWrong',
+          details: errorMsg,
+          autoCloseMs: 0,
+          showCancel: false
+        },
+        panelClass: 'dialog-error',
+        disableClose: true
+      }).afterClosed().subscribe(() => {
+        this.errorDialogOpen = false;
+      });
+    }
+
     return throwError(() => new Error(errorMsg));
   }
 
-  private showErrorDialog(message: string): void {
-    this.dialog.open(ConfirmPopupComponent, {
-      data: {
-        type: 'error',
-        messageKey: 'message.somethingWentWrong',
-        details: message,
-        autoCloseMs: 0,
-        showCancel: false
-      },
-      panelClass: 'dialog-error',
-      disableClose: true
-    });
 
-  }
+  // private showErrorDialog(message: string): void {
+  //   this.dialog.open(ConfirmPopupComponent, {
+  //     data: {
+  //       type: 'error',
+  //       messageKey: 'message.somethingWentWrong',
+  //       details: message,
+  //       autoCloseMs: 0,
+  //       showCancel: false
+  //     },
+  //     panelClass: 'dialog-error',
+  //     disableClose: true
+  //   });
+
+  // }
 
   get<T>(url: string, params?: any): Observable<ApiResponse<T>> {
     // console.log(`[DEBUG] GET Request - URL: ${url}`);

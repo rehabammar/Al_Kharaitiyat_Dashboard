@@ -8,8 +8,13 @@ export class AppConstants {
     static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 
+     static  ADMIN = 3;
+     static  SUPERADMIN = 122;
+
      static  STUDENT = 5;
      static  TEACHER = 4;
+
+     
 
 
 } 

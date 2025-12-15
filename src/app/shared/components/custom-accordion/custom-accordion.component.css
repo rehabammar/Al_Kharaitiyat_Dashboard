@@ -28,3 +28,11 @@
   color: white; /* optional: force text color */
 }
 
+
+.mat-expansion-panel-header[title] {
+  pointer-events: auto !important;
+}
+
+.mat-expansion-panel-header[title]:hover::after {
+  content: none !important;
+}

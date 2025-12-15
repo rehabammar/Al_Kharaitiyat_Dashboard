@@ -417,7 +417,26 @@
   "tracking.started": "Started",
   "tracking.finished": "Finished",
   "tracking.canceled": "Canceled",
-  "tracking.totalClasses": "Total"
+  "tracking.totalClasses": "Total",
+
+  "ActionLog.Title": "System Activity Log",
+
+  "ActionLog.Id": "ID",
+  "ActionLog.User": "User",
+  "ActionLog.Username": "Username",
+  "ActionLog.FullName": "Full Name",
+  "ActionLog.ActionType": "Action Type",
+  "ActionLog.TableName": "Table Name",
+  "ActionLog.RecordId": "Record ID",
+  "ActionLog.IpAddress": "IP Address",
+  "ActionLog.UserAgent": "User Agent",
+  "ActionLog.ActionDate": "Action Date",
+
+  "ActionLog.OldData": "Old Data",
+  "ActionLog.NewData": "New Data",
+  "ActionLog.SqlQuery": "SQL Query",
+
+  "ActionLog.Organization": "Organization"
 
 
 

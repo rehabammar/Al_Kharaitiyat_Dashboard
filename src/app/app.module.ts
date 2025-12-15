@@ -88,6 +88,9 @@ import { CommunicationPageComponent } from './Features/communication/components/
 import { WhatsappPreviewPopupComponent } from './Features/payments/components/whatsapp-preview-popup/whatsapp-preview-popup.component';
 import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
 
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RemoveAllTooltipsDirective } from './core/directive/remove-title.directive';
+import { ActionLogComponent } from './Features/action_log/components/action-log/action-log.component';
 
 
 
@@ -146,8 +149,11 @@ import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
     PaymnetPageComponent,
     CommunicationPageComponent,
     WhatsappPreviewPopupComponent,
+    RemoveAllTooltipsDirective,
+    ActionLogComponent
 
   ],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -182,6 +188,7 @@ import { NoCacheI18nInterceptor } from './no-cache-i18n.interceptor';
     // NgxMatDatepickerToggle,
 
     MatCheckboxModule,
+    MatTooltipModule
 
 
 

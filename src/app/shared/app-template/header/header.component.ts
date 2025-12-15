@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../Features/auth/services/user.service';
 import { getMessaging, deleteToken } from "firebase/messaging";
@@ -9,10 +9,18 @@ import { getMessaging, deleteToken } from "firebase/messaging";
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
 
   constructor(private router: Router, private userService: UserService) { }
+
+  isSuperAdmin : boolean = false; 
+
+
+   ngOnInit() {
+    const user = this.userService.getUser();
+    this.isSuperAdmin = user?.userTypeFk === 122 ;
+    }
 
   async handleLogoutClick() {
     this.userService.clearUser();

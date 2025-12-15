@@ -36,6 +36,7 @@ export class TeachersTrackingComponent implements AfterViewInit {
 
   sidebarOpen = false;
 
+  private refreshInterval?: any;
 
 
   ngAfterViewInit(): void {
@@ -46,7 +47,18 @@ export class TeachersTrackingComponent implements AfterViewInit {
       this.refreshTeacherLocations();
     }
   });
+
+  this.refreshInterval = setInterval(() => {
+    this.refreshTeacherLocations();
+  }, 5000);
+
 }
+
+ngOnDestroy(): void {
+  if (this.sub) this.sub.unsubscribe();
+  if (this.refreshInterval) clearInterval(this.refreshInterval);
+}
+
 
 
 

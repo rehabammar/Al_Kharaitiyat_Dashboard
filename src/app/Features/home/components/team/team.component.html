@@ -10,7 +10,7 @@
 
     <div class="team-active">  <!-- هتتحول لشبكة بدل سكرول -->
       <div class="single-cat text-center" *ngFor="let u of teachersList">
-        <div class="cat-icon">
+        <div class="teacher-photo">
           <img [src]="photoUrl(u)" [alt]="u.fullName" (error)="fallbackImg($event)" />
         </div>
 

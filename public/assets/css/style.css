@@ -7670,3 +7670,37 @@ del {
 .cdk-overlay-container {
   z-index: 9999 !important;
 }
+
+
+ /* إخفاء التولتيب بشكل كامل */
+/* Angular Material Tooltip */
+.mat-tooltip,
+.mdc-tooltip,
+.cdk-overlay-pane .mat-tooltip,
+.cdk-overlay-pane .mdc-tooltip {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* MDC tooltip surface */
+.mdc-tooltip-surface {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* MDC table overflow tooltip */
+.mdc-data-table__tooltip {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Mat Sort tooltip */
+.mat-sort-header-tooltip {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}

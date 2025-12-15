@@ -1,0 +1,30 @@
+ <main>
+  <section class="slider-area slider-area2">
+    <div class="slider-active">
+      <div class="single-slider slider-height2"> 
+      </div>
+    </div>
+  </section>
+  <div class="accordion-container">
+
+   <app-custom-accordion title="ActionLog.Title">
+
+    <app-generic-table
+      #logTable
+      [screenId]="'actionLog'"
+      [primaryKey]="'actionLogPk'"
+      [columns]="columns"
+      [dataFactory]="dataFactory"
+      [apiPath]="'action-log'"
+      [isEditableTable]="false"
+      [exportToExcelFl]="true"
+      [overridePage]="1000">
+    </app-generic-table>
+
+  </app-custom-accordion>
+
+  </div>
+
+ </main>
+ 
+ 

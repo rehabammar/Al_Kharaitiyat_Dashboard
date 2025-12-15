@@ -535,7 +535,7 @@ export class GenericFormComponent<T extends Record<string, any>>
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Delete failed', err);
+          // console.error('Delete failed', err);
           this.isLoading = false;
         }
       });

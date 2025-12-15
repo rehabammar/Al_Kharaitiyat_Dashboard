@@ -21,8 +21,9 @@ export class SliderComponent {
   constructor(private orgStore: PreLoginService) { }
 
   ngOnInit() {
-    this.org$ = this.orgStore.organization$;
-    this.orgStore.load().subscribe();
+   // this.org$ = this.orgStore.organization$;
+    // this.orgStore.load().subscribe();
+    this.org$ = this.orgStore.load(true);
     this.currentLang = LanguageService.getLanguage()?.langCode ?? 'ar' ;
   }
 

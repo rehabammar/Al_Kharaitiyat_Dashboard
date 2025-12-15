@@ -49,12 +49,16 @@
                                                 <a  class="hover-underline"  [routerLink]="['/reports']">{{ 'reports' | translate }} </a>
                                             </li>
 
-                                             <li routerLinkActive="active"> 
+                                             <li  *ngIf="isSuperAdmin"  routerLinkActive="active"> 
                                                 <a  class="hover-underline" [routerLink]="['/teachersTracking']">{{ 'tracking.tracking' | translate }} </a>
                                             </li>
 
                                              <li routerLinkActive="active"> 
                                                 <a  class="hover-underline" [routerLink]="['/communication']">{{ 'communication.communication' | translate }} </a>
+                                            </li>
+
+                                             <li  *ngIf="isSuperAdmin"  routerLinkActive="active"> 
+                                                <a  class="hover-underline" [routerLink]="['/action-log']">{{ 'ActionLog.Title' | translate }} </a>
                                             </li>
 
 
@@ -85,8 +89,9 @@
                                 <li><a [routerLink]="['/financial-transactions']" (click)="closeMobileMenu()">{{ 'financial-transactions' | translate }}</a></li>
                                 <li><a [routerLink]="['/payment']" (click)="closeMobileMenu()">{{ 'payment.payment' | translate }}</a></li>
                                 <li><a [routerLink]="['/reports']" (click)="closeMobileMenu()">{{ 'reports' | translate }}</a></li>
-                                <li><a [routerLink]="['/teachersTracking']" (click)="closeMobileMenu()">{{ 'tracking.tracking' | translate }}</a></li>
+                                <li  *ngIf="isSuperAdmin" ><a [routerLink]="['/teachersTracking']" (click)="closeMobileMenu()">{{ 'tracking.tracking' | translate }}</a></li>
                                 <li><a [routerLink]="['/communication']" (click)="closeMobileMenu()">{{ 'communication.communication' | translate }}</a></li>
+                                <li  *ngIf="isSuperAdmin" ><a [routerLink]="['/action-log']" (click)="closeMobileMenu()">{{ 'ActionLog.Title' | translate }}</a></li>
                                 <li>
                                     <a (click)="handleLogoutClick(); closeMobileMenu()">
                                     {{ 'logout' | translate }}

@@ -18,6 +18,7 @@ type Block = {
   status: string;
   statusClass: string;
   classPk: null;
+  teacherCourseFk?: number | null;
 };
 type TeacherRow = {
   teacherId: number | null;
@@ -38,7 +39,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   private langCode = 'en'; // keep the app language code
 
   // ---- grid config ----
-  START_HOUR = 8;       // 08:00
+  START_HOUR = 7;       // 08:00
   END_HOUR = 24;      // 11:59 PM
   SLOT_MIN = 10;      // slot granularity (10-minute steps like your data)
 
@@ -161,7 +162,8 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         time: this.formatTimeRange(start, end),
         status: c?.statusName || '—',
         statusClass: this.statusClass(c?.classStatusFk),
-        classPk: c?.classPk
+        classPk: c?.classPk ,
+        teacherCourseFk: c?.teacherCourseFk ?? null
       };
       map.get(id)!.blocks.push(block);
     }
