@@ -120,6 +120,15 @@ export class ClassDetailsFormComponent implements OnInit {
       disabled: false,
       width: '160px',
       showInTable: false,
+    },
+    {
+      labelKey: 'Class.ClassCost',
+      field: 'actualAmountRequired',
+      required: false,
+      dataType: 'number',
+      disabled: false,
+      width: '160px',
+      showInTable: false,
     }
   ];
 

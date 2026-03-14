@@ -183,6 +183,15 @@
   margin: 3px;
 }
 
+.class-field .mat-mdc-form-field-icon-suffix {
+  transform: scale(1.1);
+  color: hsl(var(--bg));
+}
+
+.class-field input{
+  text-align: center;
+}
+
 
 
 
@@ -203,6 +212,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 6px;
+  gap: 16px;     
 }
 
 ::ng-deep .mat-mdc-form-field .mdc-floating-label,
@@ -216,7 +226,6 @@
 
 
 
-/* حجم التاريخ داخل input */
 .date-input {
   font-size: 16px !important;
   font-weight: 500 !important;
@@ -226,24 +235,41 @@
 
 }
 
-/* تصغير أيقونة الكالندر */
 .date-field .mat-mdc-form-field-icon-suffix {
   transform: scale(1.2);
   background-color: hsl(var(--bg)) !important;
 }
 
-/* تقليل ارتفاع الحقل بالكامل */
 .date-field .mat-mdc-form-field-flex {
-  min-height: 25px !important;      /* ارتفاع ممتاز ومناسب */
+  min-height: 25px !important;     
 }
 
-/* تقليل مساحة الـ input الداخلية */
 .date-field .mat-mdc-form-field-infix {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
 
-/* تقليل space حول اللابل */
 .date-field .mat-mdc-floating-label {
   top: 8px !important;
+}
+
+
+.icon-btn{
+  width: 28px;
+  height: 28px;
+  color: black;
+
+  transition: all .2s ease;
+  background: transparent;
+  border: none;
+}
+
+.icon-btn:hover{
+  color: #0f3b82;
+  transform: scale(1.1);
+}
+
+/* زر clear */
+.icon-btn.clear:hover{
+  color: #dc2626;
 }

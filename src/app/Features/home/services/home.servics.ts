@@ -44,18 +44,32 @@ export class HomeService {
         // tap(res => console.log('Daily summary RAW response:', res.data)),   // logs the whole API response
         map(res => res.data));
   }
+  getDailyClasses(date?: string | null, classPk?: number): Observable<Class[]> {
 
+    const body: any = {
+      page: 0,
+      size: 1000
+    };
 
-  getDailyClasses(date: string): Observable<Class[]> {
-    // const todayStr = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
-    return this.apiService.post<ApiPage<Class>>(ApiEndpoints.getCourseClasses(), { "expectedStartTime": date, "page": 0, "size": 500 })
-      .pipe(
-        map(res => res.data.content));
+    if (date) {
+      body.expectedStartTime = date;
+    }
+
+    if (classPk) {
+      body.classPk = classPk;
+    }
+
+    return this.apiService.post<ApiPage<Class>>(
+      ApiEndpoints.getCourseClasses(),
+      body
+    ).pipe(
+      map(res => res.data.content)
+    );
   }
 
 
-
   getClassById(classId: number): Observable<Class> {
+    console.log("classId" + classId)
     const headers = new HttpHeaders({ 'classId': String(classId) });
     return this.apiService.post<Class>(ApiEndpoints.getClassById(), {}, { headers })
       .pipe(map(res => res.data));

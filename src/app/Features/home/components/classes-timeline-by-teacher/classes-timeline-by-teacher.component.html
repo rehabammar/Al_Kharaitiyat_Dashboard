@@ -1,7 +1,10 @@
 <app-custom-accordion title="Class.DailyClass">
 
-<div class="date-picker-container">
-  <mat-form-field appearance="outline" class="date-field">
+  <div class="date-picker-container">
+
+  <!-- اختيار التاريخ -->
+  <mat-form-field appearance="outline" class="date-field"  floatLabel="always">
+
     <mat-label>{{ 'dailyClass.selectDate' | translate }}</mat-label>
 
     <input matInput
@@ -10,9 +13,46 @@
            [(ngModel)]="selectedDate"
            (dateChange)="loadData()">
 
+    <!-- <button mat-icon-button
+            matSuffix
+            *ngIf="selectedDate"
+            (click)="clearDate()"
+            class="icon-btn clear">
+
+      <mat-icon>close</mat-icon>
+
+    </button> -->
+
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
     <mat-datepicker #picker></mat-datepicker>
+
   </mat-form-field>
+
+
+  <!-- البحث برقم الحصة -->
+  <mat-form-field appearance="outline"
+                  class="date-field class-field"
+                  floatLabel="always">
+
+    <mat-label>{{ 'Class.ClassPk' | translate }}</mat-label>
+
+    <input matInput
+           class="date-input"
+           [(ngModel)]="classId"
+           (keyup.enter)="loadData()">
+
+    <!-- <button mat-icon-button
+            matSuffix
+            (click)="loadData()"
+            class="icon-btn">
+
+      <mat-icon>search</mat-icon>
+
+    </button> -->
+
+  </mat-form-field>
+
 </div>
 
 

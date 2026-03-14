@@ -196,7 +196,6 @@ export class ApiService {
 
     // console.log(`[DEBUG] POST Request - URL: ${url}`);
     // console.log(`[DEBUG] POST Body - ${JSON.stringify(body)}`);
-    // console.log(`[DEBUG] POST Headers - ${JSON.stringify(options.headers || {})}`);
 
     this.loadingService.show();
 

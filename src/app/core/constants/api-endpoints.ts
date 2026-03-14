@@ -165,6 +165,9 @@ export class ApiEndpoints {
 
   static getTodayTeachersStatus = () => api('classes/today-teachers-status');
 
+    static getTeacherMovements = () => api('classes/today-teachers-status-locations');
+
+
 
   static sendWatsappMessages = () => api('whatsapp/send');
   static getWatsappMessages = () => api('whatsappSentMessages/search');

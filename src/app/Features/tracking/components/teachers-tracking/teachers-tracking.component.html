@@ -101,7 +101,7 @@
 
                    <input type="checkbox"
                     [checked]="t.selected"
-                    (change)="updateMarkers()" />
+                    (change)="onTeacherToggle(t)" />
 
                   <div class="teacher-info">
                     <img [src]="photoUrl(t)" class="teacher-avatar">

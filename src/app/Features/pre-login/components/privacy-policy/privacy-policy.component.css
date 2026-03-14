@@ -6,7 +6,6 @@
   --maxw:860px;
 }
 
-/* الصفحة */
 .policy{
   max-width: var(--maxw);
   /* padding: 0 16px 32px; */
@@ -14,7 +13,6 @@
   margin: 0px;
 }
 
-/* الهيرو */
 .policy__hero{
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 70%);
   color: #fff;
@@ -24,7 +22,6 @@
   margin-bottom: 12px;
 }
 
-/* صف الهيرو */
 .hero__row{
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -58,7 +55,6 @@
   color:#fff;
 }
 
-/* عنوان الصفحة و"آخر تحديث" */
 .page-meta{
   min-width:0;
 }

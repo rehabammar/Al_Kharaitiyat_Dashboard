@@ -48,10 +48,11 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   rows: TeacherRow[] = [];
   loading = false;
 
-  selectedDate: Date = new Date();
+  selectedDate: Date | null = new Date();
+  classId?: number;
 
 
-  constructor(private homeService: HomeService , private dialog: MatDialog) { }
+  constructor(private homeService: HomeService, private dialog: MatDialog) { }
 
 
 
@@ -95,9 +96,12 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
   loadData() {
 
     this.loading = true;
-    const dateStr = formatDate(this.selectedDate, 'yyyy-MM-dd', 'en-US');
 
-    this.sub = this.homeService.getDailyClasses(dateStr)
+    const dateStr = this.selectedDate
+      ? formatDate(this.selectedDate, 'yyyy-MM-dd', 'en-US')
+      : null;
+
+    this.sub = this.homeService.getDailyClasses(dateStr, this.classId)
       .pipe(
         catchError(err => {
           console.error('getDailyClasses error', err);
@@ -162,7 +166,7 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
         time: this.formatTimeRange(start, end),
         status: c?.statusName || '—',
         statusClass: this.statusClass(c?.classStatusFk),
-        classPk: c?.classPk ,
+        classPk: c?.classPk,
         teacherCourseFk: c?.teacherCourseFk ?? null
       };
       map.get(id)!.blocks.push(block);
@@ -280,21 +284,25 @@ export class ClassesTimelineByTeacherComponent implements OnInit, OnDestroy {
     }
   }
 
-  
-openClass(classPk: number) {
-  const ref = this.dialog.open(ClassDetailsFormComponent, {
-    width: '900px',
-    maxWidth: '95vw',
-    data: { classId: classPk },
-    autoFocus: false
-  });
 
-  ref.afterClosed().pipe(take(1)).subscribe((shouldReload: boolean) => {
-    if (shouldReload) {
-      this.sub?.unsubscribe();
-      this.loadData();       
-    }
-  });
-}
+  openClass(classPk: number) {
+    const ref = this.dialog.open(ClassDetailsFormComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      data: { classId: classPk },
+      autoFocus: false
+    });
 
+    ref.afterClosed().pipe(take(1)).subscribe((shouldReload: boolean) => {
+      if (shouldReload) {
+        this.sub?.unsubscribe();
+        this.loadData();
+      }
+    });
+  }
+
+  clearDate() {
+    this.selectedDate = null;
+    this.loadData();
+  }
 }

@@ -14,7 +14,7 @@ export class TeachersTrackingService {
   getTodayTeachersStatus(): Observable<TeacherTracking[]> {
     return this.api
       .post<TeacherTracking[]>(
-        ApiEndpoints.getTodayTeachersStatus(), 
+        ApiEndpoints.getTeacherMovements(), 
         {}
       )
       .pipe(map(res => res.data));

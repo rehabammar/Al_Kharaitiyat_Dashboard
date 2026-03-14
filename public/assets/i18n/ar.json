@@ -103,6 +103,7 @@
     "Class.CancelClassReason": "سبب إلغاء الحصة",
     "Class.CenterCarFlag" :"تم التوصيل بسيارة المركز",
     "Class.CenterCarCost" :"تكلفة التوصيل",
+    "Class.ClassCost" :"تكلفة الحصة",
     "CourseStudent.Students": "الطلاب",
     "CourseStudent.SelectStudent": "اختر الطالب",
     "CourseStudent.CourseStudentPk": "رقم الطالب",
@@ -316,7 +317,7 @@
     "privacy.sections.data.items.usage": "بيانات الاستخدام والجهاز: نوع الجهاز، إصدار النظام، لغة الواجهة، بيانات الأعطال والأداء.",
     "privacy.sections.data.items.userContent": "محتوى يرسله المستخدم: ملاحظات أو مرفقات داخل التطبيق.",
     "privacy.sections.data.items.identifiers": "المعرفات: رمز الإشعارات (Device Token) لاستلام التنبيهات.",
-    "privacy.sections.data.note": "لا نجمع موقعك الدقيق، ولا نبيع بياناتك لأي طرف ثالث.",
+    "privacy.sections.data.note": "لا نبيع بياناتك لأي طرف ثالث ولا نستخدمها لأغراض إعلانية.",
 
     "privacy.sections.use.title": "كيفية استخدامنا لبياناتك",
     "privacy.sections.use.items.core": "تقديم الميزات الأساسية للتطبيق وتحسين التجربة.",
@@ -348,6 +349,11 @@
     "privacy.sections.international.body": "قد تُعالَج البيانات على خوادم خارج بلدك مع ضمانات مناسبة لحماية الخصوصية.",
     "privacy.sections.changes.title": "التغييرات على هذه السياسة",
     "privacy.sections.changes.body": "قد نقوم بتحديث هذه السياسة من وقت لآخر، وسنخطرك بالتغييرات الجوهرية.",
+
+    "privacy.sections.location.title": "بيانات الموقع الجغرافي",
+    "privacy.sections.location.body": "يستخدم التطبيق بيانات الموقع الجغرافي لتقديم بعض الميزات الأساسية. قد يتم الوصول إلى الموقع أثناء استخدام التطبيق أو في الخلفية (Background Location) لضمان استمرارية عمل الخدمات المرتبطة بالموقع.<br><br>يتم جمع بيانات الموقع فقط بعد موافقة المستخدم الصريحة، ولا يتم استخدامها لأغراض إعلانية أو مشاركتها مع أي طرف ثالث. يمكن للمستخدم إيقاف إذن الموقع في أي وقت من إعدادات الجهاز.",
+
+
     "deleteAccountTitle": "طلب حذف الحساب",
     "deleteAccountInstruction": "يرجى إدخال اسم المستخدم وكلمة المرور لتأكيد رغبتك في حذف الحساب.",
     "deleteAccountUsername": "اسم المستخدم",

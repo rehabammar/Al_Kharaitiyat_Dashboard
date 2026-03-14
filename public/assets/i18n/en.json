@@ -103,6 +103,7 @@
     "Class.CancelClassReason": "Cancel Class Reason",
     "Class.CenterCarFlag" :"Center Car Provided",
     "Class.CenterCarCost" :"Center Car Cost",
+    "Class.ClassCost" :"Class Cost",
     "CourseStudent.Students": "Students",
     "CourseStudent.SelectStudent": "Select Student",
     "CourseStudent.CourseStudentPk": "Student ID",
@@ -316,7 +317,7 @@
   "privacy.sections.data.items.usage": "Usage & device data: device type, OS version, UI language, crash and performance data.",
   "privacy.sections.data.items.userContent": "User-submitted content: notes or attachments you upload in the app.",
   "privacy.sections.data.items.identifiers": "Identifiers: notification token (Device Token) to deliver push/local notifications.",
-  "privacy.sections.data.note": "We do not collect your precise location and we do not sell your data to third parties.",
+  "privacy.sections.data.note": "We do not sell your data to third parties and we do not use location data for advertising purposes." ,
 
   "privacy.sections.use.title": "How We Use Your Data",
   "privacy.sections.use.items.core": "Provide core app features and improve your experience.",
@@ -349,6 +350,12 @@
 
   "privacy.sections.changes.title": "Changes to This Policy",
   "privacy.sections.changes.body": "We may update this policy from time to time. We will notify you of material changes via the app or email.",
+
+  
+  "privacy.sections.location.title": "Location Data",
+  "privacy.sections.location.body": "The app uses location data to enable certain core features. Location access may occur while the app is in use or in the background (Background Location) to ensure continuity of location-based services.<br><br>Location data is collected only after explicit user consent. It is not used for advertising purposes and is not shared with third parties. Users can disable location access at any time through their device settings.",
+
+  
   "deleteAccountTitle": "Delete Account Request",
   "deleteAccountInstruction": "Please enter your username and password to confirm your request to delete the account.",
   "deleteAccountUsername": "Username",
