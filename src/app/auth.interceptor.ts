@@ -13,7 +13,7 @@ import { LanguageService } from './core/services/shared/language.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private userService: UserService , private route: Router) { }
+  constructor(private userService: UserService, private route: Router) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const userInfo: User = this.userService.getUser();
@@ -21,20 +21,32 @@ export class AuthInterceptor implements HttpInterceptor {
     if (userInfo) {
       request = request.clone({
         setHeaders: {
-         Authorization: `Bearer ${userInfo.authToken}`,
+          Authorization: `Bearer ${userInfo.authToken}`,
           userId: userInfo.userPk!.toString(),
-          lang: LanguageService.getLanguage()?.langCode ?? 'ar', 
+          lang: LanguageService.getLanguage()?.langCode ?? 'ar',
+          'device-type': 'web'
         }
       });
 
-      // console.log('[DEBUG] Request - URL:', request.url);
-      // console.log('[DEBUG] Request - Body:', request.body);
-      // console.log('[DEBUG] Request - Headers:', {
-      //   Authorization: request.headers.get('Authorization'),
-      //   userId: request.headers.get('userId'),
-      //   lang:  request.headers.get('lang'),        
-      // });
+
+    } else {
+      request = request.clone({
+        setHeaders: {
+
+          lang: LanguageService.getLanguage()?.langCode ?? 'ar',
+          'device-type': 'web'
+        }
+      });
+
     }
+    console.log('[DEBUG] Request - URL:', request.url);
+    console.log('[DEBUG] Request - Body:', request.body);
+    console.log('[DEBUG] Request - Headers:', {
+      Authorization: request.headers.get('Authorization'),
+      userId: request.headers.get('userId'),
+      lang: request.headers.get('lang'),
+      'device-type': request.headers.get('device-type')
+    });
 
     return next.handle(request);
   }

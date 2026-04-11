@@ -126,7 +126,7 @@ export class ClassDetailsFormComponent implements OnInit {
       field: 'actualAmountRequired',
       required: false,
       dataType: 'number',
-      disabled: false,
+      disabled: true,
       width: '160px',
       showInTable: false,
     }
